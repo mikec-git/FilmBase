@@ -1,0 +1,8 @@
+.CarouselDots {
+  display: flex;
+  margin-bottom: 2rem;
+
+  & > *:not(:last-child) {
+    margin-right: 0.75rem;
+  }
+}

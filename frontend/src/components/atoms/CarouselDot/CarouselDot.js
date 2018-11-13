@@ -3,7 +3,7 @@ import c from './CarouselDot.module.scss';
 
 const carouselDot = (props) => {
   const classNames = props.active ? 
-  c.CarouselDot : [c.CarouselDot, c.CarouselDot_filled].join(' ');
+  [c.CarouselDot, c.CarouselDot_active].join(' ') : c.CarouselDot;
 
   return (
     <div className={classNames}></div>
