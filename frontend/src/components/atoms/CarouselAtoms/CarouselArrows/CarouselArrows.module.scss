@@ -1,0 +1,11 @@
+.CarouselArrow {
+  display: block;
+  width: 5rem;
+  height: 5rem;
+  filter: drop-shadow(0 1rem .3rem rgba(0,0,0,.5));
+  transition: all 200ms ease-out;
+
+  &:hover {
+    filter: drop-shadow(0 1rem .3rem rgba(0,0,0,.5)) brightness(1.5);
+  }
+}

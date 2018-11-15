@@ -7,11 +7,22 @@ class Movies extends Component {
   componentDidMount() {
     this.props.onFetchNowPlayingMovies();
   }
+
+  dotClickedHandler = (movieId) => {
+    this.props.onChangeCarouselMovie(movieId);
+  }
+
+  arrowClickedHandler = (arrow) => {
+    this.props.onChangeCarouselMovieArrow(arrow);
+  }
   
   render() { 
     let carousel = null;
-    if(!this.props.loading) {
-      carousel = <Carousel movies={this.props.nowPlayingMovies.slice(0,7)} />;
+    if(this.props.nowPlayingMovies) {
+      carousel = <Carousel 
+        movies={this.props.nowPlayingMovies}
+        dotClicked={this.dotClickedHandler}
+        arrowClicked={this.arrowClickedHandler} />;
     }
 
     return ( 
@@ -31,7 +42,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchNowPlayingMovies: () => dispatch(actions.fetchNowPlayingMovies())
+    onFetchNowPlayingMovies: () => dispatch(actions.fetchNowPlayingMovies()),
+    onChangeCarouselMovie: (movieId) => dispatch(actions.changeCarouselMovie(movieId)),
+    onChangeCarouselMovieArrow: (arrow) => dispatch(actions.changeCarouselMovieArrow(arrow))
   }
 }
  

@@ -1,17 +1,17 @@
 import React from 'react';
-import CarouselDot from '../../atoms/CarouselDot/CarouselDot';
-import c from './CarouselDots.module.scss';
+import CarouselDot from '../../atoms/CarouselAtoms/CarouselDot/CarouselDot';
 
 const carouselDots = (props) => {
   let dots = null;
   if(props.movieList) {
     dots = (
-      <div className={c.CarouselDots}>
-        {props.movieList.map((movie, index) => {
+      <>
+        {props.movieList.map(movie => {
           return movie.active ? 
-            <CarouselDot key={index} active /> : <CarouselDot key={index} />;
+            <CarouselDot key={movie.id} id={movie.id} active /> : 
+            <CarouselDot clicked={props.clicked} key={movie.id} id={movie.id} />;
         })}
-      </div>
+      </>
     )
   }
 

@@ -1,15 +1,15 @@
 .Carousel {
+  position: relative;
   display: grid;
   grid-template-rows: repeat(2, 1fr); 
   justify-items: center;
   align-items: end;
 
   margin: 0 auto;
-  height: 70vh;
-  width: 90vw;
+  width: 85vw;
   background-color: orangered;
 
-  &__Img {
+  &__Info {
     grid-column: 1 / -1;
     grid-row: 1 / -1;
     width: 100%;
@@ -17,7 +17,56 @@
   }
 
   &__Dots {
+    z-index: 10;
     grid-column: 1 / -1;
     grid-row: 1 / -1;
+    display: flex;
+    margin-bottom: 2rem;
+    padding: 1rem 2rem;
+    background-color: rgba(255,255,255, .1);
+    border-radius: 100px;
+    transition: all 200ms ease-in-out;
+  
+    & > *:not(:last-child) {
+      margin-right: 0.75rem;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, .3);
+    }
+  }
+    
+  &__Arrows {
+    z-index: 10;
+    visibility: hidden;
+    opacity: 0;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 200ms ease-out;   
+    clip-path: circle(50%);
+    cursor: pointer;
+    
+    &_left { 
+      left: 2%; 
+      
+      &:hover {
+        transform: translate(-.25rem, -50%);
+      }
+    }
+
+    &_right{
+      right: 2%; 
+
+      &:hover {
+        transform: translate(.25rem, -50%);
+      }
+    }
+  }
+
+  &:hover &__Arrows {
+    visibility: visible;
+    opacity: 1;
   }
 }
