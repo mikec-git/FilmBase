@@ -4,10 +4,14 @@ const initialState = {
   loading: false,
   error: null,
   movies: null,
-  nowPlayingMovies: null
+  nowPlayingMovies: null,
+  translateSlide: 0,
+  currentMovieDetails: null
 };
 
-// FETCHING MOVIES FROM MOVIE DB API
+// =========================== //
+//   FETCHING MOVIES FROM API  //
+// =========================== //
 const fetchMoviesStart = (state, action) => {
   return { ...state, loading: true };
 };
@@ -20,7 +24,21 @@ const fetchNowPlayingFail = (state, action) => {
   return { ...state, loading: false, error: action.error };
 };
 
-// CHANGING CAROUSEL MOVIE 
+const showMovieDetailsSuccess = (state, action) => {
+  return { ...state, loading: false, currentMovieDetails: action.details };
+};
+
+const showMovieDetailsFail = (state, action) => {
+  return { ...state, loading: false, error: action.error };
+};
+
+const closeMovieDetails = (state, action) => {
+  return { ...state, currentMovieDetails: null }
+}
+
+// =========================== //
+//           CAROUSEL          //
+// =========================== // 
 const updateCarouselMovieState = (state, activeIndex, newActiveIndex) => {
   let updatedState              = [...state.nowPlayingMovies];
   updatedState[activeIndex]     = { ...updatedState[activeIndex], active: false };
@@ -33,34 +51,60 @@ const changeCarouselMovie = (state, action) => {
   const newActiveIndex  = state.nowPlayingMovies.findIndex(movie => movie.id === action.movieId);
 
   const updatedNowPlayingMovies = updateCarouselMovieState(state, activeIndex, newActiveIndex);
-  
-  return { ...state, nowPlayingMovies: updatedNowPlayingMovies };
+  const updatedTranslateSlide = -newActiveIndex * action.element.clientWidth;
+
+  return { ...state, nowPlayingMovies: updatedNowPlayingMovies, translateSlide: updatedTranslateSlide };
 };
 
 const changeCarouselMovieArrow = (state, action) => {
   const activeIndex = state.nowPlayingMovies.findIndex(movie => movie.active);
   
   let newActiveIndex = null;
+  let updatedTranslateSlide = state.translateSlide;
   if(action.arrowDirection === 'left') {
-    newActiveIndex = activeIndex - 1 >= 0 ? 
-      activeIndex - 1 : state.nowPlayingMovies.length-1;
+    if(activeIndex - 1 >= 0) {
+      newActiveIndex = activeIndex - 1;
+      updatedTranslateSlide += action.element.clientWidth;
+    } else {
+      newActiveIndex = state.nowPlayingMovies.length-1;
+      updatedTranslateSlide = action.element.clientWidth * -(state.nowPlayingMovies.length-1);
+    }
   } else {
-    newActiveIndex = activeIndex + 1 < state.nowPlayingMovies.length ? 
-      activeIndex + 1 : 0;
+    if(activeIndex + 1 < state.nowPlayingMovies.length) {
+      newActiveIndex = activeIndex + 1;
+      updatedTranslateSlide -= action.element.clientWidth;
+    } else {
+      newActiveIndex = 0;
+      updatedTranslateSlide = 0;
+    }
   }
 
   const updatedNowPlayingMovies = updateCarouselMovieState(state, activeIndex, newActiveIndex);
   
-  return { ...state, nowPlayingMovies: updatedNowPlayingMovies };
+  return { ...state, nowPlayingMovies: updatedNowPlayingMovies, translateSlide: updatedTranslateSlide };
 };
 
+const resizeCarouselSlide = (state, action) => {
+  const activeIndex = state.nowPlayingMovies.findIndex(movie => movie.active);
+  const newTranslateSlide = -action.element.clientWidth * activeIndex;
+  return { ...state, translateSlide: newTranslateSlide };
+};
+
+
+// =========================== //
+//           REDUCER           //
+// =========================== //
 const reducer = (state = initialState, action) => {
   switch(action.type) {
-    case actionTypes.FETCH_MOVIES_START: return fetchMoviesStart(state,action);
-    case actionTypes.FETCH_NOW_PLAYING_SUCCESS: return fetchNowPlayingSuccess(state,action);
-    case actionTypes.FETCH_NOW_PLAYING_FAIL: return fetchNowPlayingFail(state,action);
-    case actionTypes.CHANGE_CAROUSEL_MOVIE: return changeCarouselMovie(state,action);
-    case actionTypes.CHANGE_CAROUSEL_MOVIE_ARROW: return changeCarouselMovieArrow(state,action);
+    case actionTypes.FETCH_MOVIES_START: return fetchMoviesStart(state, action);
+    case actionTypes.FETCH_NOW_PLAYING_SUCCESS: return fetchNowPlayingSuccess(state, action);
+    case actionTypes.FETCH_NOW_PLAYING_FAIL: return fetchNowPlayingFail(state, action);
+    case actionTypes.CHANGE_CAROUSEL_MOVIE: return changeCarouselMovie(state, action);
+    case actionTypes.CHANGE_CAROUSEL_MOVIE_ARROW: return changeCarouselMovieArrow(state, action);
+    case actionTypes.RESIZE_CAROUSEL_SLIDE: return resizeCarouselSlide(state, action);
+    case actionTypes.SHOW_MOVIE_DETAILS_SUCCESS: return showMovieDetailsSuccess(state, action);
+    case actionTypes.SHOW_MOVIE_DETAILS_FAIL: return showMovieDetailsFail(state, action);
+    case actionTypes.CLOSE_MOVIE_DETAILS: return closeMovieDetails(state, action);
     default: return state;
   }
 }

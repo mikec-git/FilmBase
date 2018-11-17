@@ -11,30 +11,45 @@ const carousel = (props) => {
     return (
       <CarouselInfo
         key={movie.id}
+        movieId={movie.id}
         movieTitle={movie.title}
         movieImage={movie.backdrop_path} 
         movieGenre={movie.genre}
         movieRating={movie.vote_average}
         active={movie.active}
-        arrowClicked={props.arrowClicked} />
+        arrowClicked={props.arrowClicked}
+        clickTest={props.clickTest}
+        showMovie={props.movieClicked} />
     )
   });
 
-  const classesLeftArrow = [c.Carousel__Arrows, c.Carousel__Arrows_left].join(' ');
+  const classesLeftArrow  = [c.Carousel__Arrows, c.Carousel__Arrows_left].join(' ');
   const classesRightArrow = [c.Carousel__Arrows, c.Carousel__Arrows_right].join(' ');
+  const slidePosition = {
+    transform: `translateX(${props.translateX}px)`
+  };
 
   return ( 
     <header className={c.Carousel}>
       <div className={classesLeftArrow}>
-        <CarouselLeftArrow clicked={props.arrowClicked} /></div>
+        <CarouselLeftArrow
+          clicked={props.arrowClicked} />
+      </div>
       <div className={classesRightArrow}>
-        <CarouselRightArrow clicked={props.arrowClicked} /></div>
-      <div className={c.Carousel__Info}>
-        {carouselInfo}</div>
+        <CarouselRightArrow 
+          clicked={props.arrowClicked} />
+      </div>
+      <div 
+        className={c.Carousel__Info} 
+        ref={props.slideRef} 
+        style={slidePosition}>
+        {carouselInfo}
+      </div>
       <div className={c.Carousel__Dots}>
         <CarouselDots 
           movieList={props.movies}
-          clicked={props.dotClicked} /></div>
+          clicked={props.dotClicked} />
+      </div>
     </header>
   );
 }

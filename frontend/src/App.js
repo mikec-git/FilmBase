@@ -3,13 +3,16 @@ import { Route } from 'react-router-dom';
 
 import Movies from './containers/Movies/Movies';
 
-class App extends Component {
+import { LoadYoutube } from './shared/LoadYoutube';
 
+class App extends Component {
+  componentDidMount() {    
+    LoadYoutube();
+  }
 
   render() {
     return (
       <div>
-        <h1>This is FilmBase</h1>
         <Route exact path="/" component={Movies} />
       </div>
     );

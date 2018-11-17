@@ -11,9 +11,6 @@ import CarouselEmptyHeart from '../../atoms/CarouselAtoms/CarouselHeart/Carousel
 import c from './CarouselInfo.module.scss';
 
 const carouselInfo = (props) => {
-  const classNames = props.active ? 
-    [c.CarouselInfo, c.CarouselInfo_active].join(' ') :  c.CarouselInfo;
-
   const starCount = (Math.round(props.movieRating)/2).toFixed(1);
   let halfCounted = false;
   
@@ -28,14 +25,17 @@ const carouselInfo = (props) => {
   });
   
   return ( 
-    <a href="#" className={classNames}>
+    <a 
+      href="#" 
+      className={c.CarouselInfo}
+      onClick={() => props.showMovie(props.movieId)}>
       <div className={c.CarouselInfo__Img}>
         <CarouselImage 
           image={props.movieImage} 
           title={props.movieTitle} />
       </div>
       <div className={c.CarouselInfo__Desc}>
-        <CarouselHeader>In Theatres</CarouselHeader>
+        <CarouselHeader>In Theatres Now</CarouselHeader>
         <CarouselTitle title={props.movieTitle} />
         <div className={c.CarouselInfo__Rating}>
           <CarouselGenre genre={props.movieGenre} />

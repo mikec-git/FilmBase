@@ -1,0 +1,14 @@
+.Modal {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  right: 5%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  // TEMPORARY
+  background-color: orangered;
+  height: 75vh;
+}
