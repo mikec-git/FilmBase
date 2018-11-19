@@ -1,10 +1,15 @@
 import React from 'react';
 import moment from 'moment';
+// import c from './ReleaseDate.module.scss';
 
 const releaseDate = (props) => {
-  const releaseDate = moment(props.releaseDate).format('dddd, MMMM Do YYYY');
+  // const classNames = props.className ? 
+  //   [c.ReleaseDate, ...props.className].join(' ') : c.ReleaseDate;
+  
+    const releaseDate = moment(props.releaseDate).format('ddd, MMM Do YYYY');
+
   return ( 
-    <dd style={{zIndex: '999'}}>{releaseDate}</dd>
+    <dd className={props.className}>{releaseDate}</dd>
   );
 };
  

@@ -1,22 +1,70 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Movies from './containers/Movies/Movies';
+import Modal from './hoc/Modal/Modal';
+import MoreInfo from './containers/MoreInfo/MoreInfo';
+import * as actions from './store/actions/MoviesActions';
 
-import { LoadYoutube } from './shared/LoadYoutube';
 
 class App extends Component {
-  componentDidMount() {    
-    LoadYoutube();
+  prevLocation = this.props.location;
+
+  componentDidMount() {
+    if(this.props.location.pathname !== '/') {
+      this.props.history.push('/');
+    }    
+  }
+
+  componentDidUpdate() {
+    // If current location is not modal
+    let { location, history } = this.props;
+    if(history !== 'POP' && (!location.state || !location.state.modal)) {
+      this.prevLocation = this.props.location;
+    }
   }
 
   render() {
+    let modal         = null;
+    let { location }  = this.props;
+    let isModal       = !!(
+      location.state && location.state.modal && 
+      this.prevLocation !== location
+    );
+    
+    if(isModal && this.props.movieDetails) {
+      modal = () => {
+        return (
+          <Modal modalClosed={this.props.onClearMovieDetails}>
+            <MoreInfo movieDetails={this.props.movieDetails} />
+          </Modal>
+        )
+      };
+    }
+
     return (
       <div>
-        <Route exact path="/" component={Movies} />
+        <Switch>
+          <Route path="/" component={Movies} />  
+        </Switch>
+        {isModal ? <Route path='/movie/:movieId' component={modal}/> : null}
       </div>
+
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    movieDetails: state.movies.currentMovieDetails
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onClearMovieDetails: () => dispatch(actions.clearMovieDetails())
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import Backdrop from '../../components/atoms/UIAtoms/Backdrop/Backdrop';
 import c from './Modal.module.scss';
 
-const modal = (props) => {
-  let modalComponent = null;
-  if(props.showMovie) {
-    modalComponent = (
+class Modal extends Component {
+  goBack = (e) => {
+    e.stopPropagation();
+    this.props.history.goBack();
+    this.props.modalClosed();
+  }
+
+  render() {
+    return (
       <>
-        <Backdrop clicked={props.backdropClicked} />
+        <Backdrop clicked={this.goBack} />
         <div className={c.Modal}>
-          {props.children}
+          {this.props.children}
         </div>
       </>
     );
   }
-  return modalComponent;
 }
  
-export default modal;
+export default withRouter(Modal);

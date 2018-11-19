@@ -1,7 +1,7 @@
 import React from 'react';
 
 const genre = (props) => (
-  <dd>{props.genre}</dd>
+  <span>{props.genre}</span>
 );
 
 export default genre;

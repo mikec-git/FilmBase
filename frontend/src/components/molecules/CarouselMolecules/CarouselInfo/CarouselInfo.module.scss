@@ -13,8 +13,6 @@
   
   &__Img {
     transition: all 200ms ease-out;
-    height: 100%;
-    width: 100%;
   }
   
   &:hover &__Img {
@@ -22,7 +20,7 @@
     filter: contrast(1.05);
   }
 
-  &__Desc {
+  &__Text {
     position: absolute;
     bottom: 10rem;
     left: 10rem;

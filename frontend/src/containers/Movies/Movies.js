@@ -2,27 +2,33 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Carousel from '../../components/organisms/Carousel/Carousel';
-import Modal from '../../hoc/Modal/Modal';
-import Youtube from '../../components/organisms/YoutubeVideo/YoutubeVideo';
-import Runtime from '../../components/atoms/MoreInfoAtoms/Times/Runtime';
-
 import * as actions from '../../store/actions/MoviesActions';
 
-class Movies extends Component {  
-  constructor(props) {
-    super(props);
-    this.carouselSlideRef = React.createRef();
+class Movies extends Component {
+  carouselSlideRef = React.createRef();
+  
+  componentDidMount() {
     window.addEventListener('resize', this.resizeSlide);
-    this.state = {
-      showMovie: false
+    this.props.onFetchNowPlayingMovies();
+    this.startInterval();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timeoutID);
+  }
+
+  componentDidUpdate() {
+    if(this.modalOpened && this.props.history.action === 'POP' && (!this.props.location.state || !this.props.location.state.modal)) {
+      this.startInterval();
+      this.modalOpened = false;
     }
   }
   
-  componentDidMount() {
-    this.props.onFetchNowPlayingMovies();
+  // Start auto rotation of carousel
+  startInterval = () => {
     this.timeoutID = setInterval(() => this.arrowClickedHandler('right'), 5000);
   }
-  
+
   // Manual changing of carousel movie
   dotClickedHandler = (movieId) => {
     this.props.onChangeCarouselMovie(movieId, this.carouselSlideRef.current);
@@ -36,7 +42,7 @@ class Movies extends Component {
   
   resetCarouselAutoSlide = () => {
     clearInterval(this.timeoutID);
-    this.timeoutID = setInterval(() => this.arrowClickedHandler('right'), 5000);
+    this.startInterval()
   }
   
   // Adjust carousel translate amount on window resize
@@ -44,13 +50,11 @@ class Movies extends Component {
     this.props.onResizeCarouselSlide(this.carouselSlideRef.current);
   }
 
-  showMovieToggleHandler = (movieId) => {
-    if(movieId){
-      this.props.onShowMovieDetails(movieId);
-    } else {
-      this.props.onCloseMovieDetails();
-    }
-    this.setState(prevState => ({ showMovie: !prevState.showMovie }));
+  // When clicking a movie/TV image
+  getMovieDetailsHandler = (movieId) => {
+    this.props.onGetMovieDetails(movieId);    
+    clearInterval(this.timeoutID); //WORK ON THIS
+    this.modalOpened = true;
   }
   
   render() { 
@@ -62,27 +66,11 @@ class Movies extends Component {
         arrowClicked={this.arrowClickedHandler}
         translateX={this.props.translateSlide}
         slideRef={this.carouselSlideRef}
-        movieClicked={this.showMovieToggleHandler} />;
+        movieClicked={this.getMovieDetailsHandler} />;
     }
-
-    let movieDetails = null;
-    if(this.props.movieDetails) {
-      console.log(this.props.movieDetails);
-      movieDetails = (
-        <>
-          <Youtube playerId='123' />
-          <Runtime runtime='134' />
-        </>
-      );
-    }
-
+    
     return ( 
       <>
-        <Modal 
-          showMovie={this.state.showMovie}
-          backdropClicked={this.showMovieToggleHandler}>
-          {movieDetails}
-        </Modal>
         {carousel}
       </>
     );
@@ -93,8 +81,7 @@ const mapStateToProps = state => {
   return {
     nowPlayingMovies: state.movies.nowPlayingMovies,
     loading: state.movies.loading,
-    translateSlide: state.movies.translateSlide,
-    movieDetails: state.movies.currentMovieDetails
+    translateSlide: state.movies.translateSlide
   }
 }
 
@@ -104,8 +91,7 @@ const mapDispatchToProps = dispatch => {
     onChangeCarouselMovie: (movieId, element) => dispatch(actions.changeCarouselMovie(movieId, element)),
     onChangeCarouselMovieArrow: (arrow, element) => dispatch(actions.changeCarouselMovieArrow(arrow, element)),
     onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlide(element)),
-    onShowMovieDetails: (movieId) => dispatch(actions.showMovieDetails(movieId)),
-    onCloseMovieDetails: () => dispatch(actions.closeMovieDetails())
+    onGetMovieDetails: (movieId) => dispatch(actions.getMovieDetails(movieId))
   }
 }
  

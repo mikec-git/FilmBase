@@ -4,7 +4,7 @@ import c from './CarouselArrows.module.scss';
 
 const carouselRightArrow = (props) => (
   <img 
-    className={c.CarouselArrow} 
+    className={[c.CarouselArrow, c.CarouselArrow_right].join(' ')} 
     src={rightArrow} 
     alt="Right Arrow"
     onClick={() => props.clicked('right')} />

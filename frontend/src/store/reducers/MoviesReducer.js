@@ -24,15 +24,15 @@ const fetchNowPlayingFail = (state, action) => {
   return { ...state, loading: false, error: action.error };
 };
 
-const showMovieDetailsSuccess = (state, action) => {
+const getMovieDetailsSuccess = (state, action) => {
   return { ...state, loading: false, currentMovieDetails: action.details };
 };
 
-const showMovieDetailsFail = (state, action) => {
+const getMovieDetailsFail = (state, action) => {
   return { ...state, loading: false, error: action.error };
 };
 
-const closeMovieDetails = (state, action) => {
+const clearMovieDetails = (state, action) => {
   return { ...state, currentMovieDetails: null }
 }
 
@@ -102,9 +102,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.CHANGE_CAROUSEL_MOVIE: return changeCarouselMovie(state, action);
     case actionTypes.CHANGE_CAROUSEL_MOVIE_ARROW: return changeCarouselMovieArrow(state, action);
     case actionTypes.RESIZE_CAROUSEL_SLIDE: return resizeCarouselSlide(state, action);
-    case actionTypes.SHOW_MOVIE_DETAILS_SUCCESS: return showMovieDetailsSuccess(state, action);
-    case actionTypes.SHOW_MOVIE_DETAILS_FAIL: return showMovieDetailsFail(state, action);
-    case actionTypes.CLOSE_MOVIE_DETAILS: return closeMovieDetails(state, action);
+    case actionTypes.GET_MOVIE_DETAILS_SUCCESS: return getMovieDetailsSuccess(state, action);
+    case actionTypes.GET_MOVIE_DETAILS_FAIL: return getMovieDetailsFail(state, action);
+    case actionTypes.CLEAR_MOVIE_DETAILS: return clearMovieDetails(state, action);
     default: return state;
   }
 }

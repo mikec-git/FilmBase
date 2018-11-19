@@ -1,13 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-import CarouselHeader from '../../atoms/CarouselAtoms/CarouselHeader/CarouselHeader';
-import CarouselTitle from '../../atoms/CarouselAtoms/CarouselTitle/CarouselTitle';
-import CarouselImage from '../../atoms/CarouselAtoms/CarouselImage/CarouselImage';
-import CarouselGenre from '../../atoms/CarouselAtoms/CarouselGenre/CarouselGenre';
-import CarouselRating from '../../atoms/CarouselAtoms/CarouselRating/CarouselRating';
-import CarouselFullHeart from '../../atoms/CarouselAtoms/CarouselHeart/CarouselFullHeart';
-import CarouselHalfHeart from '../../atoms/CarouselAtoms/CarouselHeart/CarouselHalfHeart';
-import CarouselEmptyHeart from '../../atoms/CarouselAtoms/CarouselHeart/CarouselEmptyHeart';
+import CarouselHeader from '../../../atoms/CarouselAtoms/CarouselHeader/CarouselHeader';
+import CarouselTitle from '../../../atoms/CarouselAtoms/CarouselTitle/CarouselTitle';
+import CarouselImage from '../../../atoms/CarouselAtoms/CarouselImage/CarouselImage';
+import CarouselGenre from '../../../atoms/CarouselAtoms/CarouselGenre/CarouselGenre';
+import CarouselRating from '../../../atoms/CarouselAtoms/CarouselRating/CarouselRating';
+import CarouselFullHeart from '../../../atoms/CarouselAtoms/CarouselHearts/CarouselFullHeart';
+import CarouselHalfHeart from '../../../atoms/CarouselAtoms/CarouselHearts/CarouselHalfHeart';
+import CarouselEmptyHeart from '../../../atoms/CarouselAtoms/CarouselHearts/CarouselEmptyHeart';
 import c from './CarouselInfo.module.scss';
 
 const carouselInfo = (props) => {
@@ -25,16 +26,17 @@ const carouselInfo = (props) => {
   });
   
   return ( 
-    <a 
-      href="#" 
+    <Link 
+      to={{
+        pathname: '/movie/' + props.movieId,
+        state: { modal: true } }}
       className={c.CarouselInfo}
       onClick={() => props.showMovie(props.movieId)}>
-      <div className={c.CarouselInfo__Img}>
-        <CarouselImage 
-          image={props.movieImage} 
-          title={props.movieTitle} />
-      </div>
-      <div className={c.CarouselInfo__Desc}>
+      <CarouselImage 
+        image={props.movieImage} 
+        title={props.movieTitle}
+        className={[c.CarouselInfo__Img]} />
+      <div className={c.CarouselInfo__Text}>
         <CarouselHeader>In Theatres Now</CarouselHeader>
         <CarouselTitle title={props.movieTitle} />
         <div className={c.CarouselInfo__Rating}>
@@ -43,7 +45,7 @@ const carouselInfo = (props) => {
           <CarouselRating rating={props.movieRating} />
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
  

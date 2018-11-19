@@ -1,0 +1,39 @@
+.VideoSummary {
+  padding: 1rem;  
+  
+  &__DescList {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+  }
+  
+  &__DescItem {
+    display: flex;
+    flex-direction: column;
+    
+  }
+
+  &__DescTitle {
+    font-size: 1.6rem;
+  }
+
+  &__DescText {
+    font-size: 1.4rem;
+  }
+
+  &__Overview {
+    font-size: 1.4rem;
+  }
+
+  &__Genres {
+    display: flex;
+    font-size: 1.4rem;
+    margin-top: 1rem;
+
+    & > *:not(:last-child) {
+      margin-right: 1rem;
+      border-right: 1px solid black;
+      padding-right: 1rem;
+    }
+  }
+}

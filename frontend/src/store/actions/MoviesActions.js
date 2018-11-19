@@ -22,20 +22,20 @@ export const fetchMoviesStart = () => {
   return { type: actionTypes.FETCH_MOVIES_START };
 }
 
-export const showMovieDetails = (movieId) => {
-  return { type: actionTypes.SHOW_MOVIE_DETAILS, movieId }
+export const getMovieDetails = (movieId) => {
+  return { type: actionTypes.GET_MOVIE_DETAILS, movieId }
 }
 
-export const showMovieDetailsSuccess = (details) => {
-  return { type: actionTypes.SHOW_MOVIE_DETAILS_SUCCESS, details }
+export const getMovieDetailsSuccess = (details) => {
+  return { type: actionTypes.GET_MOVIE_DETAILS_SUCCESS, details }
 }
 
-export const showMovieDetailsFail = (error) => {
-  return { type: actionTypes.SHOW_MOVIE_DETAILS_FAIL, error }
+export const getMovieDetailsFail = (error) => {
+  return { type: actionTypes.GET_MOVIE_DETAILS_FAIL, error }
 }
 
-export const closeMovieDetails = () => {
-  return { type: actionTypes.CLOSE_MOVIE_DETAILS }
+export const clearMovieDetails = () => {
+  return { type: actionTypes.CLEAR_MOVIE_DETAILS }
 }
 
 // ================================= //

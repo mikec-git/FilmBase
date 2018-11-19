@@ -7,10 +7,12 @@ import createSagaMiddleware from 'redux-saga';
 
 import moviesReducer from './store/reducers/MoviesReducer';
 import { watchMovies } from './store/sagas/index';
+import { LoadYoutube } from './shared/LoadYoutube';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+LoadYoutube();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const sagaMiddleware  = createSagaMiddleware();
