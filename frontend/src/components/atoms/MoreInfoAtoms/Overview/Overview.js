@@ -3,7 +3,8 @@ import c from './Overview.module.scss';
 
 const overview = (props) => {
   const classNames = props.expanded ? 
-    props.className : [props.className, c.Overview_less].join(' ') ;
+    [c.Overview, props.className].join(' ') : 
+    [c.Overview, props.className, c.Overview_less].join(' ') ;
   
   return (
     <p 

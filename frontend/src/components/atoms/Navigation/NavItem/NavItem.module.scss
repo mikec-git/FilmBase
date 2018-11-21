@@ -1,0 +1,37 @@
+.NavItem {
+  display: inline-block;
+  font-size: 2rem;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin: 0 1.5rem;
+  
+  &__Link {
+    &,
+    &:link,
+    &:visited {
+      text-decoration: none;
+      color: black;
+      height: 100%;
+      width: 100%;
+    }
+  }
+  
+  &_active {
+    position: relative;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: inline-block;
+      width: 135%;
+      height: 110%;
+      border-radius: 10rem;
+      background-color: #eee;
+      z-index: -1;
+    }
+  }
+}

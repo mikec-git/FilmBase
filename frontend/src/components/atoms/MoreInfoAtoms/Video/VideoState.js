@@ -8,8 +8,8 @@ const videoState = (props) => {
     [c.VideoState, props.className].join(' ') : c.VideoState;
     
   return props.playerState === 1 ? 
-    <img className={classNames} src={Play} alt="Playing"/> : 
-    <img className={classNames} src={Pause} alt="Paused"/>;
+  <img className={classNames} src={Pause} alt="Paused"/> :
+  <img className={classNames} src={Play} alt="Playing"/>; 
 }
  
 export default videoState;

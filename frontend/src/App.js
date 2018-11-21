@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Layout from './hoc/Layout/Layout';
 import Movies from './containers/Movies/Movies';
 import Modal from './hoc/Modal/Modal';
 import MoreInfo from './containers/MoreInfo/MoreInfo';
@@ -44,13 +45,12 @@ class App extends Component {
     }
 
     return (
-      <div>
+      <Layout>
         <Switch>
           <Route path="/" component={Movies} />  
         </Switch>
         {isModal ? <Route path='/movie/:movieId' component={modal}/> : null}
-      </div>
-
+      </Layout>
     );
   }
 }

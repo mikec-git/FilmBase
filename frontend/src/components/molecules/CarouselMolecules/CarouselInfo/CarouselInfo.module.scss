@@ -2,7 +2,6 @@
   &,
   &:link,
   &:visited {
-    // display: none;
     display: inline-block;
     position: relative;  
     text-transform: uppercase;
@@ -12,6 +11,11 @@
   }
   
   &__Img {
+    display: block;
+    object-fit: cover;
+    object-position: 50% 35%;
+    height: 100%;
+    width: 100%;
     transition: all 200ms ease-out;
   }
   
@@ -64,5 +68,11 @@
     & > *:not(:last-child) {
       margin-right: .2rem;
     }
+  }
+
+  &__Heart {
+    display: block;
+    width: 2rem;
+    height: 2rem;
   }
 }

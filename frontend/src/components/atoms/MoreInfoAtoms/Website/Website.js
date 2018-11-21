@@ -8,7 +8,7 @@ const website = (props) => (
     href={props.website} 
     target='_blank'
     rel='noopener noreferrer'>
-    <h2 className={c.Website__Name}>{props.name}</h2>
+    <h1 className={c.Website__Name}>{props.name}</h1>
   </a>
 )
  

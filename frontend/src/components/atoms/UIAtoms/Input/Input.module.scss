@@ -1,0 +1,12 @@
+.Input {
+  outline: none;
+  font: inherit;
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+
+  &:focus {
+    outline: none;
+    background-color: transparent;
+  }
+}

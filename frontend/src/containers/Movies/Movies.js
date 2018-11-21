@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Carousel from '../../components/organisms/Carousel/Carousel';
+import Categories from '../../components/molecules/FilmList-M/Categories/Categories';
 import * as actions from '../../store/actions/MoviesActions';
 
 class Movies extends Component {
@@ -50,12 +51,14 @@ class Movies extends Component {
     this.props.onResizeCarouselSlide(this.carouselSlideRef.current);
   }
 
-  // When clicking a movie/TV image
+  // Get movie details
   getMovieDetailsHandler = (movieId) => {
     this.props.onGetMovieDetails(movieId);    
-    clearInterval(this.timeoutID); //WORK ON THIS
+    clearInterval(this.timeoutID);
     this.modalOpened = true;
   }
+
+
   
   render() { 
     let carousel = null;
@@ -72,6 +75,7 @@ class Movies extends Component {
     return ( 
       <>
         {carousel}
+        <Categories />
       </>
     );
   }

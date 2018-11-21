@@ -1,7 +1,8 @@
 import React from 'react';
+import c from './Department.module.scss';
 
 const department = (props) => (
-  <dd>{props.department}</dd>
+  <span className={c.Department}>({props.department})</span>
 );
  
 export default department;

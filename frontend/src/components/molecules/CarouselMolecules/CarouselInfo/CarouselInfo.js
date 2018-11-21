@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 
 import CarouselHeader from '../../../atoms/CarouselAtoms/CarouselHeader/CarouselHeader';
 import CarouselTitle from '../../../atoms/CarouselAtoms/CarouselTitle/CarouselTitle';
-import CarouselImage from '../../../atoms/CarouselAtoms/CarouselImage/CarouselImage';
+import CarouselImage from '../../../atoms/UIAtoms/Image/Image';
 import CarouselGenre from '../../../atoms/CarouselAtoms/CarouselGenre/CarouselGenre';
 import CarouselRating from '../../../atoms/CarouselAtoms/CarouselRating/CarouselRating';
-import CarouselFullHeart from '../../../atoms/CarouselAtoms/CarouselHearts/CarouselFullHeart';
-import CarouselHalfHeart from '../../../atoms/CarouselAtoms/CarouselHearts/CarouselHalfHeart';
-import CarouselEmptyHeart from '../../../atoms/CarouselAtoms/CarouselHearts/CarouselEmptyHeart';
+import FullHeart from '../../../../assets/img/full-heart.svg';
+import HalfHeart from '../../../../assets/img/half-heart.svg';
+import EmptyHeart from '../../../../assets/img/empty-heart.svg';
 import c from './CarouselInfo.module.scss';
 
 const carouselInfo = (props) => {
@@ -17,12 +17,24 @@ const carouselInfo = (props) => {
   
   const stars = Array.from({length: 5}, (_, index) => {
     if(index < (starCount|0)) {
-      return <CarouselFullHeart key={index} />;
+      return <CarouselImage 
+        className={c.CarouselInfo__Heart}
+        key={index} 
+        imgSrc={FullHeart} 
+        imgAlt='Full Heart' />;
     } else if((starCount%1) * 10 === 5 && !halfCounted) {
       halfCounted = true;
-      return <CarouselHalfHeart key={index} />;
+      return <CarouselImage 
+        className={c.CarouselInfo__Heart}
+        key={index}
+        imgSrc={HalfHeart}
+        imgAlt='Half Heart' />;
     } 
-    return <CarouselEmptyHeart key={index} />;
+    return <CarouselImage 
+      className={c.CarouselInfo__Heart}
+      key={index}
+      imgSrc={EmptyHeart}
+      imgAlt='Empty Heart' />;
   });
   
   return ( 
@@ -33,9 +45,9 @@ const carouselInfo = (props) => {
       className={c.CarouselInfo}
       onClick={() => props.showMovie(props.movieId)}>
       <CarouselImage 
-        image={props.movieImage} 
-        title={props.movieTitle}
-        className={[c.CarouselInfo__Img]} />
+        className={c.CarouselInfo__Img}
+        imgSrc={props.movieImage} 
+        imgAlt={props.movieTitle} />
       <div className={c.CarouselInfo__Text}>
         <CarouselHeader>In Theatres Now</CarouselHeader>
         <CarouselTitle title={props.movieTitle} />

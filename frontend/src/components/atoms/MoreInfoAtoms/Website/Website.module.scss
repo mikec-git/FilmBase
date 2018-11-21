@@ -1,13 +1,25 @@
 .Website {
-  text-decoration: none;
-  margin-bottom: 1rem;
+  &,
+  &:link,
+  &:visited {
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+    transition: all 200ms ease-out;
+    backface-visibility: hidden;
+  }
+
+  &:hover {
+    transform: translateY(-.1rem);
+    color: #444;
+  }
+
+  &:active {
+    transform: translateY(.1rem);
+  }
   
   &__Name {
     font-size: 3rem;
-    color: black;
     font-weight: 300;
-    border-bottom: 1px solid black;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
   }
 }

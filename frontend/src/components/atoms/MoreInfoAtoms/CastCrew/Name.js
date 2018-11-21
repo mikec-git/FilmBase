@@ -1,7 +1,8 @@
 import React from 'react';
+import c from './Name.module.scss';
 
 const name = (props) => (
-  <dd>{props.name}</dd>
+  <h4 className={c.Name}>{props.name}</h4>
 );
  
 export default name;
