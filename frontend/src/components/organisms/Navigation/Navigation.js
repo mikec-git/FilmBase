@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import Searchbar from '../../molecules/Navigation/Searchbar/Searchbar';
-import NavItems from '../../molecules/Navigation/NavItems/NavItems';
-import Image from '../../atoms/UIAtoms/Image/ClickImage';
+import Searchbar from '../../molecules/Navigation-M/Searchbar/Searchbar';
+import NavItems from '../../molecules/Navigation-M/NavItems/NavItems';
+import Image from '../../atoms/UI-A/Image/ClickImage';
 
 import Search from '../../../assets/img/search.svg';
 import Logo from '../../../assets/img/clapperboard-Logo.svg';

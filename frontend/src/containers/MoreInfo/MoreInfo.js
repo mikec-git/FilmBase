@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 
 import Header from '../../components/organisms/MoreInfo/Header/Header';
 import Money from '../../components/organisms/MoreInfo/Money/Money';
-import Cast from '../../components/organisms/MoreInfo/Cast/Cast';
-import Crew from '../../components/organisms/MoreInfo/Crew/Crew';
+import Staff from '../../components/organisms/MoreInfo/Staff/Staff';
 import Reviews from '../../components/organisms/MoreInfo/Reviews/Reviews';
 import c from './MoreInfo.module.scss';
 
 class MoreInfo extends Component {
   state = { 
-    activeVideoId: this.props.movieDetails.videos[0].key,
+    activeVideoId: this.props.videoDetails.videos[0].key,
     overviewExpanded: false,
     sideDrawerExpanded: true,
     youtubeState: null
@@ -32,27 +31,29 @@ class MoreInfo extends Component {
   }
 
   render() { 
-    console.log(this.props.movieDetails);  
+    console.log(this.props.videoDetails);  
     return ( 
       <div className={c.MoreInfo}>
         <Header 
-          movieDetails={this.props.movieDetails}
+          videoDetails={this.props.videoDetails}
           activeVideoId={this.state.activeVideoId}
-          videoClicked={this.videoClickedHandler}
           overviewExpanded={this.state.overviewExpanded}
-          overviewToggle={this.overviewToggleHandler}
           sideDrawerExpanded={this.state.sideDrawerExpanded}
-          sideDrawerToggle={this.sideDrawerToggleHandler}
           playerState={this.state.youtubeState}
+          overviewToggle={this.overviewToggleHandler}
+          sideDrawerToggle={this.sideDrawerToggleHandler}
+          videoClicked={this.videoClickedHandler}
           youtubeStateChanged={this.youtubeStateChangeHandler} />
         <Money
-          movieBudget={this.props.movieDetails.budget}
-          movieRevenue={this.props.movieDetails.revenue} />
-        <Cast
-          castList={this.props.movieDetails.cast} />
-        <Crew
-          crewList={this.props.movieDetails.crew} />
-        <Reviews reviewList={this.props.movieDetails.reviews} />
+          budget={this.props.videoDetails.budget}
+          revenue={this.props.videoDetails.revenue} />
+        <Staff
+          staffList={this.props.videoDetails.cast}
+          staffType='Cast' />
+        <Staff
+          staffList={this.props.videoDetails.crew}
+          staffType='Crew' />
+        <Reviews reviewList={this.props.videoDetails.reviews} />
       </div>
     );
   }

@@ -1,0 +1,19 @@
+.Hearts {
+  display: flex;
+
+  & > *:not(:last-child) {
+    margin-right: .2rem;
+  }
+
+  &__Carousel {    
+    display: block;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &__Thumbnail {    
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

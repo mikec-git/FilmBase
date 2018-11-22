@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Carousel from '../../components/organisms/Carousel/Carousel';
-import Categories from '../../components/molecules/FilmList-M/Categories/Categories';
+import FilmList from '../../components/organisms/FilmList-O/FilmList-O';
 import * as actions from '../../store/actions/MoviesActions';
 
 class Movies extends Component {
   carouselSlideRef = React.createRef();
+  state = {
+    activeCategory: 'Out Now'
+  }
   
   componentDidMount() {
     window.addEventListener('resize', this.resizeSlide);
-    this.props.onFetchNowPlayingMovies();
+    this.props.onFetchMoviesInit();
     this.startInterval();
   }
 
@@ -53,29 +56,40 @@ class Movies extends Component {
 
   // Get movie details
   getMovieDetailsHandler = (movieId) => {
-    this.props.onGetMovieDetails(movieId);    
+    this.props.onGetMovieDetails(movieId); 
     clearInterval(this.timeoutID);
     this.modalOpened = true;
   }
 
-
+  categoryClickedHandler = (category) => {
+    this.setState({ activeCategory: category });
+  }
   
   render() { 
     let carousel = null;
+    let filmList = null;
     if(this.props.nowPlayingMovies) {
       carousel = <Carousel 
-        movies={this.props.nowPlayingMovies}
+        videos={this.props.nowPlayingMovies.slice(0, 7)}
         dotClicked={this.dotClickedHandler}
         arrowClicked={this.arrowClickedHandler}
         translateX={this.props.translateSlide}
         slideRef={this.carouselSlideRef}
-        movieClicked={this.getMovieDetailsHandler} />;
+        videoClicked={this.getMovieDetailsHandler}
+        pathBase='/movie/' />;
+      
+      filmList = <FilmList
+        filmList={this.props.nowPlayingMovies.slice(0,18)}
+        categoryClicked={this.categoryClickedHandler}
+        activeCategory={this.state.activeCategory}
+        videoClicked={this.getMovieDetailsHandler}
+        pathBase='/movie/' />
     }
     
     return ( 
       <>
         {carousel}
-        <Categories />
+        {filmList}
       </>
     );
   }
@@ -91,7 +105,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchNowPlayingMovies: () => dispatch(actions.fetchNowPlayingMovies()),
+    onFetchMoviesInit: () => dispatch(actions.fetchMoviesInit()),
     onChangeCarouselMovie: (movieId, element) => dispatch(actions.changeCarouselMovie(movieId, element)),
     onChangeCarouselMovieArrow: (arrow, element) => dispatch(actions.changeCarouselMovieArrow(arrow, element)),
     onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlide(element)),

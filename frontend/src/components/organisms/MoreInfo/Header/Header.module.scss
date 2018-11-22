@@ -4,12 +4,7 @@
   height: 75vh;
   width: 100%;
   overflow: hidden;
-
-  &:hover &__SideDrawerToggle {
-    visibility: visible;
-    opacity: 1;
-  }
-
+  
   &__SideDrawer {
     display: flex; 
     flex-direction: column;
@@ -17,15 +12,19 @@
     max-width: 25%;
     width: 50rem;
     transition: all 75ms ease-out;
-
+    
     &_shrink { 
       transform: translateX(100%); 
       width: 0;
     }
   }
+  
+  &:hover &__SideDrawerToggle {
+    visibility: visible;
+    opacity: 1;
+  }
 
   &__SideDrawerToggle {
-    display: block;
     position: absolute;
     z-index: 100;
     right: 1rem;
@@ -37,10 +36,6 @@
                 background-color 300ms ease-in-out,
                 transform 400ms ease-out;
     cursor: pointer;
-    
-    &:hover {
-      transform: rotateZ(-35deg) scale(1.05);
-    }
   }
   
   &__Summary {

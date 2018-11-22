@@ -1,13 +1,20 @@
 import React from 'react';
-import Budget from '../../../molecules/MoreInfoMolecules/Budget/Budget';
-import Revenue from '../../../molecules/MoreInfoMolecules/Revenue/Revenue';
+import Money from '../../../molecules/MoreInfo-M/Money/Money';
+import Budget from '../../../../assets/img/budget.svg';
+import Revenue from '../../../../assets/img/money-bag.svg';
 import c from './Money.module.scss';
 
 const money = (props) => {
   return ( 
     <div className={c.Money}>
-      <Budget budget={String(props.movieBudget)} />
-      <Revenue revenue={String(props.movieRevenue)} />
+      <Money 
+        money={String(props.budget)}
+        name='Budget'
+        moneyImg={Budget} />
+      <Money 
+        money={String(props.revenue)}
+        name='Revenue'
+        moneyImg={Revenue} />
     </div>
   );
 }

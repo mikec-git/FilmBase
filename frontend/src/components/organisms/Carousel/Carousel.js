@@ -1,26 +1,26 @@
 import React from 'react';
 
-import CarouselArrow from '../../atoms/UIAtoms/Image/ClickImage';
-import CarouselInfo from '../../molecules/CarouselMolecules/CarouselInfo/CarouselInfo';
-import CarouselDots from '../../molecules/CarouselMolecules/CarouselDots/CarouselDots';
+import CarouselArrow from '../../atoms/UI-A/Image/ClickImage';
+import CarouselInfo from '../../molecules/Carousel-M/CarouselInfo/CarouselInfo';
+import CarouselDots from '../../molecules/Carousel-M/CarouselDots/CarouselDots';
 import LeftArrow from '../../../assets/img/arrow-left-circle.svg';
 import RightArrow from '../../../assets/img/arrow-right-circle.svg';
 import c from './Carousel.module.scss';
 
 const carousel = (props) => {      
-  let carouselInfo = props.movies.map(movie => {
+  let carouselInfo = props.videos.map(video => {
     return (
       <CarouselInfo
-        key={movie.id}
-        movieId={movie.id}
-        movieTitle={movie.title}
-        movieImage={movie.backdrop_path} 
-        movieGenre={movie.genre}
-        movieRating={movie.vote_average}
-        active={movie.active}
+        key={video.id}
+        pathBase={props.pathBase}
+        videoId={video.id}
+        videoTitle={video.title}
+        videoImage={video.backdrop_path} 
+        videoGenre={video.genre}
+        videoRating={video.vote_average}
+        active={video.active}
         arrowClicked={props.arrowClicked}
-        clickTest={props.clickTest}
-        showMovie={props.movieClicked} />
+        showVideo={props.videoClicked} />
     )
   });
 
@@ -50,7 +50,7 @@ const carousel = (props) => {
       </div>
       <CarouselDots 
         className={c.Carousel__Dots}
-        movieList={props.movies}
+        videoList={props.videos}
         clicked={props.dotClicked} />
     </header>
   );

@@ -1,93 +1,128 @@
 import * as actions from '../actions/MoviesActions';
 import { put, call, all } from 'redux-saga/effects';
-import axios from 'axios';
+import { axiosMovie3 } from '../../shared/AxiosMovieAPI';
 
-export function* fetchNowPlayingMoviesSaga(action) {
+// ================================== //
+//          FETCH MOVIES INIT         //
+// ================================== //
+export function* fetchMoviesInitSaga(action) {
   yield put(actions.fetchMoviesStart());  
   try {
-    const [response, imgResponse, genreResponse] = yield all([
-      // Getting Now Playing movie data
-      call([axios,'get'], 'https://api.themoviedb.org/3/movie/now_playing?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      // Getting image configuration data
-      call([axios,'get'], 'https://api.themoviedb.org/3/configuration?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      // Getting genre id data
-      call([axios,'get'], 'https://api.themoviedb.org/3/genre/movie/list?api_key=' + process.env.REACT_APP_TMDB_KEY)
+    const [imgResponse, genreResponse] = yield all([
+      // Image Config data
+      call(axiosMovie3, '/configuration?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      // Genre ID data
+      call(axiosMovie3, '/genre/movie/list?api_key=' + process.env.REACT_APP_TMDB_KEY)
+    ]);
+
+    const [nowPlaying, upcoming, popular] = yield all([
+      call(axiosMovie3, '/movie/now_playing?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1'),
+      call(axiosMovie3, '/movie/upcoming?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1'),
+      call(axiosMovie3, '/movie/popular?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1')
     ]);
 
     // Extracting relevant data
-    const responseData = response.data.results.filter(movie => movie.backdrop_path);
-    const imgResponseData   = imgResponse.data.images;
-    const genreResponseData = genreResponse.data.genres;
+    const nowPlayingData  = filterRelevantData(nowPlaying),
+          upcomingData    = filterRelevantData(upcoming),
+          popularData     = filterRelevantData(popular),
+          imgData         = imgResponse.data.images,
+          genreData       = genreResponse.data.genres,
+          showLength      = 7;
 
     // Getting base url for backdrop images
-    let baseUrlOriginal = imgResponseData.secure_base_url + imgResponseData.backdrop_sizes[3];
+    let baseUrlBackdrop = imgData.secure_base_url + imgData.backdrop_sizes[3],
+        baseUrlPoster   = imgData.secure_base_url + imgData.poster_sizes[1],
+        baseUrl         = [baseUrlBackdrop, baseUrlPoster];
 
-    // Taking only first 7 movies
-    const fetchedNowPlaying = [];
-    for(let value of responseData.slice(0,7)) {
-      const genre = genreResponseData.find(genre => genre.id === value.genre_ids[0]);
-      fetchedNowPlaying.push({ 
-        ...value, 
-        active: false, 
-        backdrop_path: baseUrlOriginal + value.backdrop_path,
-        genre: genre.name
-      });
-    }
+    const fetchedNowPlaying = [],
+          fetchedUpcoming   = [],
+          fetchedPopular    = [];
+
+    pushUpdatedData(nowPlayingData, fetchedNowPlaying, baseUrl, true, genreData);
+    pushUpdatedData(upcomingData, fetchedUpcoming, baseUrl);
+    pushUpdatedData(popularData, fetchedPopular, baseUrl);
     fetchedNowPlaying[0].active = true;
-    yield put(actions.fetchNowPlayingSuccess(fetchedNowPlaying));
+
+    yield put(actions.fetchMoviesInitSuccess(fetchedNowPlaying, showLength));
   } catch(error) {
-    yield put(actions.fetchNowPlayingFail(error));
+    yield put(actions.fetchMoviesInitFail(error));
     console.log(error);
   }
 }
 
+function pushUpdatedData(movieData, updatedArray, baseUrlArr, isCarousel, genreData) {
+  for(let value of movieData) {
+    const genre = isCarousel ? 
+      value.genre_ids.map(id => genreData.find(genre => genre.id === id).name) : null;
+
+    updatedArray.push({ 
+      ...value, 
+      ...(isCarousel && {active: false, genre}), 
+      backdrop_path: baseUrlArr[0].concat(value.backdrop_path),
+      poster_path: baseUrlArr[1].concat(value.poster_path),
+      vote_average: value.vote_average.toFixed(1)
+    });
+  }
+}
+
+function filterRelevantData(movieData) {
+  return movieData.data.results.filter(movie => movie.backdrop_path && movie.original_language === 'en');
+}
+
+// ================================== //
+//    GET INDIVIDUAL MOVIE DETAILS    //
+// ================================== //
 export function* getMovieDetailsSaga(action) {
   yield put(actions.fetchMoviesStart());
   try {
-    const [videoResponse, creditsResponse, detailsResponse, imgResponse, reviewResponse] = yield all([
-      call([axios,'get'], 'https://api.themoviedb.org/3/movie/' + action.movieId + '/videos?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      call([axios,'get'], 'https://api.themoviedb.org/3/movie/' + action.movieId + '/credits?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      call([axios,'get'], 'https://api.themoviedb.org/3/movie/' + action.movieId + '?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      call([axios,'get'], 'https://api.themoviedb.org/3/configuration?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      call([axios,'get'], 'https://api.themoviedb.org/3/movie/' + action.movieId + '/reviews?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      
+    const [imgResponse, videoResponse, creditsResponse, detailsResponse, reviewResponse] = yield all([
+      call(axiosMovie3, '/configuration?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      call(axiosMovie3, '/movie/' + action.movieId + '/videos?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      call(axiosMovie3, '/movie/' + action.movieId + '/credits?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      call(axiosMovie3, '/movie/' + action.movieId + '?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      call(axiosMovie3, '/movie/' + action.movieId + '/reviews?api_key=' + process.env.REACT_APP_TMDB_KEY)      
     ]);
   
-    const imgResponseData = imgResponse.data.images;
-    let baseUrl300 = imgResponseData.secure_base_url + imgResponseData.backdrop_sizes[0];
-    let baseUrlProfile = imgResponseData.secure_base_url + imgResponseData.profile_sizes[1];
-
+    const imgData   = imgResponse.data.images;
+    const castData  = creditsResponse.data.cast.slice(0, 11) || creditsResponse.data.cast;
+    const crewData  = creditsResponse.data.crew.slice(0, 11) || creditsResponse.data.crew;
     const videoResponseData = videoResponse.data.results.filter(video => video.site === 'YouTube');
-    videoResponseData.sort((a, b) => {
-      let nameA = a.type.toLowerCase();
-      let nameB = b.type.toLowerCase();
-      return nameA < nameB ? 1 : nameA > nameB ? -1 : 0;
-    });
-    
-    const castResponseData = creditsResponse.data.cast.slice(0, 11);
-    const crewResponseData = creditsResponse.data.crew.slice(0, 11);
 
-    for (let i = 0; i < castResponseData.length; i++) {
-      if(castResponseData[i].profile_path) {
-        castResponseData[i].profile_path = baseUrlProfile.concat(castResponseData[i].profile_path);
-      }
-      if(crewResponseData[i].profile_path) {
-        crewResponseData[i].profile_path = baseUrlProfile.concat(crewResponseData[i].profile_path);
-      }
-    }
+    const baseUrlBackdrop = imgData.secure_base_url + imgData.backdrop_sizes[0];
+    const baseUrlProfile  = imgData.secure_base_url + imgData.profile_sizes[1];
+    
+    sortVideoType(videoResponseData);
+    getProfileUrlPath(castData, baseUrlProfile);
+    getProfileUrlPath(crewData, baseUrlProfile);
     
     const detailsResponseData = {
       ...detailsResponse.data, 
       videos: videoResponseData,
-      cast: castResponseData,
-      crew: crewResponseData,
+      cast: castData,
+      crew: crewData,
       reviews: reviewResponse.data.results,
-      backdrop_path: baseUrl300 + detailsResponse.data.backdrop_path
+      backdrop_path: baseUrlBackdrop.concat(detailsResponse.data.backdrop_path)
     };
+    
     yield put(actions.getMovieDetailsSuccess(detailsResponseData));
   } catch(error) {
     console.log(error);
     yield put(actions.getMovieDetailsFail(error));
+  }  
+}
+
+function sortVideoType(videoData) {
+  videoData.sort((a, b) => {
+    let nameA = a.type.toLowerCase();
+    let nameB = b.type.toLowerCase();
+    return nameA < nameB ? 1 : nameA > nameB ? -1 : 0;
+  });
+}
+
+function getProfileUrlPath(staffData, baseUrl) {
+  for (let i = 0; i < staffData.length; i++) {
+    if(staffData[i].profile_path) {
+      staffData[i].profile_path = baseUrl.concat(staffData[i].profile_path);
+    }
   }
-  
 }

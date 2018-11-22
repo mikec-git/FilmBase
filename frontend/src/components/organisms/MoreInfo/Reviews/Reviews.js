@@ -1,5 +1,5 @@
 import React from 'react';
-import Reviews from '../../../molecules/MoreInfoMolecules/Reviews/Reviews';
+import Reviews from '../../../molecules/MoreInfo-M/Reviews/Reviews';
 import c from './Reviews.module.scss';
 
 const reviews = (props) => {

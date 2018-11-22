@@ -1,18 +1,18 @@
 import * as actionTypes from './actionTypes';
 
 // ================================= //
-//    FETCHING NOW PLAYING MOVIES    //
+//        FETCHING MOVIES INIT       //
 // ================================= //
-export const fetchNowPlayingMovies = () => {
-  return { type: actionTypes.FETCH_NOW_PLAYING_MOVIES };
+export const fetchMoviesInit = () => {
+  return { type: actionTypes.FETCH_MOVIES_INIT };
 }
 
-export const fetchNowPlayingSuccess = (fetchedNowPlaying) => {
-  return { type: actionTypes.FETCH_NOW_PLAYING_SUCCESS, fetchedNowPlaying };
+export const fetchMoviesInitSuccess = (fetchedNowPlaying, showLength) => {
+  return { type: actionTypes.FETCH_MOVIES_INIT_SUCCESS, fetchedNowPlaying, showLength };
 }
 
-export const fetchNowPlayingFail = (error) => {
-  return { type: actionTypes.FETCH_NOW_PLAYING_FAIL, error };
+export const fetchMoviesInitFail = (error) => {
+  return { type: actionTypes.FETCH_MOVIES_INIT_FAIL, error };
 }
 
 // ================================= //

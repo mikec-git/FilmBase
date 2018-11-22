@@ -1,0 +1,45 @@
+.Searchbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  font-size: 1.6rem;
+  height: 3rem;
+  
+  &__Input {
+    width: 50%;
+    border-radius: 10rem;
+    border: 1px solid #888;
+    padding: .45rem 2rem;
+    transition: all 400ms ease-in-out;
+    background-color: #fff;
+    backface-visibility: hidden;
+
+    &:focus {
+      width: 75%;
+      border: 1px solid deeppink;
+      background-color: #eee;
+    }
+  }
+
+  &__Submit {
+    display: block;
+    width: 5rem;
+    margin-left: -3.25rem;
+    padding: .5rem 0;
+    border-radius: 100px;
+    border: 1px solid #888;
+    transition: all 200ms ease-out;
+    backface-visibility: hidden;
+    background-color: blueviolet;
+    cursor: pointer;    
+    transition: all 400ms ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  &__Input:focus + &__Submit {    
+    border: 1px solid deeppink;
+  }
+}

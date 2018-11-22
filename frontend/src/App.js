@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Layout from './hoc/Layout/Layout';
-import Movies from './containers/Movies/Movies';
-import Modal from './hoc/Modal/Modal';
 import MoreInfo from './containers/MoreInfo/MoreInfo';
+import Movies from './containers/Movies/Movies';
+import Layout from './hoc/Layout/Layout';
+import Modal from './hoc/Modal/Modal';
 import * as actions from './store/actions/MoviesActions';
 
 
@@ -15,7 +15,7 @@ class App extends Component {
   componentDidMount() {
     if(this.props.location.pathname !== '/') {
       this.props.history.push('/');
-    }    
+    }
   }
 
   componentDidUpdate() {
@@ -29,16 +29,17 @@ class App extends Component {
   render() {
     let modal         = null;
     let { location }  = this.props;
+    let videoType     = location.state && location.state.type;
     let isModal       = !!(
       location.state && location.state.modal && 
       this.prevLocation !== location
     );
     
-    if(isModal && this.props.movieDetails) {
+    if(isModal && this.props.videoDetails) {
       modal = () => {
         return (
-          <Modal modalClosed={this.props.onClearMovieDetails}>
-            <MoreInfo movieDetails={this.props.movieDetails} />
+          <Modal modalClosed={this.props.onClearVideoDetails}>
+            <MoreInfo videoDetails={this.props.videoDetails} />
           </Modal>
         )
       };
@@ -49,7 +50,7 @@ class App extends Component {
         <Switch>
           <Route path="/" component={Movies} />  
         </Switch>
-        {isModal ? <Route path='/movie/:movieId' component={modal}/> : null}
+        {isModal && videoType === 'movie' ? <Route path='/movie/:movieId' component={modal}/> : null}
       </Layout>
     );
   }
@@ -57,13 +58,13 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    movieDetails: state.movies.currentMovieDetails
+    videoDetails: state.movies.currentMovieDetails
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onClearMovieDetails: () => dispatch(actions.clearMovieDetails())
+    onClearVideoDetails: () => dispatch(actions.clearMovieDetails())
   }
 }
 
