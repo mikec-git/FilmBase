@@ -19,32 +19,13 @@ const fetchMoviesStart = (state, action) => {
   return { ...state, loading: true };
 };
 
-function pushUpdatedData(movies, updatedMovies, baseUrls, isCarousel, genres) {
-  for(let movie of movies) {
-    const genre = isCarousel ? 
-      movie.genre_ids.map(id => genres.find(genre => genre.id === id).name) : null;
-
-    updatedMovies.push({ 
-      ...movie, 
-      ...(isCarousel && {active: false, genre}), 
-      backdrop_path: baseUrls[0].concat(movie.backdrop_path),
-      poster_path: baseUrls[1].concat(movie.poster_path),
-      vote_average: movie.vote_average.toFixed(1)
-    });
-  }
-}
-
-function filterRelevantData(movies) {
-  return movies.results.filter(movie => movie.backdrop_path && movie.original_language === 'en');
-}
-
 const fetchMoviesInitSuccess = (state, action) => {
   // Extracting relevant data
-  const nowPlaying  = filterRelevantData(action.fetchedMovies[0]),
-        upcoming    = filterRelevantData(action.fetchedMovies[1]),
-        popular     = filterRelevantData(action.fetchedMovies[2]),
-        imgConfig   = action.configAndGenres[0],
-        movieGenres = action.configAndGenres[1];
+  const nowPlaying  = filterData(action.fetchedMovies['nowPlaying'].results, 'langImg'),
+        upcoming    = filterData(action.fetchedMovies['upcoming'].results, 'langImg'),
+        popular     = filterData(action.fetchedMovies['popular'].results, 'langImg'),
+        imgConfig   = action.configAndGenres['imgConfig'],
+        movieGenres = action.configAndGenres['movieGenres'];
 
   // Getting base url for backdrop images
   let baseUrlBackdrop = imgConfig.secure_base_url + imgConfig.backdrop_sizes[3],
@@ -55,9 +36,9 @@ const fetchMoviesInitSuccess = (state, action) => {
         upcomingMovies   = [],
         popularMovies    = [];
 
-  pushUpdatedData(nowPlaying, nowPlayingMovies, baseUrl, true, movieGenres);
-  pushUpdatedData(upcoming, upcomingMovies, baseUrl);
-  pushUpdatedData(popular, popularMovies, baseUrl);
+  pushUpdatedInitData(nowPlaying, nowPlayingMovies, baseUrl, true, movieGenres);
+  pushUpdatedInitData(upcoming, upcomingMovies, baseUrl);
+  pushUpdatedInitData(popular, popularMovies, baseUrl);
   nowPlayingMovies[0].active = true;
 
   return { ...state, nowPlayingMovies, upcomingMovies, popularMovies, loading: false };
@@ -68,7 +49,27 @@ const fetchMoviesInitFail = (state, action) => {
 };
 
 const getMovieDetailsSuccess = (state, action) => {
-  return { ...state, loading: false, currentMovieDetails: action.details };
+  const imgConfig = action.config,
+        videos    = filterData(action.fetchedDetails['videos'].results, 'videoSite'),
+        cast      = extractUpTo(action.fetchedDetails['credits'].cast, 11),
+        crew      = extractUpTo(action.fetchedDetails['credits'].crew, 11),
+        details   = action.fetchedDetails['details'],
+        reviews   = action.fetchedDetails['reviews'].results;
+
+  const baseUrlBackdrop = imgConfig.secure_base_url + imgConfig.backdrop_sizes[0];
+  const baseUrlProfile  = imgConfig.secure_base_url + imgConfig.profile_sizes[1];
+  
+  sortVideoType(videos);
+  getProfilePath(cast, baseUrlProfile);
+  getProfilePath(crew, baseUrlProfile);
+  
+  const currentMovieDetails = {
+    ...details, 
+    videos, cast, crew, reviews,
+    backdrop_path: baseUrlBackdrop.concat(details.backdrop_path)
+  };
+    
+  return { ...state, currentMovieDetails, loading: false };
 };
 
 const getMovieDetailsFail = (state, action) => {
@@ -150,3 +151,50 @@ const reducer = createReducer(initialState, {
 });
 
 export default reducer;
+
+
+// =========================== //
+//     MOVIE FETCH UTILITY     //
+// =========================== //
+function pushUpdatedInitData(movies, updatedMovies, baseUrls, isCarousel, genres) {
+  for(let movie of movies) {
+    const genre = isCarousel ? 
+      movie.genre_ids.map(id => genres.find(genre => genre.id === id).name) : null;
+
+    updatedMovies.push({ 
+      ...movie, 
+      ...(isCarousel && {active: false, genre}), 
+      backdrop_path: baseUrls[0].concat(movie.backdrop_path),
+      poster_path: baseUrls[1].concat(movie.poster_path),
+      vote_average: movie.vote_average.toFixed(1)
+    });
+  }
+}
+
+function filterData(data, type) {
+  if(type === 'langImg') {
+    return data.filter(movie => movie.backdrop_path && movie.original_language === 'en');
+  } else if(type === 'videoSite') {
+    return data.filter(video => video.site === 'YouTube');
+  }
+}
+
+function extractUpTo(data, max) {
+  return data.slice(0, max) || data;
+}
+
+function sortVideoType(videos) {
+  videos.sort((a, b) => {
+    let nameA = a.type.toLowerCase();
+    let nameB = b.type.toLowerCase();
+    return nameA < nameB ? 1 : nameA > nameB ? -1 : 0;
+  });
+}
+
+function getProfilePath(staffData, baseUrl) {
+  for (let i = 0; i < staffData.length; i++) {
+    if(staffData[i].profile_path) {
+      staffData[i].profile_path = baseUrl.concat(staffData[i].profile_path);
+    }
+  }
+}

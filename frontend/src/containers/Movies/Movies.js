@@ -70,7 +70,7 @@ class Movies extends Component {
     let filmList = null;
     if(this.props.nowPlayingMovies) {
       carousel = <Carousel 
-        videos={this.props.nowPlayingMovies.slice(0, 7)}
+        videos={this.props.nowPlayingMovies.slice(0, this.props.showLength)}
         dotClicked={this.dotClickedHandler}
         arrowClicked={this.arrowClickedHandler}
         translateX={this.props.translateSlide}
@@ -99,7 +99,8 @@ const mapStateToProps = state => {
   return {
     nowPlayingMovies: state.movies.nowPlayingMovies,
     loading: state.movies.loading,
-    translateSlide: state.movies.translateSlide
+    translateSlide: state.movies.translateSlide,
+    showLength: state.movies.showLength
   }
 }
 

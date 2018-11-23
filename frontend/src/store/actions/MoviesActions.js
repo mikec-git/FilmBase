@@ -26,8 +26,8 @@ export const getMovieDetails = (movieId) => {
   return { type: actionTypes.GET_MOVIE_DETAILS, movieId }
 }
 
-export const getMovieDetailsSuccess = (details) => {
-  return { type: actionTypes.GET_MOVIE_DETAILS_SUCCESS, details }
+export const getMovieDetailsSuccess = (fetchedDetails, config) => {
+  return { type: actionTypes.GET_MOVIE_DETAILS_SUCCESS, fetchedDetails, config }
 }
 
 export const getMovieDetailsFail = (error) => {
