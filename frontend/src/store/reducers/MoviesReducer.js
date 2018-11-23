@@ -1,13 +1,15 @@
 import * as actionTypes from '../actions/actionTypes';
+import createReducer from './CreateReducer';
 
 const initialState = {
   loading: false,
   error: null,
-  movies: null,
   nowPlayingMovies: null,
-  translateSlide: 0,
+  upcomingMovies: null,
+  popularMovies: null,
   currentMovieDetails: null,
-  showLength: null
+  translateSlide: 0,
+  showLength: 7
 };
 
 // =========================== //
@@ -17,8 +19,48 @@ const fetchMoviesStart = (state, action) => {
   return { ...state, loading: true };
 };
 
+function pushUpdatedData(movies, updatedMovies, baseUrls, isCarousel, genres) {
+  for(let movie of movies) {
+    const genre = isCarousel ? 
+      movie.genre_ids.map(id => genres.find(genre => genre.id === id).name) : null;
+
+    updatedMovies.push({ 
+      ...movie, 
+      ...(isCarousel && {active: false, genre}), 
+      backdrop_path: baseUrls[0].concat(movie.backdrop_path),
+      poster_path: baseUrls[1].concat(movie.poster_path),
+      vote_average: movie.vote_average.toFixed(1)
+    });
+  }
+}
+
+function filterRelevantData(movies) {
+  return movies.results.filter(movie => movie.backdrop_path && movie.original_language === 'en');
+}
+
 const fetchMoviesInitSuccess = (state, action) => {
-  return { ...state, nowPlayingMovies: action.fetchedNowPlaying, showLength: action.showLength, loading: false };
+  // Extracting relevant data
+  const nowPlaying  = filterRelevantData(action.fetchedMovies[0]),
+        upcoming    = filterRelevantData(action.fetchedMovies[1]),
+        popular     = filterRelevantData(action.fetchedMovies[2]),
+        imgConfig   = action.configAndGenres[0],
+        movieGenres = action.configAndGenres[1];
+
+  // Getting base url for backdrop images
+  let baseUrlBackdrop = imgConfig.secure_base_url + imgConfig.backdrop_sizes[3],
+      baseUrlPoster   = imgConfig.secure_base_url + imgConfig.poster_sizes[1],
+      baseUrl         = [baseUrlBackdrop, baseUrlPoster];
+
+  const nowPlayingMovies = [],
+        upcomingMovies   = [],
+        popularMovies    = [];
+
+  pushUpdatedData(nowPlaying, nowPlayingMovies, baseUrl, true, movieGenres);
+  pushUpdatedData(upcoming, upcomingMovies, baseUrl);
+  pushUpdatedData(popular, popularMovies, baseUrl);
+  nowPlayingMovies[0].active = true;
+
+  return { ...state, nowPlayingMovies, upcomingMovies, popularMovies, loading: false };
 };
 
 const fetchMoviesInitFail = (state, action) => {
@@ -95,19 +137,16 @@ const resizeCarouselSlide = (state, action) => {
 // =========================== //
 //           REDUCER           //
 // =========================== //
-const reducer = (state = initialState, action) => {
-  switch(action.type) {
-    case actionTypes.FETCH_MOVIES_START: return fetchMoviesStart(state, action);
-    case actionTypes.FETCH_MOVIES_INIT_SUCCESS: return fetchMoviesInitSuccess(state, action);
-    case actionTypes.FETCH_MOVIES_INIT_FAIL: return fetchMoviesInitFail(state, action);
-    case actionTypes.CHANGE_CAROUSEL_MOVIE: return changeCarouselMovie(state, action);
-    case actionTypes.CHANGE_CAROUSEL_MOVIE_ARROW: return changeCarouselMovieArrow(state, action);
-    case actionTypes.RESIZE_CAROUSEL_SLIDE: return resizeCarouselSlide(state, action);
-    case actionTypes.GET_MOVIE_DETAILS_SUCCESS: return getMovieDetailsSuccess(state, action);
-    case actionTypes.GET_MOVIE_DETAILS_FAIL: return getMovieDetailsFail(state, action);
-    case actionTypes.CLEAR_MOVIE_DETAILS: return clearMovieDetails(state, action);
-    default: return state;
-  }
-}
+const reducer = createReducer(initialState, {
+  [actionTypes.FETCH_MOVIES_START]: fetchMoviesStart,
+  [actionTypes.FETCH_MOVIES_INIT_SUCCESS]: fetchMoviesInitSuccess,
+  [actionTypes.FETCH_MOVIES_INIT_FAIL]: fetchMoviesInitFail,
+  [actionTypes.CHANGE_CAROUSEL_MOVIE]: changeCarouselMovie,
+  [actionTypes.CHANGE_CAROUSEL_MOVIE_ARROW]: changeCarouselMovieArrow,
+  [actionTypes.RESIZE_CAROUSEL_SLIDE]: resizeCarouselSlide,
+  [actionTypes.GET_MOVIE_DETAILS_SUCCESS]: getMovieDetailsSuccess,
+  [actionTypes.GET_MOVIE_DETAILS_FAIL]: getMovieDetailsFail,
+  [actionTypes.CLEAR_MOVIE_DETAILS]: clearMovieDetails
+});
 
 export default reducer;

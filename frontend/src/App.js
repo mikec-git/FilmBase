@@ -6,13 +6,15 @@ import MoreInfo from './containers/MoreInfo/MoreInfo';
 import Movies from './containers/Movies/Movies';
 import Layout from './hoc/Layout/Layout';
 import Modal from './hoc/Modal/Modal';
-import * as actions from './store/actions/MoviesActions';
+import * as actionsMovies from './store/actions/MoviesActions';
+import * as actionsApp from './store/actions/AppActions';
 
 
 class App extends Component {
   prevLocation = this.props.location;
 
   componentDidMount() {
+    this.props.onFetchConfigInit();
     if(this.props.location.pathname !== '/') {
       this.props.history.push('/');
     }
@@ -45,10 +47,15 @@ class App extends Component {
       };
     }
 
+    let route = null;
+    if(!this.props.loading && this.props.fetched) {
+      route = <Route path="/" component={Movies} />;
+    }
+
     return (
       <Layout>
         <Switch>
-          <Route path="/" component={Movies} />  
+          {route}
         </Switch>
         {isModal && videoType === 'movie' ? <Route path='/movie/:movieId' component={modal}/> : null}
       </Layout>
@@ -58,13 +65,16 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    videoDetails: state.movies.currentMovieDetails
+    videoDetails: state.movies.currentMovieDetails,
+    loading: state.app.loading,
+    fetched: state.app.initLoaded
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onClearVideoDetails: () => dispatch(actions.clearMovieDetails())
+    onFetchConfigInit: () => dispatch(actionsApp.fetchConfigInit()),
+    onClearVideoDetails: () => dispatch(actionsMovies.clearMovieDetails())
   }
 }
 

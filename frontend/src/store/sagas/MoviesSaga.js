@@ -1,18 +1,17 @@
 import * as actions from '../actions/MoviesActions';
-import { put, call, all } from 'redux-saga/effects';
+import { put, call, all, select } from 'redux-saga/effects';
 import { axiosMovie3 } from '../../shared/AxiosMovieAPI';
 
 // ================================== //
 //          FETCH MOVIES INIT         //
 // ================================== //
 export function* fetchMoviesInitSaga(action) {
-  yield put(actions.fetchMoviesStart());  
+  yield put(actions.fetchMoviesStart());
+
   try {
-    const [imgResponse, genreResponse] = yield all([
-      // Image Config data
-      call(axiosMovie3, '/configuration?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      // Genre ID data
-      call(axiosMovie3, '/genre/movie/list?api_key=' + process.env.REACT_APP_TMDB_KEY)
+    const [imgConfig, movieGenres] = yield all([
+      select(state => state.app.imgConfig),
+      select(state => state.app.movieGenres)
     ]);
 
     const [nowPlaying, upcoming, popular] = yield all([
@@ -21,52 +20,14 @@ export function* fetchMoviesInitSaga(action) {
       call(axiosMovie3, '/movie/popular?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1')
     ]);
 
-    // Extracting relevant data
-    const nowPlayingData  = filterRelevantData(nowPlaying),
-          upcomingData    = filterRelevantData(upcoming),
-          popularData     = filterRelevantData(popular),
-          imgData         = imgResponse.data.images,
-          genreData       = genreResponse.data.genres,
-          showLength      = 7;
-
-    // Getting base url for backdrop images
-    let baseUrlBackdrop = imgData.secure_base_url + imgData.backdrop_sizes[3],
-        baseUrlPoster   = imgData.secure_base_url + imgData.poster_sizes[1],
-        baseUrl         = [baseUrlBackdrop, baseUrlPoster];
-
-    const fetchedNowPlaying = [],
-          fetchedUpcoming   = [],
-          fetchedPopular    = [];
-
-    pushUpdatedData(nowPlayingData, fetchedNowPlaying, baseUrl, true, genreData);
-    pushUpdatedData(upcomingData, fetchedUpcoming, baseUrl);
-    pushUpdatedData(popularData, fetchedPopular, baseUrl);
-    fetchedNowPlaying[0].active = true;
-
-    yield put(actions.fetchMoviesInitSuccess(fetchedNowPlaying, showLength));
+    yield put(actions.fetchMoviesInitSuccess(
+      [nowPlaying.data, upcoming.data, popular.data],
+      [imgConfig, movieGenres]
+    ));
   } catch(error) {
     yield put(actions.fetchMoviesInitFail(error));
     console.log(error);
   }
-}
-
-function pushUpdatedData(movieData, updatedArray, baseUrlArr, isCarousel, genreData) {
-  for(let value of movieData) {
-    const genre = isCarousel ? 
-      value.genre_ids.map(id => genreData.find(genre => genre.id === id).name) : null;
-
-    updatedArray.push({ 
-      ...value, 
-      ...(isCarousel && {active: false, genre}), 
-      backdrop_path: baseUrlArr[0].concat(value.backdrop_path),
-      poster_path: baseUrlArr[1].concat(value.poster_path),
-      vote_average: value.vote_average.toFixed(1)
-    });
-  }
-}
-
-function filterRelevantData(movieData) {
-  return movieData.data.results.filter(movie => movie.backdrop_path && movie.original_language === 'en');
 }
 
 // ================================== //

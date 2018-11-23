@@ -6,27 +6,27 @@ import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 
 import moviesReducer from './store/reducers/MoviesReducer';
-import { watchMovies } from './store/sagas/index';
+import appReducer from './store/reducers/AppReducer';
+import { watchMovies, watchApp } from './store/sagas/index';
 import { LoadYoutube } from './shared/LoadYoutube';
-import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import './index.scss';
 
-LoadYoutube();
+window.addEventListener('DOMContentLoaded', LoadYoutube); 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const sagaMiddleware  = createSagaMiddleware();
-const middleWare      = composeEnhancers(
-  applyMiddleware(sagaMiddleware)
-);
-
+const sagaMiddleware = createSagaMiddleware();
+const middleWare = composeEnhancers(applyMiddleware(sagaMiddleware));
 const rootReducer = combineReducers({
-  movies: moviesReducer
+  movies: moviesReducer,
+  app: appReducer
 });
 
 const store = createStore(rootReducer, middleWare);
 
 sagaMiddleware.run(watchMovies);
+sagaMiddleware.run(watchApp);
 
 const app = (
   <Provider store={store}>

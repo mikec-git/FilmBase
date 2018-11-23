@@ -7,8 +7,8 @@ export const fetchMoviesInit = () => {
   return { type: actionTypes.FETCH_MOVIES_INIT };
 }
 
-export const fetchMoviesInitSuccess = (fetchedNowPlaying, showLength) => {
-  return { type: actionTypes.FETCH_MOVIES_INIT_SUCCESS, fetchedNowPlaying, showLength };
+export const fetchMoviesInitSuccess = (fetchedMovies, configAndGenres) => {
+  return { type: actionTypes.FETCH_MOVIES_INIT_SUCCESS, fetchedMovies, configAndGenres };
 }
 
 export const fetchMoviesInitFail = (error) => {
