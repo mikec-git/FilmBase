@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import MoreInfo from './containers/MoreInfo/MoreInfo';
 import Movies from './containers/Movies/Movies';
-import Layout from './hoc/Layout/Layout';
-import Modal from './hoc/Modal/Modal';
+import Layout from './HOC/Layout/Layout';
+import Modal from './HOC/Modal/Modal';
 import * as actionsMovies from './store/actions/MoviesActions';
 import * as actionsApp from './store/actions/AppActions';
 
@@ -38,28 +38,33 @@ class App extends Component {
     );
     
     if(isModal && this.props.videoDetails) {
-      modal = () => {
-        return (
-          <Modal modalClosed={this.props.onClearVideoDetails}>
-            <MoreInfo videoDetails={this.props.videoDetails} />
-          </Modal>
-        )
-      };
+      modal = () => (
+        <Modal modalClosed={this.props.onClearVideoDetails}>
+          <MoreInfo videoDetails={this.props.videoDetails} />
+        </Modal>
+      )
     }
 
-    let route = null;
+    let modalRoute = null;
+    if(isModal) {
+      if(videoType === 'movie') {
+        modalRoute = <Route path='/movie/:movieId' component={modal}/>;
+      }
+    }
+
+    let routes = null;
     if(!this.props.loading && this.props.fetched) {
-      route = <Route path="/" component={Movies} />;
+      routes = (
+        <Layout>
+          <Switch>
+            <Route path="/" component={Movies} />
+          </Switch>
+          {modalRoute}
+        </Layout>
+      );
     }
 
-    return (
-      <Layout>
-        <Switch>
-          {route}
-        </Switch>
-        {isModal && videoType === 'movie' ? <Route path='/movie/:movieId' component={modal}/> : null}
-      </Layout>
-    );
+    return routes;
   }
 }
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Header from '../../components/organisms/MoreInfo/Header/Header';
-import Money from '../../components/organisms/MoreInfo/Money/Money';
-import Staff from '../../components/organisms/MoreInfo/Staff/Staff';
-import Reviews from '../../components/organisms/MoreInfo/Reviews/Reviews';
+import Header from '../../components/ORGANISMS/MoreInfo-O/Header/Header';
+import Money from '../../components/ORGANISMS/MoreInfo-O/Money/Money';
+import Staff from '../../components/ORGANISMS/MoreInfo-O/Staff/Staff';
+import Reviews from '../../components/ORGANISMS/MoreInfo-O/Reviews/Reviews';
 import c from './MoreInfo.module.scss';
 
 class MoreInfo extends Component {
@@ -44,16 +44,18 @@ class MoreInfo extends Component {
           sideDrawerToggle={this.sideDrawerToggleHandler}
           videoClicked={this.videoClickedHandler}
           youtubeStateChanged={this.youtubeStateChangeHandler} />
-        <Money
-          budget={this.props.videoDetails.budget}
-          revenue={this.props.videoDetails.revenue} />
-        <Staff
-          staffList={this.props.videoDetails.cast}
-          staffType='Cast' />
-        <Staff
-          staffList={this.props.videoDetails.crew}
-          staffType='Crew' />
-        <Reviews reviewList={this.props.videoDetails.reviews} />
+          <section className={c.MoreInfo__Body}>
+            <Money
+              budget={this.props.videoDetails.budget}
+              revenue={this.props.videoDetails.revenue} />
+            <Staff
+              staffList={this.props.videoDetails.cast}
+              staffType='Cast' />
+            <Staff
+              staffList={this.props.videoDetails.crew}
+              staffType='Crew' />
+            <Reviews reviewList={this.props.videoDetails.reviews} />
+        </section>
       </div>
     );
   }

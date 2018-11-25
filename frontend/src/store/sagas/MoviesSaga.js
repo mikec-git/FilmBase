@@ -14,11 +14,13 @@ export function* fetchMoviesInitSaga(action) {
       select(state => state.app.movieGenres)
     ]);
 
-    const [nowPlaying, upcoming, popular] = yield all([
-      call(axiosMovie3, '/movie/now_playing?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1'),
-      call(axiosMovie3, '/movie/upcoming?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1'),
-      call(axiosMovie3, '/movie/popular?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1')
-    ]);
+    const {nowPlaying, upcoming, popular} = yield all({
+      nowPlaying: call(axiosMovie3, '/movie/now_playing?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1'),
+
+      upcoming: call(axiosMovie3, '/movie/upcoming?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1'),
+
+      popular: call(axiosMovie3, '/movie/popular?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&page=1')
+    });
 
     yield put(actions.fetchMoviesInitSuccess(
       { nowPlaying: nowPlaying.data, 
@@ -40,12 +42,15 @@ export function* getMovieDetailsSaga(action) {
 
   try {
     const imgConfig = yield select(state => state.app.imgConfig);
-    const [videos, credits, details, reviews] = yield all([
-      call(axiosMovie3, '/movie/' + action.movieId + '/videos?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      call(axiosMovie3, '/movie/' + action.movieId + '/credits?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      call(axiosMovie3, '/movie/' + action.movieId + '?api_key=' + process.env.REACT_APP_TMDB_KEY),
-      call(axiosMovie3, '/movie/' + action.movieId + '/reviews?api_key=' + process.env.REACT_APP_TMDB_KEY)   
-    ]);
+    const {videos, credits, details, reviews} = yield all({
+      videos: call(axiosMovie3, '/movie/' + action.movieId + '/videos?api_key=' + process.env.REACT_APP_TMDB_KEY),
+
+      credits: call(axiosMovie3, '/movie/' + action.movieId + '/credits?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      
+      details: call(axiosMovie3, '/movie/' + action.movieId + '?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      
+      reviews: call(axiosMovie3, '/movie/' + action.movieId + '/reviews?api_key=' + process.env.REACT_APP_TMDB_KEY)   
+    });
     
     yield put(actions.getMovieDetailsSuccess(
       { videos: videos.data, 

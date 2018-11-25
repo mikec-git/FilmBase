@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import createReducer from './CreateReducer';
+import * as u from '../Utility';
 
 const initialState = {
   imgConfig: null,
@@ -25,7 +25,7 @@ const fetchConfigInitFail = (state, action) => {
   return { ...state, error: action.error, loading: false }
 };
 
-const reducer = createReducer(initialState, {
+const reducer = u.createReducer(initialState, {
   [actionTypes.FETCH_CONFIG_INIT_START]: fetchConfigInitStart,
   [actionTypes.FETCH_CONFIG_INIT_SUCCESS]: fetchConfigInitSuccess,
   [actionTypes.FETCH_CONFIG_INIT_FAIL]: fetchConfigInitFail,

@@ -1,10 +1,14 @@
 import * as actionTypes from './actionTypes';
 
 // ================================= //
-//        FETCHING MOVIES INIT       //
+//           FETCHING MOVIES         //
 // ================================= //
 export const fetchMoviesInit = () => {
   return { type: actionTypes.FETCH_MOVIES_INIT };
+}
+
+export const fetchMoviesStart = () => {
+  return { type: actionTypes.FETCH_MOVIES_START };
 }
 
 export const fetchMoviesInitSuccess = (fetchedMovies, configAndGenres) => {
@@ -16,11 +20,8 @@ export const fetchMoviesInitFail = (error) => {
 }
 
 // ================================= //
-//           MOVIES GENERAL          //
+//            MOVIE DETAILS          //
 // ================================= //
-export const fetchMoviesStart = () => {
-  return { type: actionTypes.FETCH_MOVIES_START };
-}
 
 export const getMovieDetails = (movieId) => {
   return { type: actionTypes.GET_MOVIE_DETAILS, movieId }
@@ -52,4 +53,3 @@ export const changeCarouselMovieArrow = (arrowDirection, element) => {
 export const resizeCarouselSlide = (element) => {
   return { type: actionTypes.RESIZE_CAROUSEL_SLIDE, element };
 }
-

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Navigation from '../../components/organisms/Navigation/Navigation';
+import Navigation from '../../components/ORGANISMS/Navigation-O/Navigation';
 import c from './Layout.module.scss';
 
 class Layout extends Component {

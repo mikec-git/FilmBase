@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Carousel from '../../components/organisms/Carousel/Carousel';
-import FilmList from '../../components/organisms/FilmList-O/FilmList-O';
+import Carousel from '../../components/ORGANISMS/Carousel-O/Carousel';
+import FilmList from '../../components/ORGANISMS/FilmList-O/FilmList';
 import * as actions from '../../store/actions/MoviesActions';
 
 class Movies extends Component {
@@ -25,7 +25,7 @@ class Movies extends Component {
     if(this.modalOpened && this.props.history.action === 'POP' && (!this.props.location.state || !this.props.location.state.modal)) {
       this.startInterval();
       this.modalOpened = false;
-    }
+    }    
   }
   
   // Start auto rotation of carousel
@@ -68,7 +68,19 @@ class Movies extends Component {
   render() { 
     let carousel = null;
     let filmList = null;
-    if(this.props.nowPlayingMovies) {
+    let shownListMovies = null;
+
+    if(this.props.initLoaded) {
+      if(this.state.activeCategory === 'Out Now') {
+        shownListMovies = this.props.nowPlayingMovies.slice(0, this.props.listLength);
+      } else if(this.state.activeCategory === 'Upcoming') {
+        shownListMovies = this.props.upcomingMovies.slice(0, this.props.listLength);
+      } else if(this.state.activeCategory === 'Popular') {
+        shownListMovies = this.props.popularMovies.slice(0, this.props.listLength);
+      }
+    }
+
+    if(this.props.initLoaded) {
       carousel = <Carousel 
         videos={this.props.nowPlayingMovies.slice(0, this.props.showLength)}
         dotClicked={this.dotClickedHandler}
@@ -79,7 +91,7 @@ class Movies extends Component {
         pathBase='/movie/' />;
       
       filmList = <FilmList
-        filmList={this.props.nowPlayingMovies.slice(0,18)}
+        filmList={shownListMovies}
         categoryClicked={this.categoryClickedHandler}
         activeCategory={this.state.activeCategory}
         videoClicked={this.getMovieDetailsHandler}
@@ -98,9 +110,13 @@ class Movies extends Component {
 const mapStateToProps = state => {
   return {
     nowPlayingMovies: state.movies.nowPlayingMovies,
+    upcomingMovies: state.movies.upcomingMovies,
+    popularMovies: state.movies.popularMovies,
     loading: state.movies.loading,
+    initLoaded: state.movies.initLoaded,
     translateSlide: state.movies.translateSlide,
-    showLength: state.movies.showLength
+    showLength: state.movies.showLength,
+    listLength: state.movies.listLength
   }
 }
 

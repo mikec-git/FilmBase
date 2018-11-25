@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 
-import Backdrop from '../../components/atoms/UI-A/Backdrop/Backdrop';
+import Backdrop from '../../components/ATOMS/UI-A/Backdrop-A/Backdrop';
 import c from './Modal.module.scss';
 
 class Modal extends Component {
