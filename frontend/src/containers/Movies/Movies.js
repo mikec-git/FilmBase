@@ -28,6 +28,8 @@ class Movies extends Component {
   
   componentWillUnmount() {
     clearInterval(this.timeoutID);
+    window.removeEventListener('resize', this.resizeSlide);
+    this.props.onResetTranslateMovie();
   }
   
   componentDidUpdate() {
@@ -146,7 +148,8 @@ const mapDispatchToProps = dispatch => {
     onChangeCarouselMovie: (movieId, element) => dispatch(actions.changeCarouselMovie(movieId, element)),
     onChangeCarouselMovieArrow: (arrow, element) => dispatch(actions.changeCarouselMovieArrow(arrow, element)),
     onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlide(element)),
-    onGetMovieDetails: (movieId) => dispatch(actions.getMovieDetails(movieId))
+    onGetMovieDetails: (movieId) => dispatch(actions.getMovieDetails(movieId)),
+    onResetTranslateMovie: () => dispatch(actions.resetTranslateMovie())
   }
 }
  

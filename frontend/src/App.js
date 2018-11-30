@@ -8,6 +8,7 @@ import TV from './containers/TV/TV';
 import Layout from './HOC/Layout/Layout';
 import Modal from './HOC/Modal/Modal';
 import * as actionsMovies from './store/actions/MoviesActions';
+import * as actionsTV from './store/actions/TVActions';
 import * as actionsApp from './store/actions/AppActions';
 
 
@@ -40,8 +41,10 @@ class App extends Component {
     );
     
     if(isModal && this.props.videoDetails) {
+      const clearVideoDetails = videoType === 'movie' ? this.props.onClearMovieDetails : this.props.onClearTVDetails;
+
       modal = () => (
-        <Modal modalClosed={this.props.onClearVideoDetails}>
+        <Modal modalClosed={clearVideoDetails}>
           <MoreInfo type={videoType} videoDetails={this.props.videoDetails} />
         </Modal>
       );
@@ -78,7 +81,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onFetchConfigInit: () => dispatch(actionsApp.fetchConfigInit()),
-    onClearVideoDetails: () => dispatch(actionsMovies.clearMovieDetails())
+    onClearMovieDetails: () => dispatch(actionsMovies.clearMovieDetails()),
+    onClearTVDetails: () => dispatch(actionsTV.clearTVDetails())
   }
 }
 

@@ -39,6 +39,10 @@ export const clearTVDetails = () => {
   return { type: actionTypes.CLEAR_TV_DETAILS }
 }
 
+export const resetTranslateTV = () => {
+  return { type: actionTypes.RESET_TRANSLATE_TV }
+}
+
 // ================================= //
 //              CAROUSEL             //
 // ================================= //

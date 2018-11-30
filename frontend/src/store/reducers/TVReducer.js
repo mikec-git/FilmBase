@@ -75,6 +75,10 @@ const clearTVDetails = (state, action) => {
   return { ...state, currentTVDetails: null }
 }
 
+const resetTranslateTV = (state, action) => {
+  return { ...state, translateSlide: 0 };
+}
+
 // =========================== //
 //           CAROUSEL          //
 // =========================== // 
@@ -130,7 +134,8 @@ const reducer = u.createReducer(initialState, {
   [actionTypes.RESIZE_CAROUSEL_SLIDE_TV]: resizeCarouselSlideTV,
   [actionTypes.GET_TV_DETAILS_SUCCESS]: getTVDetailsSuccess,
   [actionTypes.GET_TV_DETAILS_FAIL]: getTVDetailsFail,
-  [actionTypes.CLEAR_TV_DETAILS]: clearTVDetails
+  [actionTypes.CLEAR_TV_DETAILS]: clearTVDetails,
+  [actionTypes.RESET_TRANSLATE_TV]: resetTranslateTV,
 });
 
 export default reducer;

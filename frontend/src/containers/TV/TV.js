@@ -28,6 +28,8 @@ class TV extends Component {
   
   componentWillUnmount() {
     clearInterval(this.timeoutID);
+    window.removeEventListener('resize', this.resizeSlide);
+    this.props.onResetTranslateTV();
   }
   
   componentDidUpdate() {
@@ -146,7 +148,8 @@ const mapDispatchToProps = dispatch => {
     onChangeCarouselTV: (tvId, element) => dispatch(actions.changeCarouselTV(tvId, element)),
     onChangeCarouselTVArrow: (arrow, element) => dispatch(actions.changeCarouselTVArrow(arrow, element)),
     onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlideTV(element)),
-    onGetTVDetails: (tvId) => dispatch(actions.getTVDetails(tvId))
+    onGetTVDetails: (tvId) => dispatch(actions.getTVDetails(tvId)),
+    onResetTranslateTV: () => dispatch(actions.resetTranslateTV())
   }
 }
  

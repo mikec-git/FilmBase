@@ -39,6 +39,10 @@ export const clearMovieDetails = () => {
   return { type: actionTypes.CLEAR_MOVIE_DETAILS }
 }
 
+export const resetTranslateMovie = () => {
+  return { type: actionTypes.RESET_TRANSLATE_MOVIE }
+}
+
 // ================================= //
 //              CAROUSEL             //
 // ================================= //

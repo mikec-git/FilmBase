@@ -75,6 +75,10 @@ const clearMovieDetails = (state, action) => {
   return { ...state, currentMovieDetails: null }
 }
 
+const resetTranslateMovie = (state, action) => {
+  return { ...state, translateSlide: 0 }
+}
+
 // =========================== //
 //           CAROUSEL          //
 // =========================== // 
@@ -130,7 +134,8 @@ const reducer = u.createReducer(initialState, {
   [actionTypes.RESIZE_CAROUSEL_SLIDE]: resizeCarouselSlide,
   [actionTypes.GET_MOVIE_DETAILS_SUCCESS]: getMovieDetailsSuccess,
   [actionTypes.GET_MOVIE_DETAILS_FAIL]: getMovieDetailsFail,
-  [actionTypes.CLEAR_MOVIE_DETAILS]: clearMovieDetails
+  [actionTypes.CLEAR_MOVIE_DETAILS]: clearMovieDetails,
+  [actionTypes.RESET_TRANSLATE_MOVIE]: resetTranslateMovie
 });
 
 export default reducer;
