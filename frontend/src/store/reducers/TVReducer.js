@@ -31,12 +31,12 @@ const fetchTVInitSuccess = (state, action) => {
       baseUrlPoster   = u.getBaseUrl(imgConfig, 'poster', 1),
       baseUrl         = [baseUrlBackdrop, baseUrlPoster];
       
-    console.log(airingToday);
   const tv = {
     airingToday: u.updateCategory('Airing Today', u.updateInitData(airingToday, baseUrl, tvGenres)),
     onTheAir: u.updateCategory('On The Air', u.updateInitData(onTheAir, baseUrl)),
     popular: u.updateCategory('Popular', u.updateInitData(popular, baseUrl))
   };
+
   return { ...state, tv, loading: false, initLoaded: true };
 };
 

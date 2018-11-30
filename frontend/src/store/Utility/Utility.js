@@ -36,9 +36,9 @@ export function updateCategory(category, videos) {
 
 export function filterByVideoData(videos, filterBy) {
   if(filterBy === 'langImg') {
-    return videos.filter(video => video.backdrop_path && video.original_language === 'en');
+    return videos.filter(video => video && video.backdrop_path && video.original_language === 'en');
   } else if(filterBy === 'videoSite') {
-    return videos.filter(video => video.site === 'YouTube');
+    return videos.filter(video => video && video.site === 'YouTube');
   }
 }
 

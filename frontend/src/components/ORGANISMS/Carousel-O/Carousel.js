@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CarouselArrow from '../../ATOMS/UI-A/Image-A/ClickImage';
+import CarouselArrow from '../../ATOMS/UI-A/ClickImage-A/ClickImage';
 import CarouselInfo from '../../MOLECULES/Carousel-M/Info-M/Info';
 import CarouselDots from '../../MOLECULES/Carousel-M/Dots-M/Dots';
 

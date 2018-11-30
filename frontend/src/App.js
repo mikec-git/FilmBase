@@ -41,7 +41,7 @@ class App extends Component {
     if(isModal && this.props.videoDetails) {
       modal = () => (
         <Modal modalClosed={this.props.onClearVideoDetails}>
-          <MoreInfo videoDetails={this.props.videoDetails} />
+          <MoreInfo type={videoType} videoDetails={this.props.videoDetails} />
         </Modal>
       )
     }
@@ -50,6 +50,8 @@ class App extends Component {
     if(isModal) {
       if(videoType === 'movie') {
         modalRoute = <Route path='/movie/:movieId' component={modal}/>;
+      } else if(videoType === 'tv') {
+        modalRoute = <Route path='/tv/:tvId' component={modal}/>;
       }
     }
 
@@ -72,7 +74,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    videoDetails: state.movies.currentMovieDetails,
+    videoDetails: state.movies.currentMovieDetails || state.tv.currentTVDetails,
     loading: state.app.loading,
     fetched: state.app.initLoaded
   }

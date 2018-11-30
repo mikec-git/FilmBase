@@ -5,7 +5,7 @@ import c from './Staff.module.scss';
 
 const staff = (props) => {
   let staff = null;
-  if(props.staffList) {
+  if(props.staffList.length > 0) {
     staff = props.staffList.map(staff => {
       return (
         <Staff 
@@ -17,6 +17,8 @@ const staff = (props) => {
           image={staff.profile_path} />
       )
     });
+  } else {
+    staff = 'Not Available';
   }
     
   return ( 

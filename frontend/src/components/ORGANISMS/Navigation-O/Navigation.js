@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import Searchbar from '../../MOLECULES/Navigation-M/Searchbar-M/Searchbar';
 import NavItems from '../../MOLECULES/Navigation-M/NavItems-M/NavItems';
-import Image from '../../ATOMS/UI-A/Image-A/ClickImage';
+import Image from '../../ATOMS/UI-A/ClickImage-A/ClickImage';
 
 import Search from '../../../assets/img/search.svg';
 import Logo from '../../../assets/img/clapperboard-Logo.svg';
@@ -26,20 +26,6 @@ class Navigation extends Component {
         alt: 'Search'
       },
       touched: false
-    },
-    navItems: {
-      movies: {
-        name: 'Movies',
-        path: '/'
-      },
-      tv: {
-        name: 'TV',
-        path: '/tv'
-      },
-      login: {
-        name: 'Login',
-        path: '/login'
-      }
     }
   };
 
@@ -67,8 +53,8 @@ class Navigation extends Component {
 
   render() { 
     let navigationLinks = [];
-    for (let key in this.state.navItems) {
-      navigationLinks.push(this.state.navItems[key]);
+    for (let key in this.props.navItems) {
+      navigationLinks.push(this.props.navItems[key]);
     }
 
     return (

@@ -1,0 +1,27 @@
+.Footer {
+  display: block;
+  padding: 11rem 0;
+  background-color: #ccc;
+
+  &__Nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > *:not(:last-child) {
+      margin-right: 4rem;
+    }
+  }
+
+  &__External {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__API {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

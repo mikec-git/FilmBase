@@ -11,11 +11,18 @@ const header = (props) => {
   const sideDrawerClasses = props.sideDrawerExpanded ? 
     c.Header__SideDrawer :
     [c.Header__SideDrawer, c.Header__SideDrawer_shrink].join(' ');
-
-  const times = [
-    { name: 'Release Date', type: 'release', time: details.release_date },
-    { name: 'Runtime', type: 'runtime', time: details.runtime },
-  ];
+  
+  let times = null;
+  if(props.type === 'movie') {
+    times = [
+      { name: 'Release Date', type: 'release', time: details.release_date },
+      { name: 'Runtime', type: 'runtime', time: details.runtime }];    
+  } else if(props.type === 'tv') {
+    times = [
+      { name: 'Last Air Date', type: 'release', time: details.last_air_date},
+      { name: 'Episode Runtime', type: 'runtime', time: details.runtime || details.episode_run_time }];
+  }    
+  
 
   return ( 
     <header className={c.Header}>
@@ -29,6 +36,7 @@ const header = (props) => {
         expandToggle={props.sideDrawerToggle} />
       <div className={sideDrawerClasses}>
         <VideoSummary 
+          type={props.type}
           className={c.Header__Summary}
           details={details}
           videoTimes={times}

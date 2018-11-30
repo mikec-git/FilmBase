@@ -8,7 +8,7 @@ import c from './MoreInfo.module.scss';
 
 class MoreInfo extends Component {
   state = { 
-    activeVideoId: this.props.videoDetails.videos[0].key,
+    activeVideoId: this.props.videoDetails.videos[0] && this.props.videoDetails.videos[0].key,
     overviewExpanded: false,
     sideDrawerExpanded: true,
     youtubeState: null
@@ -31,10 +31,10 @@ class MoreInfo extends Component {
   }
 
   render() { 
-    console.log(this.props.videoDetails);  
     return ( 
       <div className={c.MoreInfo}>
         <Header 
+          type={this.props.type}
           videoDetails={this.props.videoDetails}
           activeVideoId={this.state.activeVideoId}
           overviewExpanded={this.state.overviewExpanded}

@@ -5,7 +5,6 @@ import c from './Reviews.module.scss';
 
 const reviews = (props) => {
   let reviews = null;
-
   if(props.reviewList.length > 0) {
     reviews = props.reviewList.map(review => {
       return (
@@ -15,7 +14,10 @@ const reviews = (props) => {
           content={review.content} />
       );
     });
+  } else {
+    reviews = 'Not Available';
   }
+  
   return (
     <div className={c.Reviews}>
       <Subtitle subtitle='Reviews' />

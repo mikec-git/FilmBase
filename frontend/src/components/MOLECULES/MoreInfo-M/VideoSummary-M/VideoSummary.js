@@ -13,17 +13,16 @@ const videoSummary = (props) => {
     [c.VideoSummary, props.className].join(' ') : c.VideoSummary;
     
   const details = props.details;
-
   const genres = [];
   Object.entries(details.genres).forEach(([_, value]) => {
     genres.push(
       <Genre 
-        key={value.id} 
-        genre={value.name}
-        context='moreInfo' />
+      key={value.id} 
+      genre={value.name}
+      context='moreInfo' />
     );
   });
-
+    
   const overviewText = props.expanded ? 
     details.overview : details.overview.substring(0, 100) + '...';
 
@@ -39,10 +38,23 @@ const videoSummary = (props) => {
     );
   });
 
+  let heading = null;
+  if(props.type === 'movie') {
+    heading = (
+      <>
+        <Website website={details.homepage} name={details.title} />
+        <Tagline tagline={details.tagline} />
+      </>
+    );
+  } else if(props.type === 'tv') {
+    heading = (
+        <Website website={details.homepage} name={details.name} />
+    );
+  }
+
   return ( 
     <div className={classNames}>
-      <Website website={details.homepage} name={details.title} />
-      <Tagline tagline={details.tagline} />
+      {heading}
       <div className={c.VideoSummary__Genres}>{genres}</div>
       <dl className={c.VideoSummary__DescList}>{times}</dl>
       <Overview 
