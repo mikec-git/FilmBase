@@ -1,7 +1,10 @@
 .Footer {
   display: block;
   padding: 11rem 0;
-  background-color: #ccc;
+  background-image: radial-gradient(
+    at 30% top, 
+    rgb(12, 143, 114) 0%,
+    rgb(9, 40, 53) 70%);
 
   &__Nav {
     display: flex;

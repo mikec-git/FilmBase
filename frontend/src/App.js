@@ -31,6 +31,7 @@ class App extends Component {
 
   render() {
     let modal         = null;
+    let modalRoute    = null;
     let { location }  = this.props;
     let videoType     = location.state && location.state.type;
     let isModal       = !!(
@@ -43,16 +44,10 @@ class App extends Component {
         <Modal modalClosed={this.props.onClearVideoDetails}>
           <MoreInfo type={videoType} videoDetails={this.props.videoDetails} />
         </Modal>
-      )
-    }
+      );
 
-    let modalRoute = null;
-    if(isModal) {
-      if(videoType === 'movie') {
-        modalRoute = <Route path='/movie/:movieId' component={modal}/>;
-      } else if(videoType === 'tv') {
-        modalRoute = <Route path='/tv/:tvId' component={modal}/>;
-      }
+      const pathBasedOnType = `/${videoType}/:${videoType}Id`
+      modalRoute = <Route path={pathBasedOnType} component={modal}/>;
     }
 
     let routes = null;

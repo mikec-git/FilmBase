@@ -10,6 +10,8 @@ import Logo from '../../../assets/img/clapperboard-Logo.svg';
 import c from './Navigation.module.scss';
 
 class Navigation extends Component {
+  navRef = React.createRef();
+
   state = { 
     searchbar: {
       searchInput: { 
@@ -28,6 +30,22 @@ class Navigation extends Component {
       touched: false
     }
   };
+
+  
+  componentDidMount() {
+    window.addEventListener('scroll', this.pageScrollingHandler);
+    this.scrollDirDown = true; // true == down
+    this.curScrollPos = window.scrollY;
+  }
+
+  pageScrollingHandler = () => {
+    if(this.navRef && this.navRef.current) {
+      this.scrollDirDown  = window.scrollY - this.curScrollPos >= 0;
+      this.curScrollPos   = window.scrollY;
+      const navStyle      = this.navRef.current.style;
+      navStyle.transform  = !this.scrollDirDown && this.curScrollPos > navStyle.height ? 'translateY(-100%)' : 'translateY(0)';
+    }
+  }
 
   inputChangedHandler = (e, elementName) => {
     this.setState({ 
@@ -58,7 +76,7 @@ class Navigation extends Component {
     }
 
     return (
-      <nav className={c.Navigation}>
+      <nav className={c.Navigation} ref={this.navRef}>
         <Image
           className={c.Navigation__Logo}
           clicked={this.logoClickedHandler}

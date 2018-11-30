@@ -21,10 +21,11 @@ class Layout extends Component {
       }
     }
   }
+
   render() { 
     return (
       <div className={c.Layout}>
-        <Navigation navItems={this.state.navItems} />
+        <Navigation navItems={this.state.navItems}/>
         <main className={c.Layout__Main}>{this.props.children}</main>
         <Footer navItems={this.state.navItems} />
       </div>
