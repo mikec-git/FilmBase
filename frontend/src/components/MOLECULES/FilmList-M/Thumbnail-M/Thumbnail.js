@@ -9,7 +9,7 @@ import c from './Thumbnail.module.scss';
 const thumbnail = (props) => {
   // REGEX FOR VIDEO TYPE NAME
   const videoType = /\w+/ig.exec(props.pathBase);
-
+  console.log(props.title);
   return (
     <div className={c.Thumbnail}>
       <Link 

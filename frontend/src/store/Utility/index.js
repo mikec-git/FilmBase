@@ -1,4 +1,4 @@
-export * from './MoviesUtility';
+export * from './Utility';
 
 // =========================== //
 //        CREATE REDUCER       //

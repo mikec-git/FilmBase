@@ -1,0 +1,136 @@
+import * as actionTypes from '../actions/actionTypes';
+import * as u from '../Utility/index';
+
+const initialState = {
+  loading: false,
+  initLoaded: false,
+  error: null,
+  tv: {},
+  currentTVDetails: null,
+  translateSlide: 0,
+  showLength: 7,
+  listLength: 18
+};
+
+// =========================== //
+//     FETCHING TV FROM API    //
+// =========================== //
+const fetchTVStart = (state, action) => {
+  return { ...state, loading: true };
+};
+
+const fetchTVInitSuccess = (state, action) => {
+  // Extracting relevant data
+  const airingToday  = u.filterByVideoData(action.fetchedTV['airingToday'].results, 'langImg'),
+        onTheAir    = u.filterByVideoData(action.fetchedTV['onTheAir'].results, 'langImg'),
+        popular     = u.filterByVideoData(action.fetchedTV['popular'].results, 'langImg'),
+        {imgConfig, tvGenres} = action.configAndGenres;
+
+  // Getting base url for backdrop images
+  let baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 3),
+      baseUrlPoster   = u.getBaseUrl(imgConfig, 'poster', 1),
+      baseUrl         = [baseUrlBackdrop, baseUrlPoster];
+      
+    console.log(airingToday);
+  const tv = {
+    airingToday: u.updateCategory('Airing Today', u.updateInitData(airingToday, baseUrl, tvGenres)),
+    onTheAir: u.updateCategory('On The Air', u.updateInitData(onTheAir, baseUrl)),
+    popular: u.updateCategory('Popular', u.updateInitData(popular, baseUrl))
+  };
+  return { ...state, tv, loading: false, initLoaded: true };
+};
+
+const fetchTVInitFail = (state, action) => {
+  return { ...state, loading: false, error: action.error };
+};
+
+const getTVDetailsSuccess = (state, action) => {
+  const imgConfig = action.config,
+        videos    = u.filterByVideoData(action.fetchedDetails['videos'].results, 'videoSite'),
+        cast      = u.extractUpTo(action.fetchedDetails['credits'].cast, 11),
+        crew      = u.extractUpTo(action.fetchedDetails['credits'].crew, 11),
+        details   = action.fetchedDetails['details'],
+        reviews   = action.fetchedDetails['reviews'].results;
+
+  const baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 0),
+        baseUrlProfile  = u.getBaseUrl(imgConfig, 'poster', 1);
+  
+  u.sortVideoType(videos);
+  u.getProfilePath(cast, baseUrlProfile);
+  u.getProfilePath(crew, baseUrlProfile);
+  
+  const currentTVDetails = {
+    ...details, videos, cast, crew, reviews,
+    backdrop_path: baseUrlBackdrop.concat(details.backdrop_path)
+  };
+    
+  return { ...state, currentTVDetails, loading: false };
+};
+
+const getTVDetailsFail = (state, action) => {
+  return { ...state, loading: false, error: action.error };
+};
+
+const clearTVDetails = (state, action) => {
+  return { ...state, currentTVDetails: null }
+}
+
+// =========================== //
+//           CAROUSEL          //
+// =========================== // 
+const changeCarouselTV = (state, action) => {
+  const airingToday      = state.tv['airingToday'].videos;
+  const activeIndex     = airingToday.findIndex(tv => tv.active);
+  const newActiveIndex  = airingToday.findIndex(tv => tv.id === action.tvId);
+
+  const updatedAiringTodayTV = {
+    ...state.tv['airingToday'],
+    videos: u.updateCarouselState(airingToday, activeIndex, newActiveIndex)
+  };
+  const updatedTranslateSlide = -newActiveIndex * action.element.offsetWidth;
+
+  return { 
+    ...state, 
+    tv: {...state.tv, airingToday: updatedAiringTodayTV}, 
+    translateSlide: updatedTranslateSlide };
+};
+
+const changeCarouselTVArrow = (state, action) => {
+  const airingToday  = state.tv['airingToday'].videos;
+  const activeIndex = airingToday.findIndex(tv => tv.active);  
+  
+  const {newActiveIndex, updatedTranslateSlide} = u.updateIndexAndTranslation(action.arrowDirection, activeIndex, action.element, state.showLength);
+  
+  const updatedAiringTodayTV = {
+    ...state.tv['airingToday'],
+    videos: u.updateCarouselState(airingToday, activeIndex, newActiveIndex)
+  };
+  
+  return { 
+    ...state, 
+    tv: {...state.tv, airingToday: updatedAiringTodayTV},
+    translateSlide: updatedTranslateSlide };
+};
+
+const resizeCarouselSlideTV = (state, action) => {
+  const activeIndex       = state.tv['airingToday'].videos.findIndex(tv => tv.active);
+  const newTranslateSlide = -action.element.offsetWidth * activeIndex;
+  return { ...state, translateSlide: newTranslateSlide };
+};
+
+// =========================== //
+//           REDUCER           //
+// =========================== //
+const reducer = u.createReducer(initialState, {
+  [actionTypes.FETCH_TV_START]: fetchTVStart,
+  [actionTypes.FETCH_TV_INIT_SUCCESS]: fetchTVInitSuccess,
+  [actionTypes.FETCH_TV_INIT_FAIL]: fetchTVInitFail,
+  [actionTypes.CHANGE_CAROUSEL_TV]: changeCarouselTV,
+  [actionTypes.CHANGE_CAROUSEL_TV_ARROW]: changeCarouselTVArrow,
+  [actionTypes.RESIZE_CAROUSEL_SLIDE_TV]: resizeCarouselSlideTV,
+  [actionTypes.GET_TV_DETAILS_SUCCESS]: getTVDetailsSuccess,
+  [actionTypes.GET_TV_DETAILS_FAIL]: getTVDetailsFail,
+  [actionTypes.CLEAR_TV_DETAILS]: clearTVDetails
+});
+
+export default reducer;

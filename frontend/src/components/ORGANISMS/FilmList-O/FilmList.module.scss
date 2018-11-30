@@ -1,8 +1,10 @@
 .FilmList {  
   max-width: 120rem;
   width: 100%;
+  height: 100%;
   margin: 0 auto;
   padding-bottom: 3rem;
+  display: none;
   
   &__List {
     display: grid;
@@ -14,5 +16,9 @@
     align-items: start;
     grid-template-columns: repeat(auto-fit, minmax(min-content, 16rem));
     grid-auto-rows: min-content;
+  }
+
+  &_active {
+    display: block;
   }
 }

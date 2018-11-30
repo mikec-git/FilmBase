@@ -1,11 +1,11 @@
 // =========================== //
-//        MOVIE UTILITY        //
+//            UTILITY          //
 // =========================== //
-export function updatedInitData(originalData, baseUrls, genres) {
+export function updateInitData(originalData, baseUrls, genres) {
   const updatedData = [];
   if(genres) {
     for(let result of originalData) {
-      const genre = result.genre_ids.map(id => genres.find(genre => genre.id === id).name);        
+      const genre = result.genre_ids.map(id => genres.find(genre => genre.id === id).name);
       updatedData.push({ 
         ...result, 
         active: false, 
@@ -26,14 +26,19 @@ export function updatedInitData(originalData, baseUrls, genres) {
       });
     }
   }
+  
   return updatedData;
 }
 
-export function filterData(data, type) {
-  if(type === 'langImg') {
-    return data.filter(movie => movie.backdrop_path && movie.original_language === 'en');
-  } else if(type === 'videoSite') {
-    return data.filter(video => video.site === 'YouTube');
+export function updateCategory(category, videos) {
+  return { category, videos };
+}
+
+export function filterByVideoData(videos, filterBy) {
+  if(filterBy === 'langImg') {
+    return videos.filter(video => video.backdrop_path && video.original_language === 'en');
+  } else if(filterBy === 'videoSite') {
+    return videos.filter(video => video.site === 'YouTube');
   }
 }
 
@@ -66,9 +71,34 @@ export function getBaseUrl(imgConfig, type, size) {
 // =========================== //
 //       CAROUSEL UTILITY      //
 // =========================== // 
-export const updateCarouselMovieState = (state, activeIndex, newActiveIndex) => {
-  let updatedState              = [...state.nowPlayingMovies];
+export const updateCarouselState = (videos, activeIndex, newActiveIndex) => {
+  let updatedState              = [...videos];
   updatedState[activeIndex]     = { ...updatedState[activeIndex], active: false };
   updatedState[newActiveIndex]  = { ...updatedState[newActiveIndex], active: true };
   return updatedState;
+}
+
+export const updateIndexAndTranslation = (arrowDir, activeInd, element, showLength) => {
+  let newActiveIndex = null,
+      updatedTranslateSlide = null;
+
+  if(arrowDir === 'left') {
+    if(activeInd - 1 >= 0) {
+      newActiveIndex = activeInd - 1;
+      updatedTranslateSlide += element.offsetWidth * -(newActiveIndex);
+    } else {
+      newActiveIndex = showLength-1;
+      updatedTranslateSlide = element.offsetWidth * -(showLength-1);
+    }
+  } else {
+    if(activeInd + 1 < showLength) {
+      newActiveIndex = activeInd + 1;
+      updatedTranslateSlide -= element.offsetWidth * (newActiveIndex);
+    } else {
+      newActiveIndex = 0;
+      updatedTranslateSlide = 0;
+    }
+  }
+
+  return { newActiveIndex, updatedTranslateSlide };
 }

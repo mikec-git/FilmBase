@@ -3,20 +3,18 @@ import Category from '../../../ATOMS/FilmList-A/Category-A/Category';
 import c from './Categories.module.scss';
 
 const categories = (props) => {
+  const categories = props.categoryNames.map(categoryName => {
+    return (
+      <Category 
+        key={categoryName}
+        active={props.activeCategory} 
+        clicked={props.categoryClicked} 
+        category={categoryName} />
+    );
+  })
   return (
     <div className={c.Categories}>
-      <Category 
-        active={props.activeCategory} 
-        clicked={props.categoryClicked} 
-        category='Out Now' />
-      <Category 
-        active={props.activeCategory} 
-        clicked={props.categoryClicked} 
-        category='Upcoming' />
-      <Category 
-        active={props.activeCategory} 
-        clicked={props.categoryClicked} 
-        category='Popular' />
+      {categories}
     </div>
   );
 }

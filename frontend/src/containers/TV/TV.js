@@ -4,25 +4,25 @@ import { connect } from 'react-redux';
 import Carousel from '../../components/ORGANISMS/Carousel-O/Carousel';
 import Categories from '../../components/MOLECULES/FilmList-M/Categories-M/Categories';
 import FilmList from '../../components/ORGANISMS/FilmList-O/FilmList';
-import * as actions from '../../store/actions/MoviesActions';
+import * as actions from '../../store/actions/TVActions';
 import * as u from '../../shared/Utility';
 
-class Movies extends Component {
+class TV extends Component {
   carouselSlideRef  = React.createRef();
 
   state = {
-    activeCategory: 'Now Playing',
+    activeCategory: 'Airing Today',
     categoryLoaded: {
-      nowPlaying: true,
-      upcoming: false,
+      airingToday: true,
+      onTheAir: false,
       popular: false
-    },
-    categoryNames: ['Now Playing', 'Upcoming', 'Popular']
+    },    
+    categoryNames: ['Airing Today', 'On The Air', 'Popular']
   }
   
   componentDidMount() {
     window.addEventListener('resize', this.resizeSlide);
-    this.props.onFetchMoviesInit();
+    this.props.onFetchTVInit();
     this.startInterval();
   }
   
@@ -42,14 +42,14 @@ class Movies extends Component {
     this.timeoutID = setInterval(() => this.arrowClickedHandler('right'), 5000);
   }
 
-  // Manual changing of carousel movie
-  dotClickedHandler = (movieId) => {
-    this.props.onChangeCarouselMovie(movieId, this.carouselSlideRef.current);
+  // Manual changing of carousel tv
+  dotClickedHandler = (tvId) => {
+    this.props.onChangeCarouselTV(tvId, this.carouselSlideRef.current);
     this.resetCarouselAutoSlide();
   }
   
   arrowClickedHandler = (arrow) => {
-    this.props.onChangeCarouselMovieArrow(arrow, this.carouselSlideRef.current);
+    this.props.onChangeCarouselTVArrow(arrow, this.carouselSlideRef.current);
     this.resetCarouselAutoSlide();
   }
   
@@ -63,9 +63,9 @@ class Movies extends Component {
     this.props.onResizeCarouselSlide(this.carouselSlideRef.current);
   }
 
-  // Get movie details
-  getMovieDetailsHandler = (movieId) => {
-    this.props.onGetMovieDetails(movieId); 
+  // Get tv details
+  getTVDetailsHandler = (tvId) => {
+    this.props.onGetTVDetails(tvId); 
     clearInterval(this.timeoutID);
     this.modalOpened = true;
   }
@@ -90,33 +90,33 @@ class Movies extends Component {
         filmList    = [];
 
     if(this.props.initLoaded) {
-      const moviePathBase = '/movie/',
-            nowPlayingMovies = this.props.movies['nowPlaying'].videos;
-            
+      const tvPathBase = '/tv/',
+            airingTodayTV = this.props.tv['airingToday'].videos;
+
       carousel = <Carousel 
-        videos={nowPlayingMovies.slice(0, this.props.showLength)}
+        videos={airingTodayTV.slice(0, this.props.showLength)}
         dotClicked={this.dotClickedHandler}
         arrowClicked={this.arrowClickedHandler}
         translateX={this.props.translateSlide}
         slideRef={this.carouselSlideRef}
-        videoClicked={this.getMovieDetailsHandler}
-        pathBase={moviePathBase} />;
-      
-      Object.entries(this.props.movies).forEach(([_, movieList]) => {
+        videoClicked={this.getTVDetailsHandler}
+        pathBase={tvPathBase} />;
+
+      Object.entries(this.props.tv).forEach(([_, tvList]) => {
         filmList.push(<FilmList
-          key={movieList.category}
-          category={movieList.category}
-          filmList={movieList.videos.slice(0, this.props.listLength)}
-          videoClicked={this.getMovieDetailsHandler}
-          activeCategory={this.state.activeCategory}
-          hasLoaded={this.state.categoryLoaded}
-          pathBase={moviePathBase} />);
+        key={tvList.category}
+        category={tvList.category}
+        filmList={tvList.videos.slice(0, this.props.listLength)}
+        videoClicked={this.getTVDetailsHandler}
+        activeCategory={this.state.activeCategory}
+        hasLoaded={this.state.categoryLoaded}
+        pathBase={tvPathBase} />);
       });
 
       categories = <Categories 
         categoryClicked={this.categoryClickedHandler}
         activeCategory={this.state.activeCategory}
-        categoryNames={this.state.categoryNames}  />;
+        categoryNames={this.state.categoryNames} />;
     }
     
     return ( 
@@ -131,23 +131,23 @@ class Movies extends Component {
 
 const mapStateToProps = state => {
   return {
-    movies: state.movies.movies,
-    loading: state.movies.loading,
-    initLoaded: state.movies.initLoaded,
-    translateSlide: state.movies.translateSlide,
-    showLength: state.movies.showLength,
-    listLength: state.movies.listLength
+    tv: state.tv.tv,
+    loading: state.tv.loading,
+    initLoaded: state.tv.initLoaded,
+    translateSlide: state.tv.translateSlide,
+    showLength: state.tv.showLength,
+    listLength: state.tv.listLength
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchMoviesInit: () => dispatch(actions.fetchMoviesInit()),
-    onChangeCarouselMovie: (movieId, element) => dispatch(actions.changeCarouselMovie(movieId, element)),
-    onChangeCarouselMovieArrow: (arrow, element) => dispatch(actions.changeCarouselMovieArrow(arrow, element)),
-    onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlide(element)),
-    onGetMovieDetails: (movieId) => dispatch(actions.getMovieDetails(movieId))
+    onFetchTVInit: () => dispatch(actions.fetchTVInit()),
+    onChangeCarouselTV: (tvId, element) => dispatch(actions.changeCarouselTV(tvId, element)),
+    onChangeCarouselTVArrow: (arrow, element) => dispatch(actions.changeCarouselTVArrow(arrow, element)),
+    onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlideTV(element)),
+    onGetTVDetails: (tvId) => dispatch(actions.getTVDetails(tvId))
   }
 }
  
-export default connect(mapStateToProps, mapDispatchToProps)(Movies);
+export default connect(mapStateToProps, mapDispatchToProps)(TV);

@@ -1,13 +1,11 @@
 import * as actionTypes from '../actions/actionTypes';
-import * as u from '../Utility';
+import * as u from '../Utility/index';
 
 const initialState = {
   loading: false,
   initLoaded: false,
   error: null,
-  nowPlayingMovies: null,
-  upcomingMovies: null,
-  popularMovies: null,
+  movies: {},
   currentMovieDetails: null,
   translateSlide: 0,
   showLength: 7,
@@ -23,22 +21,23 @@ const fetchMoviesStart = (state, action) => {
 
 const fetchMoviesInitSuccess = (state, action) => {
   // Extracting relevant data
-  const nowPlaying  = u.filterData(action.fetchedMovies['nowPlaying'].results, 'langImg'),
-        upcoming    = u.filterData(action.fetchedMovies['upcoming'].results, 'langImg'),
-        popular     = u.filterData(action.fetchedMovies['popular'].results, 'langImg'),
-        imgConfig   = action.configAndGenres['imgConfig'],
-        movieGenres = action.configAndGenres['movieGenres'];
+  const nowPlaying  = u.filterByVideoData(action.fetchedMovies['nowPlaying'].results, 'langImg'),
+        upcoming    = u.filterByVideoData(action.fetchedMovies['upcoming'].results, 'langImg'),
+        popular     = u.filterByVideoData(action.fetchedMovies['popular'].results, 'langImg'),
+        {imgConfig, movieGenres} = action.configAndGenres;
 
   // Getting base url for backdrop images
   let baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 3),
       baseUrlPoster   = u.getBaseUrl(imgConfig, 'poster', 1),
       baseUrl         = [baseUrlBackdrop, baseUrlPoster];
-      
-  const nowPlayingMovies = u.updatedInitData(nowPlaying, baseUrl, movieGenres),
-        upcomingMovies   = u.updatedInitData(upcoming, baseUrl),
-        popularMovies    = u.updatedInitData(popular, baseUrl);
 
-  return { ...state, nowPlayingMovies, upcomingMovies, popularMovies, loading: false, initLoaded: true };
+  const movies = {
+    nowPlaying: u.updateCategory('Now Playing', u.updateInitData(nowPlaying, baseUrl, movieGenres)),
+    upcoming: u.updateCategory('Upcoming', u.updateInitData(upcoming, baseUrl)),
+    popular: u.updateCategory('Popular', u.updateInitData(popular, baseUrl))
+  };
+
+  return { ...state, movies, loading: false, initLoaded: true };
 };
 
 const fetchMoviesInitFail = (state, action) => {
@@ -47,7 +46,7 @@ const fetchMoviesInitFail = (state, action) => {
 
 const getMovieDetailsSuccess = (state, action) => {
   const imgConfig = action.config,
-        videos    = u.filterData(action.fetchedDetails['videos'].results, 'videoSite'),
+        videos    = u.filterByVideoData(action.fetchedDetails['videos'].results, 'videoSite'),
         cast      = u.extractUpTo(action.fetchedDetails['credits'].cast, 11),
         crew      = u.extractUpTo(action.fetchedDetails['credits'].crew, 11),
         details   = action.fetchedDetails['details'],
@@ -80,45 +79,41 @@ const clearMovieDetails = (state, action) => {
 //           CAROUSEL          //
 // =========================== // 
 const changeCarouselMovie = (state, action) => {
-  const activeIndex     = state.nowPlayingMovies.findIndex(movie => movie.active);
-  const newActiveIndex  = state.nowPlayingMovies.findIndex(movie => movie.id === action.movieId);
+  const nowPlaying      = state.movies['nowPlaying'].videos;
+  const activeIndex     = nowPlaying.findIndex(movie => movie.active);
+  const newActiveIndex  = nowPlaying.findIndex(movie => movie.id === action.movieId);
 
-  const updatedNowPlayingMovies = u.updateCarouselMovieState(state, activeIndex, newActiveIndex);
+  const updatedNowPlayingMovies = {
+    ...state.movies['nowPlaying'],
+    videos: u.updateCarouselState(nowPlaying, activeIndex, newActiveIndex)
+  };
   const updatedTranslateSlide = -newActiveIndex * action.element.offsetWidth;
 
-  return { ...state, nowPlayingMovies: updatedNowPlayingMovies, translateSlide: updatedTranslateSlide };
+  return { 
+    ...state, 
+    movies: {...state.movies, nowPlaying: updatedNowPlayingMovies}, 
+    translateSlide: updatedTranslateSlide };
 };
 
 const changeCarouselMovieArrow = (state, action) => {
-  const activeIndex = state.nowPlayingMovies.findIndex(movie => movie.active);
+  const nowPlaying  = state.movies['nowPlaying'].videos;
+  const activeIndex = nowPlaying.findIndex(movie => movie.active);  
   
-  let newActiveIndex = null;
-  let updatedTranslateSlide = state.translateSlide;
-  if(action.arrowDirection === 'left') {
-    if(activeIndex - 1 >= 0) {
-      newActiveIndex = activeIndex - 1;
-      updatedTranslateSlide += action.element.offsetWidth;
-    } else {
-      newActiveIndex = state.showLength-1;
-      updatedTranslateSlide = action.element.offsetWidth * -(state.showLength-1);
-    }
-  } else {
-    if(activeIndex + 1 < state.showLength) {
-      newActiveIndex = activeIndex + 1;
-      updatedTranslateSlide -= action.element.offsetWidth;
-    } else {
-      newActiveIndex = 0;
-      updatedTranslateSlide = 0;
-    }
-  }
-
-  const updatedNowPlayingMovies = u.updateCarouselMovieState(state, activeIndex, newActiveIndex);
+  const {newActiveIndex, updatedTranslateSlide} = u.updateIndexAndTranslation(action.arrowDirection, activeIndex, action.element, state.showLength);
   
-  return { ...state, nowPlayingMovies: updatedNowPlayingMovies, translateSlide: updatedTranslateSlide };
+  const updatedNowPlayingMovies = {
+    ...state.movies['nowPlaying'],
+    videos: u.updateCarouselState(nowPlaying, activeIndex, newActiveIndex)
+  };
+  
+  return { 
+    ...state, 
+    movies: {...state.movies, nowPlaying: updatedNowPlayingMovies},
+    translateSlide: updatedTranslateSlide };
 };
 
 const resizeCarouselSlide = (state, action) => {
-  const activeIndex       = state.nowPlayingMovies.findIndex(movie => movie.active);
+  const activeIndex       = state.movies['nowPlaying'].videos.findIndex(movie => movie.active);
   const newTranslateSlide = -action.element.offsetWidth * activeIndex;
   return { ...state, translateSlide: newTranslateSlide };
 };

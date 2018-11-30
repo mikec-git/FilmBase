@@ -15,7 +15,7 @@ const carousel = (props) => {
         key={video.id}
         pathBase={props.pathBase}
         videoId={video.id}
-        videoTitle={video.title}
+        videoTitle={video.title || video.name}
         videoImage={video.backdrop_path} 
         videoGenre={video.genre}
         videoRating={video.vote_average}

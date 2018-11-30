@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import MoreInfo from './containers/MoreInfo/MoreInfo';
 import Movies from './containers/Movies/Movies';
+import TV from './containers/TV/TV';
 import Layout from './HOC/Layout/Layout';
 import Modal from './HOC/Modal/Modal';
 import * as actionsMovies from './store/actions/MoviesActions';
@@ -57,6 +58,7 @@ class App extends Component {
       routes = (
         <Layout>
           <Switch>
+            <Route path="/TV" component={TV} />
             <Route path="/" component={Movies} />
           </Switch>
           {modalRoute}
