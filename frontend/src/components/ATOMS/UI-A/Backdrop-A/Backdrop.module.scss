@@ -6,4 +6,17 @@
   height: 100%;
   background-color: rgba(0,0,0, .8);
   z-index: 999;
+  transition: all 1500ms ease-out;
+  
+  &_appear {
+    opacity: 0;
+  }
+  
+  &_appear_active {
+    opacity: 1;
+  }
+  
+  &_enter_done {
+    opacity: 1;
+  }
 }

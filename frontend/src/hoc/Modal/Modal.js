@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
-
 import Backdrop from '../../components/ATOMS/UI-A/Backdrop-A/Backdrop';
 import c from './Modal.module.scss';
 
@@ -25,11 +24,11 @@ class Modal extends Component {
     this.props.history.goBack();
     this.props.modalClosed();
   }
-
+  
   render() {
     return (
-      <>
-        <Backdrop clicked={this.goBack} />
+      <>      
+        <Backdrop clicked={this.goBack} />        
         <div ref={this.targetRef} className={c.Modal}>
           {this.props.children}
         </div>

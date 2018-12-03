@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 import * as u from '../Utility/index';
 
 const initialState = {
-  loading: false,
+  loadingMain: false,
+  loadingDetails: false,
   initLoaded: false,
   error: null,
   movies: {},
@@ -16,7 +17,7 @@ const initialState = {
 //   FETCHING MOVIES FROM API  //
 // =========================== //
 const fetchMoviesStart = (state, action) => {
-  return { ...state, loading: true };
+  return { ...state, loadingMain: true };
 };
 
 const fetchMoviesInitSuccess = (state, action) => {
@@ -37,12 +38,16 @@ const fetchMoviesInitSuccess = (state, action) => {
     popular: u.updateCategory('Popular', u.updateInitData(popular, baseUrl))
   };
 
-  return { ...state, movies, loading: false, initLoaded: true };
+  return { ...state, movies, loadingMain: false, initLoaded: true };
 };
 
 const fetchMoviesInitFail = (state, action) => {
-  return { ...state, loading: false, error: action.error };
+  return { ...state, loadingMain: false, error: action.error };
 };
+
+const getMovieDetailsStart = (state, action) => {
+  return { ...state, loadingDetails: true };
+}
 
 const getMovieDetailsSuccess = (state, action) => {
   const imgConfig = action.config,
@@ -64,11 +69,11 @@ const getMovieDetailsSuccess = (state, action) => {
     backdrop_path: baseUrlBackdrop.concat(details.backdrop_path)
   };
     
-  return { ...state, currentMovieDetails, loading: false };
+  return { ...state, currentMovieDetails, loadingDetails: false };
 };
 
 const getMovieDetailsFail = (state, action) => {
-  return { ...state, loading: false, error: action.error };
+  return { ...state, loadingDetails: false, error: action.error };
 };
 
 const clearMovieDetails = (state, action) => {
@@ -132,6 +137,7 @@ const reducer = u.createReducer(initialState, {
   [actionTypes.CHANGE_CAROUSEL_MOVIE]: changeCarouselMovie,
   [actionTypes.CHANGE_CAROUSEL_MOVIE_ARROW]: changeCarouselMovieArrow,
   [actionTypes.RESIZE_CAROUSEL_SLIDE]: resizeCarouselSlide,
+  [actionTypes.GET_MOVIE_DETAILS_START]: getMovieDetailsStart,
   [actionTypes.GET_MOVIE_DETAILS_SUCCESS]: getMovieDetailsSuccess,
   [actionTypes.GET_MOVIE_DETAILS_FAIL]: getMovieDetailsFail,
   [actionTypes.CLEAR_MOVIE_DETAILS]: clearMovieDetails,

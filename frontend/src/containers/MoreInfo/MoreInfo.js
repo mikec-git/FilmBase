@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
 import Header from '../../components/ORGANISMS/MoreInfo-O/Header/Header';
-import Money from '../../components/ORGANISMS/MoreInfo-O/Money/Money';
-import Staff from '../../components/ORGANISMS/MoreInfo-O/Staff/Staff';
-import Reviews from '../../components/ORGANISMS/MoreInfo-O/Reviews/Reviews';
+import Body from '../../components/ORGANISMS/MoreInfo-O/Body/Body';
 import c from './MoreInfo.module.scss';
 
 class MoreInfo extends Component {
@@ -44,18 +42,12 @@ class MoreInfo extends Component {
           sideDrawerToggle={this.sideDrawerToggleHandler}
           videoClicked={this.videoClickedHandler}
           youtubeStateChanged={this.youtubeStateChangeHandler} />
-          <section className={c.MoreInfo__Body}>
-            <Money
-              budget={this.props.videoDetails.budget}
-              revenue={this.props.videoDetails.revenue} />
-            <Staff
-              staffList={this.props.videoDetails.cast}
-              staffType='Cast' />
-            <Staff
-              staffList={this.props.videoDetails.crew}
-              staffType='Crew' />
-            <Reviews reviewList={this.props.videoDetails.reviews} />
-        </section>
+        <Body 
+          budget={this.props.videoDetails.budget}
+          revenue={this.props.videoDetails.revenue}
+          staffListCast={this.props.videoDetails.cast}
+          staffListCrew={this.props.videoDetails.crew}
+          reviewList={this.props.videoDetails.reviews} />
       </div>
     );
   }

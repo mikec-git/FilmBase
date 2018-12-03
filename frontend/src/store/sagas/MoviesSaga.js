@@ -38,7 +38,7 @@ export function* fetchMoviesInitSaga(action) {
 //    GET INDIVIDUAL MOVIE DETAILS    //
 // ================================== //
 export function* getMovieDetailsSaga(action) {
-  yield put(actions.fetchMoviesStart());
+  yield put(actions.getMovieDetailsStart());
 
   try {
     const imgConfig = yield select(state => state.app.imgConfig);

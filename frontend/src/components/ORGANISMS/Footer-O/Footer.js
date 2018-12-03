@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import FooterNavItems from '../../MOLECULES/Footer-M/FooterNavItems-M/FooterNavItems';
 import FooterName from '../../ATOMS/Footer-A/FooterName-A/FooterName';
 import Copyright from '../../ATOMS/UI-A/Copyright-A/Copyright';
+import FooterCredits from '../../ATOMS/Footer-A/FooterCredits-A/FooterCredits';
 import ExternalLogos from '../../MOLECULES/Footer-M/ExternalLogos/ExternalLogos';
+import Button from '../../ATOMS/Footer-A/Button-A/Button';
 
 import linkedin from '../../../assets/img/linkedin.svg';
 import github from '../../../assets/img/github.svg';
@@ -44,13 +46,28 @@ class Footer extends Component {
         type: 'credit',
         img: youtube
       }
-    ]
+    ],
+    showCredits: false
+  }
+
+  creditButtonClickedHandler = () => {
+    this.setState(prevState => ({ showCredits: !prevState.showCredits }));
   }
 
   render () {
     let footerNavItems = [];
     for(let key in this.props.navItems) {
       footerNavItems.push(this.props.navItems[key]);
+    }
+
+    let credits = (<div className={c.Footer__CreditsList}><FooterCredits /></div>);
+    if(this.state.showCredits) {
+      credits = (
+        <div className={[c.Footer__CreditsList, c.Footer__CreditsList_show].join(' ')}>
+          <p className={c.Footer__CreditsList_text}>Icons Used</p>
+          <FooterCredits />
+        </div>
+      );
     }
   
     return ( 
@@ -65,7 +82,13 @@ class Footer extends Component {
         <div className={c.Footer__API}>
           <ExternalLogos links={this.state.links.filter(link => link.type === 'credit')} />
         </div>
-        <Copyright />
+        <div className={c.Footer__Credits}>
+          <Copyright />
+          {credits}
+          <Button 
+            clicked={this.creditButtonClickedHandler} 
+            showCredits={this.state.showCredits} />
+        </div>
       </footer>
     );
   }

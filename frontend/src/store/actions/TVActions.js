@@ -23,6 +23,10 @@ export const fetchTVInitFail = (error) => {
 //            TV DETAILS          //
 // ================================= //
 
+export const getTVDetailsStart = () => {
+  return { type: actionTypes.GET_TV_DETAILS_START }
+}
+
 export const getTVDetails = (tvId) => {
   return { type: actionTypes.GET_TV_DETAILS, tvId }
 }

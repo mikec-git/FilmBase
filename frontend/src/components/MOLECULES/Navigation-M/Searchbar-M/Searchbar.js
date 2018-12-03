@@ -11,15 +11,19 @@ const searchbar = (props) => {
     [c.Searchbar, props.className] : [c.Searchbar];
   
   return (
-    <form className={classNames.join(' ')}>
+    <form className={classNames.join(' ')} onSubmit={props.onSubmit}>
       <Input 
-        className={c.Searchbar__Input}
+        classNames={c.Searchbar__Input}
+        context='searchbarText'
         inputType={input.config.type} 
         inputConfig={input.config} 
         value={input.value}
-        func={(e) => props.onChange(e, input.id)} />
+        stateKey={input.stateKey}
+        updateKey={input.updateKey}
+        func={props.onChange} />
       <Input 
-        className={c.Searchbar__Submit}
+        classNames={c.Searchbar__Submit}
+        context='searchbarSubmit'
         inputType={submit.config.type} 
         inputConfig={submit.config} 
         src={submit.src}

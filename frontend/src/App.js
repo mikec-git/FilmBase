@@ -1,27 +1,37 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import MoreInfo from './containers/MoreInfo/MoreInfo';
 import Movies from './containers/Movies/Movies';
-import TV from './containers/TV/TV';
+import Search from './containers/Search/Search';
+import Discover from './containers/Discover/Discover';
 import Layout from './HOC/Layout/Layout';
 import Modal from './HOC/Modal/Modal';
+import Spinner from './components/ATOMS/UI-A/Spinner-A/Spinner';
+
 import * as actionsMovies from './store/actions/MoviesActions';
 import * as actionsTV from './store/actions/TVActions';
 import * as actionsApp from './store/actions/AppActions';
-
+const TV = lazy(() => import('./containers/TV/TV'));
 
 class App extends Component {
   prevLocation = this.props.location;
 
   componentDidMount() {
     this.props.onFetchConfigInit();
-    if(this.props.location.pathname !== '/') {
-      this.props.history.push('/');
-    }
+    if(!((this.props.location.pathname === '/tv') || 
+        (this.props.location.pathname === '/movie') || 
+        (this.props.location.pathname === '/login'))) {
+      const routePrefix = /(?<prefix>\b[a-zA-Z]+\b(?=\/)?)/.exec(this.props.location.pathname);
+      if(routePrefix) {
+        this.props.history.push(`/${routePrefix.groups.prefix}`);
+      } else {
+        this.props.history.push('/movie');
+      }
+    } 
   }
-
+  
   componentDidUpdate() {
     // If current location is not modal
     let { location, history } = this.props;
@@ -31,7 +41,6 @@ class App extends Component {
   }
 
   render() {
-    let modal         = null;
     let modalRoute    = null;
     let { location }  = this.props;
     let videoType     = location.state && location.state.type;
@@ -43,13 +52,17 @@ class App extends Component {
     if(isModal && this.props.videoDetails) {
       const clearVideoDetails = videoType === 'movie' ? this.props.onClearMovieDetails : this.props.onClearTVDetails;
 
-      modal = () => (
+      const modal = () => (
         <Modal modalClosed={clearVideoDetails}>
           <MoreInfo type={videoType} videoDetails={this.props.videoDetails} />
         </Modal>
       );
 
-      const pathBasedOnType = `/${videoType}/:${videoType}Id`
+      let pathBasedOnType = `/${videoType}/:${videoType}Id`;
+      if(location && location.state && location.state.isSearch) {
+        pathBasedOnType = `/find/${videoType}/:${videoType}Id`;
+      }
+      
       modalRoute = <Route path={pathBasedOnType} component={modal}/>;
     }
 
@@ -57,10 +70,14 @@ class App extends Component {
     if(!this.props.loading && this.props.fetched) {
       routes = (
         <Layout>
-          <Switch>
-            <Route path="/TV" component={TV} />
-            <Route path="/" component={Movies} />
-          </Switch>
+          <Suspense fallback={<Spinner suspense />}>
+            <Switch>
+              <Route path="/discover" component={Discover} />
+              <Route path="/find" component={Search} />
+              <Route path="/tv" render={props => <TV {...props} />} />
+              <Route path="/movie" component={Movies} />
+            </Switch>        
+          </Suspense>
           {modalRoute}
         </Layout>
       );

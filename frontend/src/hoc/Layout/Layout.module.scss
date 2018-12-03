@@ -1,7 +1,15 @@
+@import '../../styles/variables';
+
 .Layout {
-  background-color: #ccc;
+  background-image: linear-gradient(
+      to top, 
+      rgb(12, 143, 114) 0%,
+      rgb(9, 40, 53) 20%);
   
-  &__Main {
+      
+  &__Main { 
+    min-height: $layout-min-height;
+    background-color: #ccc;
     margin: 0 auto;
   }
 }

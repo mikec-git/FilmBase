@@ -12,6 +12,8 @@ const title = (props) => {
     classNames = props.className ? 
       [c.Title__Thumbnail, props.className].join(' ') : 
       c.Title__Thumbnail;
+  } else if(props.context === 'search') {
+    classNames = c.Title__Search;
   }
 
   return (

@@ -4,19 +4,15 @@ import { connect } from 'react-redux';
 import Carousel from '../../components/ORGANISMS/Carousel-O/Carousel';
 import Categories from '../../components/MOLECULES/FilmList-M/Categories-M/Categories';
 import FilmList from '../../components/ORGANISMS/FilmList-O/FilmList';
+import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
+
 import * as actions from '../../store/actions/MoviesActions';
-import * as u from '../../shared/Utility';
 
 class Movies extends Component {
   carouselSlideRef  = React.createRef();
 
   state = {
     activeCategory: 'Now Playing',
-    categoryLoaded: {
-      nowPlaying: true,
-      upcoming: false,
-      popular: false
-    },
     categoryNames: ['Now Playing', 'Upcoming', 'Popular']
   }
   
@@ -73,27 +69,18 @@ class Movies extends Component {
   }
 
   categoryClickedHandler = (category) => {
-    const categoryCamelCase = u.toCamelCase(category);
-    if(!this.state.categoryLoaded[categoryCamelCase]) {
-      this.setState({ 
-        ...this.state,
-        activeCategory: category, 
-        categoryLoaded: {
-          ...this.state.categoryLoaded, 
-          [categoryCamelCase]: true} });
-    } else {
-      this.setState({ activeCategory: category });
-    }
+    this.setState({ activeCategory: category });
   }
   
   render() { 
     let carousel    = null,
         categories  = null,
+        content     = null,
         filmList    = [];
 
     if(this.props.initLoaded) {
-      const moviePathBase = '/movie/',
-            nowPlayingMovies = this.props.movies['nowPlaying'].videos;
+      const moviePathBase     = '/movie/',
+            nowPlayingMovies  = this.props.movies['nowPlaying'].videos;
             
       carousel = <Carousel 
         videos={nowPlayingMovies.slice(0, this.props.showLength)}
@@ -111,7 +98,6 @@ class Movies extends Component {
           filmList={movieList.videos.slice(0, this.props.listLength)}
           videoClicked={this.getMovieDetailsHandler}
           activeCategory={this.state.activeCategory}
-          hasLoaded={this.state.categoryLoaded}
           pathBase={moviePathBase} />);
       });
 
@@ -119,13 +105,20 @@ class Movies extends Component {
         categoryClicked={this.categoryClickedHandler}
         activeCategory={this.state.activeCategory}
         categoryNames={this.state.categoryNames}  />;
+
+      content = (
+        <>
+          {carousel}
+          {categories}
+          {filmList}
+        </>
+      )
     }
     
     return ( 
       <>
-        {carousel}
-        {categories}
-        {filmList}
+        <Spinner loading={this.props.loadingMain} pageTitle='Movies' />
+        {content}
       </>
     );
   }
@@ -134,7 +127,7 @@ class Movies extends Component {
 const mapStateToProps = state => {
   return {
     movies: state.movies.movies,
-    loading: state.movies.loading,
+    loadingMain: state.movies.loadingMain,
     initLoaded: state.movies.initLoaded,
     translateSlide: state.movies.translateSlide,
     showLength: state.movies.showLength,

@@ -23,6 +23,10 @@ export const fetchMoviesInitFail = (error) => {
 //            MOVIE DETAILS          //
 // ================================= //
 
+export const getMovieDetailsStart = () => {
+  return { type: actionTypes.GET_MOVIE_DETAILS_START }
+}
+
 export const getMovieDetails = (movieId) => {
   return { type: actionTypes.GET_MOVIE_DETAILS, movieId }
 }

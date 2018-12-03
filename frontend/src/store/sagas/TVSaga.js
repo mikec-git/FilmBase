@@ -7,6 +7,7 @@ import { axiosMovie3 } from '../../shared/AxiosMovieAPI';
 // ================================== //
 export function* fetchTVInitSaga(action) {
   yield put(actions.fetchTVStart());
+  
   try {
     let [imgConfig, tvGenres, movieGenres] = yield all([
       select(state => state.app.imgConfig),
@@ -40,7 +41,7 @@ export function* fetchTVInitSaga(action) {
 //      GET INDIVIDUAL TV DETAILS     //
 // ================================== //
 export function* getTVDetailsSaga(action) {
-  yield put(actions.fetchTVStart());
+  yield put(actions.getTVDetailsStart());
 
   try {
     const imgConfig = yield select(state => state.app.imgConfig);

@@ -1,0 +1,39 @@
+@import '../../../../styles/variables';
+
+.Body {
+  width: $max-width;
+  margin: 0 auto;
+
+  &__Staff {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 5rem auto;
+  }
+
+  &__StaffMember {
+    display: flex;
+    align-items: flex-start;
+    overflow-x: scroll;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    
+    & > *:not(:last-child) {
+      margin-right: 5rem;
+    }
+  }
+
+  &__Reviews {
+    width: 100%;  
+  }
+
+  &__Money {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: $max-width;
+    margin: 0 auto;
+    padding: 5rem 10rem;
+  }
+}

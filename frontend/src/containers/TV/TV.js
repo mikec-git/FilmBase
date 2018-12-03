@@ -4,19 +4,15 @@ import { connect } from 'react-redux';
 import Carousel from '../../components/ORGANISMS/Carousel-O/Carousel';
 import Categories from '../../components/MOLECULES/FilmList-M/Categories-M/Categories';
 import FilmList from '../../components/ORGANISMS/FilmList-O/FilmList';
+import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
+
 import * as actions from '../../store/actions/TVActions';
-import * as u from '../../shared/Utility';
 
 class TV extends Component {
   carouselSlideRef  = React.createRef();
 
   state = {
     activeCategory: 'Airing Today',
-    categoryLoaded: {
-      airingToday: true,
-      onTheAir: false,
-      popular: false
-    },    
     categoryNames: ['Airing Today', 'On The Air', 'Popular']
   }
   
@@ -73,28 +69,19 @@ class TV extends Component {
   }
 
   categoryClickedHandler = (category) => {
-    const categoryCamelCase = u.toCamelCase(category);
-    if(!this.state.categoryLoaded[categoryCamelCase]) {
-      this.setState({ 
-        ...this.state,
-        activeCategory: category, 
-        categoryLoaded: {
-          ...this.state.categoryLoaded, 
-          [categoryCamelCase]: true} });
-    } else {
-      this.setState({ activeCategory: category });
-    }
+    this.setState({ activeCategory: category });
   }
   
   render() { 
     let carousel    = null,
         categories  = null,
+        content     = null,
         filmList    = [];
 
     if(this.props.initLoaded) {
       const tvPathBase = '/tv/',
             airingTodayTV = this.props.tv['airingToday'].videos;
-
+      
       carousel = <Carousel 
         videos={airingTodayTV.slice(0, this.props.showLength)}
         dotClicked={this.dotClickedHandler}
@@ -106,26 +93,32 @@ class TV extends Component {
 
       Object.entries(this.props.tv).forEach(([_, tvList]) => {
         filmList.push(<FilmList
-        key={tvList.category}
-        category={tvList.category}
-        filmList={tvList.videos.slice(0, this.props.listLength)}
-        videoClicked={this.getTVDetailsHandler}
-        activeCategory={this.state.activeCategory}
-        hasLoaded={this.state.categoryLoaded}
-        pathBase={tvPathBase} />);
+          key={tvList.category}
+          category={tvList.category}
+          filmList={tvList.videos.slice(0, this.props.listLength)}
+          videoClicked={this.getTVDetailsHandler}
+          activeCategory={this.state.activeCategory}
+          pathBase={tvPathBase} />);
       });
 
       categories = <Categories 
         categoryClicked={this.categoryClickedHandler}
         activeCategory={this.state.activeCategory}
         categoryNames={this.state.categoryNames} />;
+
+      content = (
+        <>
+          {carousel}
+          {categories}
+          {filmList}
+        </>
+      );
     }
     
     return ( 
       <>
-        {carousel}
-        {categories}
-        {filmList}
+        <Spinner loading={this.props.loadingMain} pageTitle='TV' />
+        {content}
       </>
     );
   }
@@ -134,7 +127,7 @@ class TV extends Component {
 const mapStateToProps = state => {
   return {
     tv: state.tv.tv,
-    loading: state.tv.loading,
+    loadingMain: state.tv.loadingMain,
     initLoaded: state.tv.initLoaded,
     translateSlide: state.tv.translateSlide,
     showLength: state.tv.showLength,

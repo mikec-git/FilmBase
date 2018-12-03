@@ -9,11 +9,15 @@ class Layout extends Component {
     navItems: {
       movies: {
         name: 'Movies',
-        path: '/'
+        path: '/movie'
       },
       tv: {
         name: 'TV',
         path: '/tv'
+      },
+      discover: {
+        name: 'Discover',
+        path: '/discover'
       },
       login: {
         name: 'Login',

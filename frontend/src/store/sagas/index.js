@@ -4,6 +4,7 @@ import * as actionTypes from '../actions/actionTypes';
 import { fetchMoviesInitSaga, getMovieDetailsSaga } from './MoviesSaga';
 import { fetchTVInitSaga, getTVDetailsSaga } from './TVSaga';
 import { fetchConfigInitSaga } from './AppSaga';
+import { getSearchbarResultsSaga } from './SearchSaga';
 
 const watchMovies = [
   takeEvery(actionTypes.FETCH_MOVIES_INIT, fetchMoviesInitSaga),
@@ -19,11 +20,16 @@ const watchApp = [
   takeEvery(actionTypes.FETCH_CONFIG_INIT, fetchConfigInitSaga )
 ];
 
+const watchSearch = [
+  takeLatest(actionTypes.GET_SEARCHBAR_RESULTS, getSearchbarResultsSaga)
+];
+
 
 export default function* rootSaga() {
   yield all([
     ...watchMovies,
     ...watchTV,
+    ...watchSearch,
     ...watchApp
   ]);
 };

@@ -10,8 +10,10 @@ export function updateInitData(originalData, baseUrls, genres) {
         ...result, 
         active: false, 
         genre, 
-        backdrop_path: baseUrls[0].concat(result.backdrop_path),
-        poster_path: baseUrls[1].concat(result.poster_path),
+        backdrop_path: baseUrls[0] ? 
+          baseUrls[0].concat(result.backdrop_path) : result.backdrop_path,
+        poster_path: baseUrls[1] ? 
+          baseUrls[1].concat(result.poster_path) : result.poster_path,
         vote_average: result.vote_average.toFixed(1)
       });
     }    
@@ -20,8 +22,10 @@ export function updateInitData(originalData, baseUrls, genres) {
     for(let result of originalData) {
       updatedData.push({ 
         ...result, 
-        backdrop_path: baseUrls[0].concat(result.backdrop_path),
-        poster_path: baseUrls[1].concat(result.poster_path),
+        backdrop_path: baseUrls[0] ? 
+          baseUrls[0].concat(result.backdrop_path) : result.backdrop_path,
+        poster_path: baseUrls[1] ? 
+          baseUrls[1].concat(result.poster_path) : result.poster_path,
         vote_average: result.vote_average.toFixed(1)
       });
     }
@@ -37,7 +41,9 @@ export function updateCategory(category, videos) {
 export function filterByVideoData(videos, filterBy) {
   if(filterBy === 'langImg') {
     return videos.filter(video => video && video.backdrop_path && video.original_language === 'en');
-  } else if(filterBy === 'videoSite') {
+  } else if(filterBy === 'search') {
+    return videos.filter(video => video && video.poster_path && (video.media_type === 'movie' || video.media_type === 'tv'));
+  }else if(filterBy === 'videoSite') {
     return videos.filter(video => video && video.site === 'YouTube');
   }
 }

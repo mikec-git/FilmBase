@@ -1,9 +1,11 @@
+@import '../../../styles/variables';
+
 .FilmList {  
-  max-width: 120rem;
+  max-width: $max-width;
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding-bottom: 3rem;
+  padding-bottom: 15rem;
   display: none;
   
   &__List {

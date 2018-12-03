@@ -1,0 +1,12 @@
+@import '../../../../styles/variables';
+
+.Filters {
+  display: grid;
+  grid-template-columns: repeat(5, [filter-start] 1fr [filter-end]);
+  grid-gap: 1rem;
+  max-width: $max-width;
+  justify-items: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 5rem 0;
+}

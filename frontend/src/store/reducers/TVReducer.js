@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 import * as u from '../Utility/index';
 
 const initialState = {
-  loading: false,
+  loadingMain: false,
+  loadingDetails: false,
   initLoaded: false,
   error: null,
   tv: {},
@@ -16,7 +17,7 @@ const initialState = {
 //     FETCHING TV FROM API    //
 // =========================== //
 const fetchTVStart = (state, action) => {
-  return { ...state, loading: true };
+  return { ...state, loadingMain: true };
 };
 
 const fetchTVInitSuccess = (state, action) => {
@@ -37,12 +38,16 @@ const fetchTVInitSuccess = (state, action) => {
     popular: u.updateCategory('Popular', u.updateInitData(popular, baseUrl))
   };
 
-  return { ...state, tv, loading: false, initLoaded: true };
+  return { ...state, tv, loadingMain: false, initLoaded: true };
 };
 
 const fetchTVInitFail = (state, action) => {
-  return { ...state, loading: false, error: action.error };
+  return { ...state, loadingMain: false, error: action.error };
 };
+
+const getTVDetailsStart = (state, action) => {
+  return { ...state, loadingDetails: true };
+}
 
 const getTVDetailsSuccess = (state, action) => {
   const imgConfig = action.config,
@@ -64,11 +69,11 @@ const getTVDetailsSuccess = (state, action) => {
     backdrop_path: baseUrlBackdrop.concat(details.backdrop_path)
   };
     
-  return { ...state, currentTVDetails, loading: false };
+  return { ...state, currentTVDetails, loadingDetails: false };
 };
 
 const getTVDetailsFail = (state, action) => {
-  return { ...state, loading: false, error: action.error };
+  return { ...state, loadingDetails: false, error: action.error };
 };
 
 const clearTVDetails = (state, action) => {
@@ -103,7 +108,12 @@ const changeCarouselTVArrow = (state, action) => {
   const airingToday  = state.tv['airingToday'].videos;
   const activeIndex = airingToday.findIndex(tv => tv.active);  
   
-  const {newActiveIndex, updatedTranslateSlide} = u.updateIndexAndTranslation(action.arrowDirection, activeIndex, action.element, state.showLength);
+  let showListLength = state.showLength;
+  if(airingToday.length < state.showLength) {
+    showListLength = airingToday.length;
+  }
+
+  const {newActiveIndex, updatedTranslateSlide} = u.updateIndexAndTranslation(action.arrowDirection, activeIndex, action.element, showListLength);
   
   const updatedAiringTodayTV = {
     ...state.tv['airingToday'],
@@ -132,6 +142,7 @@ const reducer = u.createReducer(initialState, {
   [actionTypes.CHANGE_CAROUSEL_TV]: changeCarouselTV,
   [actionTypes.CHANGE_CAROUSEL_TV_ARROW]: changeCarouselTVArrow,
   [actionTypes.RESIZE_CAROUSEL_SLIDE_TV]: resizeCarouselSlideTV,
+  [actionTypes.GET_TV_DETAILS_START]: getTVDetailsStart,
   [actionTypes.GET_TV_DETAILS_SUCCESS]: getTVDetailsSuccess,
   [actionTypes.GET_TV_DETAILS_FAIL]: getTVDetailsFail,
   [actionTypes.CLEAR_TV_DETAILS]: clearTVDetails,

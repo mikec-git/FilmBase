@@ -15,7 +15,8 @@ class Navigation extends Component {
   state = { 
     searchbar: {
       searchInput: { 
-        id: 'searchInput',
+        stateKey: 'searchbar',
+        updateKey: 'searchInput',
         config: { 
           type: 'text',
           placeholder: 'Search...'
@@ -23,15 +24,14 @@ class Navigation extends Component {
         value: ''
       },
       submit: { 
-        config: { type: 'submit' },
+        config: { type: 'submitImg' },
         src: Search,
         alt: 'Search'
       },
       touched: false
     }
   };
-
-  
+    
   componentDidMount() {
     window.addEventListener('scroll', this.pageScrollingHandler);
     this.scrollDirDown = true; // true == down
@@ -40,33 +40,43 @@ class Navigation extends Component {
 
   pageScrollingHandler = () => {
     if(this.navRef && this.navRef.current) {
-      this.scrollDirDown  = window.scrollY - this.curScrollPos >= 0;
+      this.scrollDirDown  = (window.scrollY - this.curScrollPos) >= 0;
       this.curScrollPos   = window.scrollY;
       const navStyle      = this.navRef.current.style;
       navStyle.transform  = !this.scrollDirDown && this.curScrollPos > navStyle.height ? 'translateY(-100%)' : 'translateY(0)';
     }
   }
 
-  inputChangedHandler = (e, elementName) => {
+  updateInputValue = (e, stateKey, updateKey) => {
     this.setState({ 
-      searchbar: {
-        ...this.state.searchbar,
-        [elementName]: {
-          ...this.state.searchbar[elementName],
+      [stateKey]: {
+        ...this.state[stateKey],
+        [updateKey]: {
+          ...this.state[stateKey][updateKey],
           value: e.target.value
         },
         touched: true
       }
     });
   }
-
-  searchSubmitHandler = () => {
-    console.log("search Submitted");
     
+  searchSubmitHandler = (e) => {
+    e.preventDefault();
+    this.setState(prevState => {
+      this.props.history.replace({
+        pathname: '/find',
+        search: `?q=${this.state.searchbar.searchInput.value}`
+      });
+      return {
+        searchbar: {
+          ...prevState.searchbar,
+          searchInput: {...prevState.searchbar.searchInput, value: ''}
+      }};
+    });
   }
 
   logoClickedHandler = () => {
-    this.props.history.push('/');
+    this.props.history.push('/movie');
   }
 
   render() { 
@@ -85,7 +95,7 @@ class Navigation extends Component {
         <Searchbar 
           className={c.Navigation__Searchbar}
           searchbar={this.state.searchbar} 
-          onChange={this.inputChangedHandler}
+          onChange={this.updateInputValue}
           onSubmit={this.searchSubmitHandler} />
         <NavItems 
           className={c.Navigation__NavItems}
@@ -94,5 +104,6 @@ class Navigation extends Component {
     );
   }
 }
+
  
 export default withRouter(Navigation);

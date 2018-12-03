@@ -1,6 +1,6 @@
 .Footer {
   display: block;
-  padding: 11rem 0;
+  padding: 10rem 0 7rem;
   background-image: radial-gradient(
     at 30% top, 
     rgb(12, 143, 114) 0%,
@@ -11,6 +11,14 @@
     justify-content: center;
     align-items: center;
 
+    & > *:last-child > * a {
+      transition: all 200ms ease-out;
+    }
+
+    & > *:last-child > * a:hover {
+      color: #888;
+    }
+
     & > *:not(:last-child) {
       margin-right: 4rem;
     }
@@ -20,11 +28,61 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    & > * {
+      transition: all 200ms ease-out;
+    }
+
+    & > *:hover {
+      filter: invert(.3) drop-shadow(-.5rem .5rem .5rem rgba(#000, .3));
+    }
   }
 
   &__API {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    & > * {
+      transition: all 200ms ease-out;
+    }
+
+    & > *:hover {
+      filter: drop-shadow(-.9rem .9rem .5rem rgba(#000, .6));
+    }
+  }
+
+  &__Credits {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    margin-top: 7.5rem;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+  }
+
+  &__CreditsList {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    padding: 1rem;
+    background-image: radial-gradient(at 30% top, #1e5363 0%, #10516d 50%);
+    border: 1px solid black;
+    border-top-left-radius: 1rem;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 200ms ease-out;
+
+    &_show {
+      transform: scaleX(1);
+    }
+
+    &_text {
+      font-size: 2rem;
+      font-weight: 600;
+    }
   }
 }

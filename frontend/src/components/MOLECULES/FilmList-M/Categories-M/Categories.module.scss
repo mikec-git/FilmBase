@@ -1,9 +1,11 @@
+@import '../../../../styles/variables';
+
 .Categories {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 70%;
-  margin: 3rem auto;
+  max-width: $max-width;
+  margin: 10rem auto 3rem;
   border: 3px solid black;
   border-radius: 100px;
 }
