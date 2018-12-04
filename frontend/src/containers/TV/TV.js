@@ -47,7 +47,7 @@ class TV extends Component {
   }
   
   arrowClickedHandler = (arrow) => {
-    this.props.onChangeCarouselTVArrow(arrow, this.carouselSlideRef.current);
+    this.props.onChangeCarouselTVArrow(arrow, this.carouselSlideRef.current, this.props.showLength);
     this.resetCarouselAutoSlide();
   }
   
@@ -79,9 +79,9 @@ class TV extends Component {
         filmList    = [];
 
     if(this.props.initLoaded) {
-      const tvPathBase = '/tv/',
+      const tvPathBase = this.props.location.pathname,
             airingTodayTV = this.props.tv['airingToday'].videos;
-      
+            
       carousel = <Carousel 
         videos={airingTodayTV.slice(0, this.props.showLength)}
         dotClicked={this.dotClickedHandler}
@@ -130,8 +130,8 @@ const mapStateToProps = state => {
     loadingMain: state.tv.loadingMain,
     initLoaded: state.tv.initLoaded,
     translateSlide: state.tv.translateSlide,
-    showLength: state.tv.showLength,
-    listLength: state.tv.listLength
+    showLength: state.app.showLength,
+    listLength: state.app.listLength
   }
 }
 
@@ -139,7 +139,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onFetchTVInit: () => dispatch(actions.fetchTVInit()),
     onChangeCarouselTV: (tvId, element) => dispatch(actions.changeCarouselTV(tvId, element)),
-    onChangeCarouselTVArrow: (arrow, element) => dispatch(actions.changeCarouselTVArrow(arrow, element)),
+    onChangeCarouselTVArrow: (arrow, element, showLength) => dispatch(actions.changeCarouselTVArrow(arrow, element, showLength)),
     onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlideTV(element)),
     onGetTVDetails: (tvId) => dispatch(actions.getTVDetails(tvId)),
     onResetTranslateTV: () => dispatch(actions.resetTranslateTV())

@@ -5,6 +5,8 @@ const initialState = {
   imgConfig: null,
   movieGenres: null,
   tvGenres: null,
+  listLength: 20,
+  showLength: 7,
   error: null,
   loading: false,
   initLoaded: false

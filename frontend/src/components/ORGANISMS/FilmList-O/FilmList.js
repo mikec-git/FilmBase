@@ -7,14 +7,21 @@ const filmList = (props) => {
   let classNames      = props.category === props.activeCategory ? 
     [c.FilmList, c.FilmList_active].join(' ') : 
     c.FilmList;
-
+  
   if(props.filmList) {
     listThumbnails = props.filmList.map(film => {
-      let pathBase = props.pathBase;
+      let pathBase = props.pathBase + '/';
       if(props.isSearch) {
-        pathBase = props.pathBase + film.media_type + '/';
+        pathBase = props.pathBase + '/' + film.media_type + '/';
+      } else if(props.isDiscover) {
+        pathBase = props.pathBase + '/' + props.mediaType +'/';
       }
 
+      let typePathBase = '';
+      if(props.hasPathPrefix) {
+        typePathBase = props.pathBase + '/';
+      }
+      
       return (
         <Thumbnail
           key={film.id}
@@ -24,7 +31,8 @@ const filmList = (props) => {
           rating={film.vote_average}
           showVideo={props.videoClicked}
           pathBase={pathBase}
-          isSearch={!!props.isSearch} />
+          onImgLoad={props.onImgLoad}
+          typePathBase={typePathBase} />
       )
     })
   }

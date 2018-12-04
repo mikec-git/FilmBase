@@ -38,13 +38,20 @@ export function updateCategory(category, videos) {
   return { category, videos };
 }
 
+export function removeDuplicateById(arrayToFilter) {
+  return arrayToFilter.filter(
+    (set => item => !set.has(item.id) && set.add(item.id))(new Set()));
+}
+
 export function filterByVideoData(videos, filterBy) {
   if(filterBy === 'langImg') {
     return videos.filter(video => video && video.backdrop_path && video.original_language === 'en');
   } else if(filterBy === 'search') {
     return videos.filter(video => video && video.poster_path && (video.media_type === 'movie' || video.media_type === 'tv'));
-  }else if(filterBy === 'videoSite') {
+  } else if(filterBy === 'videoSite') {
     return videos.filter(video => video && video.site === 'YouTube');
+  } else if(filterBy === 'langPosterImg') {
+    return videos.filter(video => video && video.poster_path && video.original_language === 'en');
   }
 }
 

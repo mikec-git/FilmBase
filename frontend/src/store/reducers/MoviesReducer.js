@@ -8,9 +8,7 @@ const initialState = {
   error: null,
   movies: {},
   currentMovieDetails: null,
-  translateSlide: 0,
-  showLength: 7,
-  listLength: 18
+  translateSlide: 0
 };
 
 // =========================== //
@@ -108,7 +106,7 @@ const changeCarouselMovieArrow = (state, action) => {
   const nowPlaying  = state.movies['nowPlaying'].videos;
   const activeIndex = nowPlaying.findIndex(movie => movie.active);  
   
-  const {newActiveIndex, updatedTranslateSlide} = u.updateIndexAndTranslation(action.arrowDirection, activeIndex, action.element, state.showLength);
+  const {newActiveIndex, updatedTranslateSlide} = u.updateIndexAndTranslation(action.arrowDirection, activeIndex, action.element, action.showLength);
   
   const updatedNowPlayingMovies = {
     ...state.movies['nowPlaying'],

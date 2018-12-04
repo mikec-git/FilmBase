@@ -43,19 +43,23 @@ class Search extends Component {
 
   render() { 
     let results = null;
-    if(this.props.results.length > 0) {
+    if(Array.isArray(this.props.results) &&this.props.results.length > 0) {
+      console.log(this.props.location.pathname);
       results = (
         <FilmList
           filmList={this.props.results}
           videoClicked={this.getFilmDetailsHandler}
-          pathBase='/find/'
-          isSearch={true} />
+          pathBase={this.props.location.pathname}
+          isSearch={true}
+          hasPathPrefix />
       );
     }
 
     return ( 
       <>
-        <Spinner loading={this.props.loading} pageTitle={'Searching for ' + this.state.currentQueryParams + '...'} />
+        <Spinner 
+          loading={this.props.loading} 
+          pageTitle={'Searching for ' + this.state.currentQueryParams + '...'} />
         <Header resultsTitle={'Results for ' + this.state.currentQueryParams} />
         {results}
       </>

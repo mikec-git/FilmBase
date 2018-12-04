@@ -54,8 +54,8 @@ export const changeCarouselMovie = (movieId, element) => {
   return { type: actionTypes.CHANGE_CAROUSEL_MOVIE, movieId, element };
 }
 
-export const changeCarouselMovieArrow = (arrowDirection, element) => {
-  return { type: actionTypes.CHANGE_CAROUSEL_MOVIE_ARROW, arrowDirection, element };
+export const changeCarouselMovieArrow = (arrowDirection, element, showLength) => {
+  return { type: actionTypes.CHANGE_CAROUSEL_MOVIE_ARROW, arrowDirection, element, showLength };
 }
 
 export const resizeCarouselSlide = (element) => {

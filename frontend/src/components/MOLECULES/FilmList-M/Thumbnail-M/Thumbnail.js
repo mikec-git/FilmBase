@@ -8,19 +8,25 @@ import c from './Thumbnail.module.scss';
 
 const thumbnail = (props) => {
   // REGEX FOR VIDEO TYPE NAME
-  const videoType = /[^/find]\w+(?=\/?)/ig.exec(props.pathBase);
+  const videoType = /[^/find/discover]\w+(?=\/?)/ig.exec(props.pathBase);
+  
   return (
     <div className={c.Thumbnail}>
       <Link 
         to={{
           pathname: props.pathBase + props.videoId,
-          state: { modal: true, type: videoType[0], isSearch: props.isSearch }
+          state: { 
+            modal: true, 
+            type: videoType[0], 
+            pathBase: props.typePathBase
+          }
         }}
         className={c.Thumbnail__Item}
         onClick={() => props.showVideo(props.videoId, videoType[0])}>
         <FilmImage
           context='thumbnail'
           className={c.Thumbnail__Img}
+          onImgLoad={props.onImgLoad}
           imgSrc={props.image}
           imgAlt={props.title} />
         <div className={c.Thumbnail__Rating}>

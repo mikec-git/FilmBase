@@ -13,7 +13,7 @@ const carousel = (props) => {
     return (
       <CarouselInfo
         key={video.id}
-        pathBase={props.pathBase}
+        pathBase={props.pathBase + '/'}
         videoId={video.id}
         videoTitle={video.title || video.name}
         videoImage={video.backdrop_path} 
@@ -33,12 +33,14 @@ const carousel = (props) => {
     <header className={c.Carousel}>
       <CarouselArrow 
         className={classesLeftArrow}
+        context='arrowRound'
         imgSrc={LeftArrow} 
         imgAlt='Left Arrow' 
         clickParam={'left'} 
         clicked={props.arrowClicked} />
       <CarouselArrow
         className={classesRightArrow}
+        context='arrowRound'
         imgSrc={RightArrow} 
         imgAlt='Right Arrow' 
         clickParam={'right'} 

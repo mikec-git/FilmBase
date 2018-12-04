@@ -8,9 +8,7 @@ const initialState = {
   error: null,
   tv: {},
   currentTVDetails: null,
-  translateSlide: 0,
-  showLength: 7,
-  listLength: 18
+  translateSlide: 0
 };
 
 // =========================== //
@@ -108,12 +106,12 @@ const changeCarouselTVArrow = (state, action) => {
   const airingToday  = state.tv['airingToday'].videos;
   const activeIndex = airingToday.findIndex(tv => tv.active);  
   
-  let showListLength = state.showLength;
-  if(airingToday.length < state.showLength) {
-    showListLength = airingToday.length;
+  let showLength = action.showLength;
+  if(airingToday.length < action.showLength) {
+    showLength = airingToday.length;
   }
 
-  const {newActiveIndex, updatedTranslateSlide} = u.updateIndexAndTranslation(action.arrowDirection, activeIndex, action.element, showListLength);
+  const {newActiveIndex, updatedTranslateSlide} = u.updateIndexAndTranslation(action.arrowDirection, activeIndex, action.element, showLength);
   
   const updatedAiringTodayTV = {
     ...state.tv['airingToday'],

@@ -47,7 +47,7 @@ class Movies extends Component {
   }
   
   arrowClickedHandler = (arrow) => {
-    this.props.onChangeCarouselMovieArrow(arrow, this.carouselSlideRef.current);
+    this.props.onChangeCarouselMovieArrow(arrow, this.carouselSlideRef.current, this.props.showLength);
     this.resetCarouselAutoSlide();
   }
   
@@ -79,7 +79,7 @@ class Movies extends Component {
         filmList    = [];
 
     if(this.props.initLoaded) {
-      const moviePathBase     = '/movie/',
+      const moviePathBase     = this.props.location.pathname,
             nowPlayingMovies  = this.props.movies['nowPlaying'].videos;
             
       carousel = <Carousel 
@@ -130,8 +130,8 @@ const mapStateToProps = state => {
     loadingMain: state.movies.loadingMain,
     initLoaded: state.movies.initLoaded,
     translateSlide: state.movies.translateSlide,
-    showLength: state.movies.showLength,
-    listLength: state.movies.listLength
+    showLength: state.app.showLength,
+    listLength: state.app.listLength
   }
 }
 
@@ -139,7 +139,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onFetchMoviesInit: () => dispatch(actions.fetchMoviesInit()),
     onChangeCarouselMovie: (movieId, element) => dispatch(actions.changeCarouselMovie(movieId, element)),
-    onChangeCarouselMovieArrow: (arrow, element) => dispatch(actions.changeCarouselMovieArrow(arrow, element)),
+    onChangeCarouselMovieArrow: (arrow, element, showLength) => dispatch(actions.changeCarouselMovieArrow(arrow, element, showLength)),
     onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlide(element)),
     onGetMovieDetails: (movieId) => dispatch(actions.getMovieDetails(movieId)),
     onResetTranslateMovie: () => dispatch(actions.resetTranslateMovie())

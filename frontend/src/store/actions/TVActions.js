@@ -54,8 +54,8 @@ export const changeCarouselTV = (tvId, element) => {
   return { type: actionTypes.CHANGE_CAROUSEL_TV, tvId, element };
 }
 
-export const changeCarouselTVArrow = (arrowDirection, element) => {
-  return { type: actionTypes.CHANGE_CAROUSEL_TV_ARROW, arrowDirection, element };
+export const changeCarouselTVArrow = (arrowDirection, element, showLength) => {
+  return { type: actionTypes.CHANGE_CAROUSEL_TV_ARROW, arrowDirection, element, showLength };
 }
 
 export const resizeCarouselSlideTV = (element) => {

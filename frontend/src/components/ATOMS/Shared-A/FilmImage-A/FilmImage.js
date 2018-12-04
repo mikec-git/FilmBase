@@ -12,9 +12,10 @@ const image = (props) => {
       [c.FilmImage__Thumbnail, props.className].join(' ') : 
       c.FilmImage__Thumbnail;
   }
-
+  
   return <img 
     className={classNames} 
+    onLoad={props.onImgLoad}
     src={props.imgSrc} 
     alt={props.imgAlt} />;
 }

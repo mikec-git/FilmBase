@@ -1,12 +1,16 @@
 @import '../../../../styles/variables';
 
 .Filters {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(5, [filter-start] 1fr [filter-end]);
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
   grid-gap: 1rem;
   max-width: $max-width;
+  width: 100%;
   justify-items: center;
+  justify-content: center;
   align-items: center;
   margin: 0 auto;
-  padding: 5rem 0;
+  padding-top: 5rem;
+  z-index: 20;
 }

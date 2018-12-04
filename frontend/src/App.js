@@ -50,19 +50,22 @@ class App extends Component {
     );
     
     if(isModal && this.props.videoDetails) {
-      const clearVideoDetails = videoType === 'movie' ? this.props.onClearMovieDetails : this.props.onClearTVDetails;
+      const clearVideoDetails = videoType === 'movie' ? 
+        this.props.onClearMovieDetails : this.props.onClearTVDetails;
 
       const modal = () => (
         <Modal modalClosed={clearVideoDetails}>
           <MoreInfo type={videoType} videoDetails={this.props.videoDetails} />
         </Modal>
       );
-
+      
       let pathBasedOnType = `/${videoType}/:${videoType}Id`;
-      if(location && location.state && location.state.isSearch) {
-        pathBasedOnType = `/find/${videoType}/:${videoType}Id`;
+      // console.log(location);
+      if(location && location.state && location.state.pathBase) {
+        pathBasedOnType = `${location.state.pathBase}${videoType}/:${videoType}Id`;
       }
       
+      // console.log(pathBasedOnType);
       modalRoute = <Route path={pathBasedOnType} component={modal}/>;
     }
 

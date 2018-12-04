@@ -7,7 +7,7 @@ export const toCamelCase = (string) => {
 }
 
 // GET CURRENT YEAR
-export const getCurrentYear = () => new Date().getFullYear();
+export const getCurrentYear = () => new Date().getFullYear().toString();
 
 // CREATE INPUT SELECT OPTION INTEGER RANGE FROM LENGTH OF ARRAY
 export const getOptionsIntRange = (header, range, initValue, order) => {
@@ -23,6 +23,8 @@ export const getOptionsIntRange = (header, range, initValue, order) => {
   }))
 }
 
+
+// DICTIONARY FOR FILTER QUERY - THEMOVIEDB
 export const getDiscoverOrderQueryValue = (value) => {
   switch(value) {
     case 'Popularity: High to Low':

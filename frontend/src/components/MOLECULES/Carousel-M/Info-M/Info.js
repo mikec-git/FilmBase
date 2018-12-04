@@ -23,7 +23,7 @@ const info = (props) => {
       onClick={() => props.showVideo(props.videoId)}>
       <FilmImage
         context='carousel'
-        className={c.CarouselInfo__Img}
+        className={c.Info__Img}
         imgSrc={props.videoImage} 
         imgAlt={props.videoTitle} />
       <div className={c.Info__Text}>
