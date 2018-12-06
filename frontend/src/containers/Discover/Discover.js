@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Filters from '../../components/MOLECULES/Discover-M/Filters-M/Filters';
 import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
 import DiscoverHeader from '../../components/ORGANISMS/Discover-O/DiscoverHeader';
 import DiscoverBody from '../../components/ORGANISMS/Discover-O/DiscoverBody';
@@ -89,31 +88,32 @@ class Discover extends Component {
       year: { name: 'primary_release_year', value: u.getCurrentYear() }
     },
     searchQueryPath: '',
-    imgLoadCount: 0,
-    isLoaded: false,
+    isLoaded: false
   }
 
   componentDidMount() {
-    const { initFilters } = this.state;
-    const newPath = '/discover?' + initFilters.year.name + '=' + initFilters.year.value + '&media=' + initFilters.media.name;
+    const { initFilters } = this.state,
+          newPath = ['/discover?', initFilters.year.name, '=',initFilters.year.value, '&media=', initFilters.media.name].join('');
+          
     this.setState({ searchQueryPath: newPath });
     this.props.onGetDiscoverInit(initFilters);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps,) {
     const { page: prevPage } = prevProps,
-          { isLoaded: prevIsLoaded, imgLoadCount: prevImgCount } = prevState,
-          { location, history, page, listLength } = this.props,
-          { searchQueryPath, imgLoadCount }       = this.state;
+          { location, history, page, loading, listLength } = this.props;
+    const { searchQueryPath, isLoaded } = this.state;
     
     if(searchQueryPath !== '' && prevPage !== page) {
-      history.push(searchQueryPath.concat('&page=' + page))
+      history.push(searchQueryPath.concat(['&page=', page].join('')))
     }
-    
-    if(!prevIsLoaded && imgLoadCount >= listLength) {
-      this.setState({ isLoaded: true });
-    } else if(prevIsLoaded && prevImgCount < listLength && !location.state) {
-      this.setState({ isLoaded: false });
+
+    if(listLength) {
+      if(!isLoaded && !loading) { 
+        this.setState({ isLoaded: true });
+      } else if(isLoaded && loading && !location.state) {
+        this.setState({ isLoaded: false });
+      }
     }
   }
   
@@ -124,22 +124,16 @@ class Discover extends Component {
     } else if(typeof e === 'string') {
       newValue = e;
     }
-
-    this.setState({ 
-      [stateKey]: {
-        ...this.state[stateKey],
-        [updateKey]: {
-          ...this.state[stateKey][updateKey],
-          value: newValue
-        }
-      }
+    
+    this.setState({
+      [stateKey]: u.setStateDirectChildValue(stateKey, updateKey, newValue, this.state)
     });
   }
 
   applyFiltersHandler = (e) => {
     e.preventDefault();
-    const filterQuery = {},
-          pathString  = [];
+    const queries = {},
+          path    = [];
     
     Object.entries(this.state.filters).forEach(([key, data]) => {
       let { inputConfig, value, inputType, hasDictionary } = data;
@@ -151,23 +145,25 @@ class Discover extends Component {
         }
         if(isMedia) {
           name = value.toLowerCase();
-          pathString.push(['media', name].join('='));
+          path.push(['media', name].join('='));
         } else {
-          pathString.push([name, value].join('='));
+          path.push([name, value].join('='));
         }
-        filterQuery[key] = { name, value };
+        queries[key] = { name, value };
       } else if(inputType !== 'select' && value !== '') {
-        pathString.push([name, value].join('='));
-        filterQuery[key] = { name, value };
+        path.push([name, value].join('='));
+        queries[key] = { name, value };
       }
     });
 
     const { history, onGetDiscoverResults, page } = this.props;
-    if(Object.keys(filterQuery).length > 0) {
-      const pathStringJoined = '/discover?' + pathString.join('&');
-      history.push(pathStringJoined + '&page=' + page);
-      onGetDiscoverResults(filterQuery);
-      this.setState({ searchQueryPath: pathStringJoined, imgLoadCount: 0 });
+
+    if(u.isObjEmpty(queries)) {
+      const searchQueryPath = ['/discover?', path.join('&')].join(''),
+            pushQueryPath   = [searchQueryPath, '&page=', page].join('');
+      onGetDiscoverResults(queries);
+      history.push(pushQueryPath);
+      this.setState({ searchQueryPath });
     } else {
       history.push('/discover');
     }
@@ -181,24 +177,11 @@ class Discover extends Component {
     }
   }
 
-  imageLoadedHandler = () => {
-    this.setState(prevState => ({ imgLoadCount: prevState.imgLoadCount + 1 }));
-  }
-
   arrowClickedHandler = (arrow) => {
     this.props.onChangeDiscoverList(arrow);
-    this.setState({ imgLoadCount: 0 });
   }
 
-  render() { 
-    const filters = (
-      <Filters 
-        stateKey='filters'
-        applyFilters={this.applyFiltersHandler}
-        inputChanged={this.updateInputValueHandler}
-        filters={this.state.filters} />
-    );
-
+  render() {
     return (
       <> 
         <Spinner 
@@ -216,7 +199,6 @@ class Discover extends Component {
             listLength={this.props.listLength}
             videoClicked={this.getFilmDetailsHandler}
             arrowClicked={this.arrowClickedHandler}
-            onImgLoad={this.imageLoadedHandler}
             mediaType={this.state.filters.media.value.toLowerCase()}
             isImgLoaded={this.state.isLoaded} />
         </div>
@@ -228,9 +210,11 @@ class Discover extends Component {
 const mapStateToProps = state => {
   return {
     results: state.discover.results,
+    totalResults: state.discover.totalResults,
     loadingInit: state.discover.loadingInit,
     loading: state.discover.loading,
     page: state.discover.showPage,
+    loadedPage: state.discover.page,
     maxPage: state.discover.maxPage,
     listLength: state.app.listLength
   };

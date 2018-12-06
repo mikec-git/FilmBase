@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .Carousel {
   position: relative;
   display: grid;
@@ -10,9 +12,8 @@
   &__Info {
     white-space: nowrap;
     width: 102%;
-    height: calc(100vh - 6rem);
-    // For Slide transition
-    transition: all 500ms ease-in-out;
+    height: calc(100vh - 8rem);
+    transition: all 500ms ease-in-out; // For slide transition
   }
 
   &__Dots {

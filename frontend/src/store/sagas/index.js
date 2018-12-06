@@ -27,7 +27,7 @@ const watchSearch = [
 
 const watchDiscover = [
   takeEvery(actionTypes.GET_DISCOVER_INIT, getDiscoverInitSaga),
-  takeLatest(actionTypes.GET_DISCOVER_RESULTS, getDiscoverResultsSaga),
+  takeEvery(actionTypes.GET_DISCOVER_RESULTS, getDiscoverResultsSaga),
   takeEvery(actionTypes.CHANGE_DISCOVER_LIST, changeDiscoverListSaga),
 ]
 

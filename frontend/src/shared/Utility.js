@@ -21,8 +21,25 @@ export const getOptionsIntRange = (header, range, initValue, order) => {
 
     return { text: textValue.toString() };
   }))
+};
+
+export const isArrayGT = (testObj, greaterThan) => {
+  return Array.isArray(testObj) && testObj.length > greaterThan;
+};
+
+export const isObjEmpty = (object) => {
+  return Object.keys(object).length > 0;
 }
 
+export const setStateDirectChildValue = (stateKey, updateKey, updatedValue, state) => {
+  return {
+    ...state[stateKey],
+    [updateKey]: {
+      ...state[stateKey][updateKey],
+      value: updatedValue
+    }
+  };
+};
 
 // DICTIONARY FOR FILTER QUERY - THEMOVIEDB
 export const getDiscoverOrderQueryValue = (value) => {

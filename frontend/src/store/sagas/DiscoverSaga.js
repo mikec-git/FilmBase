@@ -1,81 +1,114 @@
 import * as actions from '../actions/DiscoverActions';
 import { put, call, all, select } from 'redux-saga/effects';
 import { axiosMovie3 } from '../../shared/AxiosMovieAPI';
+import * as u from '../../shared/Utility';
 
-export function* getDiscoverInitSaga(action) {
-  yield put(actions.getDiscoverInitStart());
+export function* getDiscoverInitSaga(action) {  
+  let page            = 1,
+      showPage        = 1,
+      maxIterations   = 5,        
+      hasLooped       = false,
+      loadType        = 'init';
 
   try {
     const imgConfig       = yield select(state => state.app.imgConfig),
           listLength      = yield select(state => state.app.listLength),
           { media, year } = action.queryParams,
-          queryPathString = [year.name, year.value].join('=');
+          queryPath       = [year.name, year.value].join('=');
 
-    const discoverSearchString = '/discover/' + media.name + '?api_key=' + process.env.REACT_APP_TMDB_KEY + '&language=en-US&include_video=true&' + queryPathString + '&page=1';
+    yield put(actions.getDiscoverInitStart({showPage, listLength, imgConfig}));
 
-    const initResults = yield call(axiosMovie3, discoverSearchString);
+    while(maxIterations > 0) {      
+      const searchString = ['/discover/', media.name, '?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&include_video=true&', queryPath, '&page=', page].join('');
 
-    yield put(actions.getDiscoverInitSuccess({
-      initResults: initResults.data, 
-      imgConfig,
-      listLength,
-      searchString: discoverSearchString
-    }));
+      let results = yield call(axiosMovie3, searchString);
+          results = results.data;
+
+      yield put(actions.getDiscoverResultsSuccess({ hasLooped, page, results, searchString, loadType }));
+
+      const resultsLength = yield select(state => state.discover.results.length),
+            loopAgain     = showPage * listLength > resultsLength;
+      
+      if(!loopAgain) {
+        break;
+      }
+
+      page++;
+      maxIterations--;
+      hasLooped = true;
+    }      
+
   } catch (error) {
     yield put(actions.getDiscoverInitFail(error));
   }
 }
 
-export function* getDiscoverResultsSaga(action) {
-  yield put(actions.getDiscoverResultsStart());
-
+export function* getDiscoverResultsSaga(action) {  
   try {
-    const query         = action.queryParams;
-    let queryPathString = [];
+    const query         = action.queryParams,    
+          listLength    = yield select(state => state.app.listLength);
+    let queryPath = [],
+        showPage  = 1;
     
+    yield put(actions.getDiscoverResultsStart(showPage));
+
     let idResults = yield all ([
       call(getQueryIds, 'people', 'person', query),
       call(getQueryIds, 'keywords', 'keyword', query)
     ]);
-
     idResults = idResults.filter(id => !!id);
 
     Object.entries(query).forEach(([key, value]) => {
       if(key !== 'people' && key !== 'keywords' && key !== 'media') {
-        queryPathString.push([value.name, value.value].join('='));
+        queryPath.push([value.name, value.value].join('='));
       }
     });
     
-    if(Array.isArray(idResults) && idResults.length > 0) {
-      queryPathString = [...queryPathString, ...idResults].join('&');
-    } else {
-      queryPathString = queryPathString.join('&');
+    queryPath = u.isArrayGT(idResults, 0) ? 
+      [...queryPath, ...idResults].join('&') : queryPath.join('&');
+
+    let maxIterations = 5,
+        hasLooped     = false,
+        loadType      = 'filter',
+        page          = 1;
+        
+    while (maxIterations > 0) {
+      const searchString = ['/discover/', query.media.name, '?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&include_adult=false&include_video=false&', queryPath, '&page=', page].join('');
+      
+      let results = yield call(axiosMovie3, searchString);
+          results = results.data;
+
+      yield put(actions.getDiscoverResultsSuccess({ hasLooped, page, results, searchString, loadType }));
+
+      const resultsLength = yield select(state => state.discover.results.length),
+            maxPage = yield select(state => state.discover.maxPage),
+            loopAgain     = (1 * listLength > resultsLength) && maxPage !== page;
+            
+      if(!loopAgain || page >= maxPage) {
+        break;
+      }
+      
+      page++;
+      maxIterations--;
+      hasLooped = true;
     }
-
-    const discoverSearchString = `/discover/${query['media'].name}?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US&include_video=true&${queryPathString}&page=1`;
-
-    const discoverResults = yield call(axiosMovie3, discoverSearchString);
-
-    yield put(actions.getDiscoverResultsSuccess({discoverResults: discoverResults.data, searchString: discoverSearchString}));
   } catch (error) {
     yield put(actions.getDiscoverResultsFail(error));
   }
 }
 
 // UTILITY - getDiscoverResultsSaga
-function* getQueryIds(filterType, searchType, queryParams) {
-  if(queryParams[filterType]) {
-    const queries = queryParams[filterType].value.match(/\b\w+(\s+\w+)*\b/g);
-    const queryResults = yield all (queries.map(query => call(getQueryId, query, searchType)));
-    const queryIds = queryResults.map(result => {
-      if(!!result.data.total_results) {
-        return result.data.results[0].id;
-      }
-      return null;
+function* getQueryIds(filter, searchType, queryParams) {
+  if(queryParams[filter]) {
+    const queries       = queryParams[filter].value.match(/\b\w+(\s+\w+)*\b/g),
+          queryResults  = yield all (queries.map(query => call(getQueryId, query, searchType)));
+
+    const queryIds = queryResults.flatMap(result => {
+      return !!result.data.total_results ? result.data.results[0].id : null;
     });
-    const filteredIds = queryIds.filter(id => !!id);
-    if(Array.isArray(filteredIds) && !!filteredIds.length) {
-      return [queryParams[filterType].name, filteredIds].join('=');
+
+    if(u.isArrayGT(queryIds, 0)) {
+      return [queryParams[filter].name, queryIds].join('=');
     }
   }
   return null;
@@ -92,31 +125,34 @@ function* getQueryId(query, searchType) {
 
 export function* changeDiscoverListSaga(action) {
   try {
-    let hasLooped = false;
-    let maxIterations = 10;
+    let hasLooped     = false,
+        maxIterations = 10;
+    const { direction } = action;
+
     while(maxIterations > 0) {
-      const { direction } = action;
       const prevPage = yield select(state => state.discover.page);
       
       yield put(actions.changeDiscoverListStart(direction, hasLooped));
       
-      const newPage       = yield select(state => state.discover.page);
-      const searchString  = yield select(state => state.discover.searchString);
-
-      if(newPage > prevPage || hasLooped) {
-        const nextPageData = yield call(axiosMovie3, searchString);
-        yield put(actions.changeDiscoverListSuccess(nextPageData.data));
+      const newPage       = yield select(state => state.discover.page),
+            searchString  = yield select(state => state.discover.searchString);
+            
+      if(direction === 'right' && (newPage > prevPage || hasLooped)) {
+        let nextPageData = yield call(axiosMovie3, searchString);
+        yield put(actions.changeDiscoverListSuccess(nextPageData.data, direction));
+      } else {
+        yield put(actions.changeDiscoverListSuccess(-1, direction));
       }
-      
-      const showPage      = yield select(state => state.discover.showPage);
-      const resultsLength = yield select(state => state.discover.results.length);
-      const listLength    = yield select(state => state.app.listLength);       
 
-      const loopAgain = showPage*listLength > resultsLength;
-      if(!loopAgain) {
+      const showPage      = yield select(state => state.discover.showPage),
+            resultsLength = yield select(state => state.discover.results.length),
+            maxPage       = yield select(state => state.discover.maxPage),
+            listLength    = yield select(state => state.app.listLength),
+            loopAgain     = showPage*listLength > resultsLength;            
+            
+      if(!loopAgain || newPage >= maxPage) {
         break;
       }
-
       hasLooped = true;
       maxIterations--;
     }

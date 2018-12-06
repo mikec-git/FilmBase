@@ -13,7 +13,7 @@ const pageCount = (props) => {
   if(+props.page > 1) {
     leftCount = <span className={c.PageCount__Side}>{+props.page - 1}</span>
   } 
-  if(+props.page < +props.maxPage) {
+  if(props.hasNextPage) {
     rightCount = <span className={c.PageCount__Side}>{+props.page + 1}</span>
   }
 

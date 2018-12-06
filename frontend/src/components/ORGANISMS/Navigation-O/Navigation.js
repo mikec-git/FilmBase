@@ -8,6 +8,7 @@ import Image from '../../ATOMS/UI-A/ClickImage-A/ClickImage';
 import Search from '../../../assets/img/search.svg';
 import Logo from '../../../assets/img/clapperboard-Logo.svg';
 import c from './Navigation.module.scss';
+import * as u from '../../../shared/Utility';
 
 class Navigation extends Component {
   navRef = React.createRef();
@@ -48,15 +49,9 @@ class Navigation extends Component {
   }
 
   updateInputValue = (e, stateKey, updateKey) => {
-    this.setState({ 
-      [stateKey]: {
-        ...this.state[stateKey],
-        [updateKey]: {
-          ...this.state[stateKey][updateKey],
-          value: e.target.value
-        },
-        touched: true
-      }
+    this.setState({
+      [stateKey]: u.setStateDirectChildValue(stateKey, updateKey, e.target.value, this.state), 
+      touched: true
     });
   }
     

@@ -77,10 +77,12 @@ class Footer extends Component {
           <FooterNavItems navItems={footerNavItems} />
         </nav>
         <div className={c.Footer__External}>
-          <ExternalLogos links={this.state.links.filter(link => link.type === 'logo')} />
+          <ExternalLogos 
+            links={this.state.links.filter(link => link.type === 'logo')} />
         </div>
         <div className={c.Footer__API}>
-          <ExternalLogos links={this.state.links.filter(link => link.type === 'credit')} />
+          <ExternalLogos 
+            links={this.state.links.filter(link => link.type === 'credit')} />
         </div>
         <div className={c.Footer__Credits}>
           <Copyright />

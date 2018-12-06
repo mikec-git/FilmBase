@@ -7,6 +7,7 @@ import FilmList from '../../components/ORGANISMS/FilmList-O/FilmList';
 import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
 
 import * as actions from '../../store/actions/MoviesActions';
+import * as u from '../../shared/Utility';
 
 class Movies extends Component {
   carouselSlideRef  = React.createRef();
@@ -78,7 +79,7 @@ class Movies extends Component {
         content     = null,
         filmList    = [];
 
-    if(this.props.initLoaded) {
+    if(u.isObjEmpty(this.props.movies)) {
       const moviePathBase     = this.props.location.pathname,
             nowPlayingMovies  = this.props.movies['nowPlaying'].videos;
             
@@ -117,7 +118,7 @@ class Movies extends Component {
     
     return ( 
       <>
-        <Spinner loading={this.props.loadingMain} pageTitle='Movies' />
+        <Spinner loading={this.props.loadingInit} pageTitle='Movies' />
         {content}
       </>
     );
@@ -127,8 +128,7 @@ class Movies extends Component {
 const mapStateToProps = state => {
   return {
     movies: state.movies.movies,
-    loadingMain: state.movies.loadingMain,
-    initLoaded: state.movies.initLoaded,
+    loadingInit: state.movies.loadingInit,
     translateSlide: state.movies.translateSlide,
     showLength: state.app.showLength,
     listLength: state.app.listLength

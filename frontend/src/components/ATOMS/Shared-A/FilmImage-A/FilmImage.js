@@ -15,7 +15,6 @@ const image = (props) => {
   
   return <img 
     className={classNames} 
-    onLoad={props.onImgLoad}
     src={props.imgSrc} 
     alt={props.imgAlt} />;
 }

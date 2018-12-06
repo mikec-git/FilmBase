@@ -3,12 +3,12 @@
   padding: .2rem;
 
   a {
-    color: black;
+    color: inherit;
     text-decoration: none;
     transition: color 300ms ease-out;
     
     &:hover {
-      color: #ccc;
+      color: #fff;
     }
   }
 }

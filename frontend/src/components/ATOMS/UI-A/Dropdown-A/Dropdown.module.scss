@@ -8,6 +8,7 @@
   &_discover {
     background-color: $filter-background-color;
     border-radius: $filter-border-radius;
+    box-shadow: $filter-box-shadow;
     transition: all 200ms ease-out 200ms;
     margin: 0 1rem;  
     
@@ -32,7 +33,7 @@
     transform: scaleY(0);
     transform-origin: top;
     transition: all 200ms ease-out;
-    overflow-y: scroll;
+    overflow-y: auto;
     
     &_discover {
       border-bottom-right-radius: $filter-border-radius-top-side;

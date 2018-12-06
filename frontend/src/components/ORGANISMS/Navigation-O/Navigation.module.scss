@@ -1,13 +1,16 @@
+@import '../../../styles/variables';
+
 .Navigation {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   align-items: center;
   width: 100%;
-  height: 6rem;
-  background-image: radial-gradient(
-    at 30% top, 
-    rgb(12, 143, 114) 0%,
-    rgb(9, 40, 53) 90%);
+  height: $navbar-height;
+  // background-image: radial-gradient(
+  //   at 30% top, 
+  //   rgb(12, 143, 114) 0%,
+  //   rgb(9, 40, 53) 90%);
+  background-color: $nav-background-color;
   position: sticky;
   top: 0;
   left: 0;

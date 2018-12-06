@@ -31,7 +31,6 @@ const filmList = (props) => {
           rating={film.vote_average}
           showVideo={props.videoClicked}
           pathBase={pathBase}
-          onImgLoad={props.onImgLoad}
           typePathBase={typePathBase} />
       )
     })

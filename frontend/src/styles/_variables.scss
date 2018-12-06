@@ -2,10 +2,12 @@ $max-width: 120rem;
 $large-border-radius: 10rem;
 $normal-font-size: 1.6rem;
 
+$navbar-height: 8rem;
+
 $filter-border-radius: 2rem;
 $filter-border-radius-top-side: 1rem;
-$filter-padding: 1rem 2rem;
-$filter-gradient: linear-gradient(to bottom right, #11998e 0%, #38ef7d 90%);
+$filter-padding: .75rem 2rem;
+$filter-box-shadow: 0 1rem 2rem rgba(0,0,0,.5);
 
 $filter-dropdown-height: 18rem;
 $filter-background-color: #013338;
@@ -16,4 +18,19 @@ $filter-scrollbar-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 $filter-scrollbar-bg-color: #ccc;
 $filter-scrollbar-thumb-bg-color: #19BFD1;
 
-$layout-min-height: calc(100vh - 15rem);
+$layout-min-height: calc(100vh);
+$filmList-min-height: calc(85vh);
+
+$layout-main-gradient: linear-gradient(316deg, #1d093d 0%, #520d37 84%);
+
+$filter-gradient: linear-gradient(to bottom right, #11998e 0%, #38ef7d 90%);
+$footer-gradient: radial-gradient(circle at 30% 30%, #131313 0%, #030303 65%);
+
+$primary-purple-light: #800080;
+$primary-purple: #520d37;
+$primary-pink: #FF0099;
+$primary-navy: #1d093d;
+$primary-light-gray: #ccc;
+$primary-gray: rgb(121, 116, 116);
+$primary-dark-gray: #0f0f0f;
+$nav-background-color: #0f0f0f;

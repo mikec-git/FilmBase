@@ -21,6 +21,7 @@
     font-size: $normal-font-size;
     background-color: $filter-background-color;
     border-radius: $filter-border-radius;
+    box-shadow: $filter-box-shadow;
     transition: all 200ms ease-out;
 
     &:focus {
@@ -47,50 +48,50 @@
     border-radius: $filter-border-radius;
     justify-self: center;
     grid-column: 1 / -1;
+    box-shadow: $filter-box-shadow;
     cursor: pointer;
     transition: all 200ms ease-out;
 
     &:hover {
       transform: translateY(-.15rem);
-      box-shadow: 0 .5rem 2rem rgba(0, 0, 0, .5);
+      box-shadow: 0 2rem 2rem rgba(0, 0, 0, .5);
       background-color: #ccc;
     }
   }
 
   &__SearchbarText {
-    width: 50%;
-    height: 100%;
+    width: 70%;
+    height: 120%;
     border-radius: $large-border-radius;
     font-size: $normal-font-size;
     padding: 0 2rem;
     transition: all 400ms ease-in-out;
-    background-color: #fff;
+    background-color: $primary-light-gray;
     backface-visibility: hidden;
 
     &::placeholder {
-      color: rgba($color: #888, $alpha: .65);
+      color: rgba($primary-dark-gray, .7);
     }
 
     &:focus {
-      width: 75%;
-      box-shadow: 0 .1rem 0.15rem deeppink,
-                  0 -.1rem 0.15rem deeppink,
-                  .1rem .1rem 0.15rem deeppink,
-                  .1rem -.1rem 0.15rem deeppink,
-                  -.1rem .1rem 0.15rem deeppink,
-                  -.1rem -.1rem 0.15rem deeppink;
-      background-color: #eee;
+      width: 90%;
+      box-shadow: 0 .1rem 0.15rem $primary-purple-light,
+                  0 -.1rem 0.15rem $primary-purple-light,
+                  .1rem .1rem 0.15rem $primary-purple-light,
+                  .1rem -.1rem 0.15rem $primary-purple-light,
+                  -.1rem .1rem 0.15rem $primary-purple-light,
+                  -.1rem -.1rem 0.15rem $primary-purple-light;
     }
   }
   
   &__SearchbarSubmit {
-    width: 5rem;
-    height: 100%;
-    margin-left: -5rem;
-    padding: .5rem 0;
+    width: 7rem;
+    height: 120%;
+    margin-left: -7rem;
+    padding: .6rem 0;
     border-radius: 10rem;
     backface-visibility: hidden;
-    background-color: blueviolet;
+    background-color: $primary-purple-light;
     transition: all 400ms ease-in-out;
     cursor: pointer;    
 

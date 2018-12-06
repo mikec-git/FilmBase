@@ -4,7 +4,7 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
-  grid-gap: 1rem;
+  grid-gap: 2rem;
   max-width: $max-width;
   width: 100%;
   justify-items: center;

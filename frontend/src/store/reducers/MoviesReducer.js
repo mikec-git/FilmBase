@@ -1,13 +1,19 @@
 import * as actionTypes from '../actions/actionTypes';
 import * as u from '../Utility/index';
 
-const initialState = {
-  loadingMain: false,
+const initialState = {  
+  imgConfig: null,
+  movieGenres: null,
+  listLength: null,
+  loadingInit: false,
+  loading: false,
   loadingDetails: false,
-  initLoaded: false,
-  error: null,
   movies: {},
-  currentMovieDetails: null,
+  currentMovieDetails: {},
+  page: null,
+  maxPage: null,
+  showPage: null,
+  error: null,
   translateSlide: 0
 };
 
@@ -15,15 +21,18 @@ const initialState = {
 //   FETCHING MOVIES FROM API  //
 // =========================== //
 const fetchMoviesStart = (state, action) => {
-  return { ...state, loadingMain: true };
+  const { listLength, imgConfig, movieGenres } = action;
+  return { ...state, loadingInit: true, listLength, imgConfig, movieGenres };
 };
 
 const fetchMoviesInitSuccess = (state, action) => {
+  const { fetchedMovies }         = action;
+  const {imgConfig, movieGenres}  = state;
+
   // Extracting relevant data
-  const nowPlaying  = u.filterByVideoData(action.fetchedMovies['nowPlaying'].results, 'langImg'),
-        upcoming    = u.filterByVideoData(action.fetchedMovies['upcoming'].results, 'langImg'),
-        popular     = u.filterByVideoData(action.fetchedMovies['popular'].results, 'langImg'),
-        {imgConfig, movieGenres} = action.configAndGenres;
+  const nowPlaying = u.filterByVideoData(fetchedMovies['nowPlaying'].results, 'langImg'),
+        upcoming  = u.filterByVideoData(fetchedMovies['upcoming'].results, 'langImg'),
+        popular   = u.filterByVideoData(fetchedMovies['popular'].results, 'langImg');
 
   // Getting base url for backdrop images
   let baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 3),
@@ -36,13 +45,16 @@ const fetchMoviesInitSuccess = (state, action) => {
     popular: u.updateCategory('Popular', u.updateInitData(popular, baseUrl))
   };
 
-  return { ...state, movies, loadingMain: false, initLoaded: true };
+  return { ...state, movies, loadingInit: false };
 };
 
 const fetchMoviesInitFail = (state, action) => {
-  return { ...state, loadingMain: false, error: action.error };
+  return { ...state, loadingInit: false, error: action.error };
 };
 
+// =========================== //
+//   FETCHING MOVIE DETAILS    //
+// =========================== //
 const getMovieDetailsStart = (state, action) => {
   return { ...state, loadingDetails: true };
 }

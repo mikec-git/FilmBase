@@ -7,12 +7,12 @@ export const fetchMoviesInit = () => {
   return { type: actionTypes.FETCH_MOVIES_INIT };
 }
 
-export const fetchMoviesStart = () => {
-  return { type: actionTypes.FETCH_MOVIES_START };
+export const fetchMoviesStart = ({listLength, imgConfig, movieGenres}) => {
+  return { type: actionTypes.FETCH_MOVIES_START, listLength, imgConfig, movieGenres };
 }
 
-export const fetchMoviesInitSuccess = (fetchedMovies, configAndGenres) => {
-  return { type: actionTypes.FETCH_MOVIES_INIT_SUCCESS, fetchedMovies, configAndGenres };
+export const fetchMoviesInitSuccess = (fetchedMovies) => {
+  return { type: actionTypes.FETCH_MOVIES_INIT_SUCCESS, fetchedMovies };
 }
 
 export const fetchMoviesInitFail = (error) => {

@@ -1,10 +1,9 @@
+@import '../../../styles/variables';
+
 .Footer {
   display: block;
   padding: 10rem 0 7rem;
-  background-image: radial-gradient(
-    at 30% top, 
-    rgb(12, 143, 114) 0%,
-    rgb(9, 40, 53) 70%);
+  background-image: $footer-gradient;
 
   &__Nav {
     display: flex;
@@ -16,7 +15,8 @@
     }
 
     & > *:last-child > * a:hover {
-      color: #888;
+      color: #fff;
+      filter: drop-shadow(0 .5rem 1rem rgba($primary-pink, .6));
     }
 
     & > *:not(:last-child) {
@@ -34,7 +34,7 @@
     }
 
     & > *:hover {
-      filter: invert(.3) drop-shadow(-.5rem .5rem .5rem rgba(#000, .3));
+      filter: brightness(2) drop-shadow(0 .5rem 1rem rgba($primary-pink, .6));
     }
   }
 
@@ -48,7 +48,7 @@
     }
 
     & > *:hover {
-      filter: drop-shadow(-.9rem .9rem .5rem rgba(#000, .6));
+      filter: drop-shadow(-.9rem .9rem 2.5rem rgba($primary-pink, .4));
     }
   }
 
@@ -60,8 +60,8 @@
     align-items: center;
     
     margin-top: 7.5rem;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-top: 1px solid $primary-gray;
+    border-bottom: 1px solid $primary-gray;
   }
 
   &__CreditsList {
@@ -69,7 +69,7 @@
     bottom: 100%;
     right: 0;
     padding: 1rem;
-    background-image: radial-gradient(at 30% top, #1e5363 0%, #10516d 50%);
+    background-color: $primary-dark-gray;
     border: 1px solid black;
     border-top-left-radius: 1rem;
     transform: scaleX(0);

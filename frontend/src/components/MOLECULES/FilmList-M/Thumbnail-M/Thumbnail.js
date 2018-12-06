@@ -26,7 +26,6 @@ const thumbnail = (props) => {
         <FilmImage
           context='thumbnail'
           className={c.Thumbnail__Img}
-          onImgLoad={props.onImgLoad}
           imgSrc={props.image}
           imgAlt={props.title} />
         <div className={c.Thumbnail__Rating}>
