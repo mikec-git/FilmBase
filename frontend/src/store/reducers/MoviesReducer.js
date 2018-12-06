@@ -10,6 +10,7 @@ const initialState = {
   loadingDetails: false,
   movies: {},
   currentMovieDetails: {},
+  searchString: {},
   page: null,
   maxPage: null,
   showPage: null,
@@ -21,36 +22,133 @@ const initialState = {
 //   FETCHING MOVIES FROM API  //
 // =========================== //
 const fetchMoviesStart = (state, action) => {
-  const { listLength, imgConfig, movieGenres } = action;
-  return { ...state, loadingInit: true, listLength, imgConfig, movieGenres };
+  const { listLength, imgConfig, movieGenres, showPage } = action;
+  return { ...state, loadingInit: true, listLength, imgConfig, movieGenres, showPage };
 };
 
 const fetchMoviesInitSuccess = (state, action) => {
-  const { fetchedMovies }         = action;
-  const {imgConfig, movieGenres}  = state;
+  const { fetchedMovies, hasLooped, loopAgain, page, searchString } = action,
+        {imgConfig, movieGenres} = state;
+        
+  const movies  = {},
+        maxPage = {
+    nowPlaying: fetchedMovies['nowPlaying'].total_pages,
+    upcoming: fetchedMovies['upcoming'].total_pages,
+    popular: fetchedMovies['popular'].total_pages };
 
-  // Extracting relevant data
-  const nowPlaying = u.filterByVideoData(fetchedMovies['nowPlaying'].results, 'langImg'),
-        upcoming  = u.filterByVideoData(fetchedMovies['upcoming'].results, 'langImg'),
-        popular   = u.filterByVideoData(fetchedMovies['popular'].results, 'langImg');
-
-  // Getting base url for backdrop images
-  let baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 3),
+  let nowPlaying  = null,
+      upcoming    = null,
+      popular     = null,
+      baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 3),
       baseUrlPoster   = u.getBaseUrl(imgConfig, 'poster', 1),
       baseUrl         = [baseUrlBackdrop, baseUrlPoster];
 
-  const movies = {
-    nowPlaying: u.updateCategory('Now Playing', u.updateInitData(nowPlaying, baseUrl, movieGenres)),
-    upcoming: u.updateCategory('Upcoming', u.updateInitData(upcoming, baseUrl)),
-    popular: u.updateCategory('Popular', u.updateInitData(popular, baseUrl))
-  };
+  // Extracting relevant data
+  if(!hasLooped || loopAgain['nowPlaying']) {
+    nowPlaying = u.filterByVideoData(fetchedMovies['nowPlaying'].results, 'langImg');
+    movies.nowPlaying = u.updateCategory('Now Playing', u.updateInitData(nowPlaying, baseUrl, movieGenres));
+    if(loopAgain['nowPlaying']) {
+      movies.nowPlaying.videos = state.movies.nowPlaying.videos.concat(movies.nowPlaying.videos);
+    }
+  }
 
-  return { ...state, movies, loadingInit: false };
+  if(!hasLooped || loopAgain['upcoming']) {
+    upcoming = u.filterByVideoData(fetchedMovies['upcoming'].results, 'langImg');
+    movies.upcoming = u.updateCategory('Upcoming', u.updateInitData(upcoming, baseUrl));
+    if(loopAgain['upcoming']) {
+      movies.upcoming.videos = state.movies.upcoming.videos.concat(movies.upcoming.videos);
+    }
+  }
+
+  if(!hasLooped || loopAgain['popular']) {
+    popular = u.filterByVideoData(fetchedMovies['popular'].results, 'langImg');
+    movies.popular = u.updateCategory('Popular', u.updateInitData(popular, baseUrl))
+    if(loopAgain['popular']) {
+      movies.popular.videos = state.movies.popular.videos.concat(movies.popular.videos);
+    }
+  }
+  
+  if(hasLooped) {
+    return { 
+      ...state, page, maxPage, loadingInit: false, searchString,
+      movies: {...state.movies, ...movies}};
+  } 
+  if(!hasLooped) {
+    return { ...state, page, maxPage, loadingInit: false, movies, searchString };
+  }
 };
 
 const fetchMoviesInitFail = (state, action) => {
   return { ...state, loadingInit: false, error: action.error };
 };
+
+// =========================== //
+//       CHANGE MOVIE LIST     //
+// =========================== //
+const changeMovieListStart = (state, action) => {
+  const { direction, hasLooped, category } = action;
+  let   { maxPage, listLength, } = state;
+  
+  let page          = {...state.page},
+      movies        = {...state.movies},
+      showPage      = {...state.showPage},
+      searchString  = {...state.searchString};
+  
+  if(direction === 'left' && showPage[category] > 1) {
+    showPage[category]--;
+  } else if(direction === 'right') {
+    const sliceStart  = showPage[category] * listLength,
+          sliceEnd    = (showPage[category]+1) * listLength;
+
+    if(!hasLooped && movies[category].videos.slice(sliceStart, sliceEnd).length >= 0) {
+      showPage[category]++;
+    }
+    if(page[category] < maxPage[category] && (movies[category].videos.slice(sliceStart, sliceEnd).length < listLength)) {
+      page[category]++;
+      searchString[category] = searchString[category].replace(/page=\d+(?=&?)/g, `page=${page[category]}`);
+    } 
+  }
+
+  return { ...state, 
+    page: { ...state.page, ...page }, 
+    showPage: { ...state.showPage, ...showPage }, 
+    searchString: { ...state.searchString, ...searchString }, 
+    loading: true };
+}
+
+const changeMovieListSuccess = (state, action) => {
+  const { direction, category, newData: newDataAction } = action;
+  const { imgConfig, movies } = state;
+
+  if(direction === 'left' || newDataAction === -1) {
+    return { ...state, loading: false };
+  }
+
+  const newData       = newDataAction.results,
+        baseUrlPoster = u.getBaseUrl(imgConfig, 'poster', 1),
+        baseUrl       = [null, baseUrlPoster];  
+
+  let updatedResults = u.filterByVideoData(newData, 'langPosterImg');
+      updatedResults = u.updateInitData(updatedResults, baseUrl);
+
+  let combinedResults     = movies[category].videos.concat(updatedResults),
+      noDuplicateResults  = u.removeDuplicateById(combinedResults);
+      
+  return { 
+    ...state, 
+    movies: {
+      ...movies,
+      [category]: {
+        ...movies[category],
+        videos: noDuplicateResults
+      }
+    }, 
+    loading: false };
+}
+
+const changeMovieListFail = (state, action) => {
+  return { ...state, error: action.error, loading: false };
+}
 
 // =========================== //
 //   FETCHING MOVIE DETAILS    //
@@ -60,16 +158,20 @@ const getMovieDetailsStart = (state, action) => {
 }
 
 const getMovieDetailsSuccess = (state, action) => {
-  const imgConfig = action.config,
-        videos    = u.filterByVideoData(action.fetchedDetails['videos'].results, 'videoSite'),
-        cast      = u.extractUpTo(action.fetchedDetails['credits'].cast, 11),
-        crew      = u.extractUpTo(action.fetchedDetails['credits'].crew, 11),
-        details   = action.fetchedDetails['details'],
-        reviews   = action.fetchedDetails['reviews'].results;
-
+  const { 
+    videos: videoResult, 
+    credits: creditResult, 
+    details, 
+    reviews: reviewResult } = action.fetchedDetails;  
+  const { imgConfig } = state,
+        videos    = u.filterByVideoData(videoResult.results, 'videoSite'),
+        cast      = u.extractUpTo(creditResult.cast, 11),
+        crew      = u.extractUpTo(creditResult.crew, 11),
+        reviews   = reviewResult.results;
+        
   const baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 0),
         baseUrlProfile  = u.getBaseUrl(imgConfig, 'poster', 1);
-  
+
   u.sortVideoType(videos);
   u.getProfilePath(cast, baseUrlProfile);
   u.getProfilePath(crew, baseUrlProfile);
@@ -87,7 +189,7 @@ const getMovieDetailsFail = (state, action) => {
 };
 
 const clearMovieDetails = (state, action) => {
-  return { ...state, currentMovieDetails: null }
+  return { ...state, currentMovieDetails: {} }
 }
 
 const resetTranslateMovie = (state, action) => {
@@ -144,6 +246,9 @@ const reducer = u.createReducer(initialState, {
   [actionTypes.FETCH_MOVIES_START]: fetchMoviesStart,
   [actionTypes.FETCH_MOVIES_INIT_SUCCESS]: fetchMoviesInitSuccess,
   [actionTypes.FETCH_MOVIES_INIT_FAIL]: fetchMoviesInitFail,
+  [actionTypes.CHANGE_MOVIE_LIST_START]: changeMovieListStart,
+  [actionTypes.CHANGE_MOVIE_LIST_SUCCESS]: changeMovieListSuccess,
+  [actionTypes.CHANGE_MOVIE_LIST_FAIL]: changeMovieListFail,  
   [actionTypes.CHANGE_CAROUSEL_MOVIE]: changeCarouselMovie,
   [actionTypes.CHANGE_CAROUSEL_MOVIE_ARROW]: changeCarouselMovieArrow,
   [actionTypes.RESIZE_CAROUSEL_SLIDE]: resizeCarouselSlide,

@@ -200,7 +200,9 @@ class Discover extends Component {
             videoClicked={this.getFilmDetailsHandler}
             arrowClicked={this.arrowClickedHandler}
             mediaType={this.state.filters.media.value.toLowerCase()}
-            isImgLoaded={this.state.isLoaded} />
+            isImgLoaded={this.state.isLoaded}
+            isDiscover
+            hasPathPrefix />
         </div>
       </>
     );

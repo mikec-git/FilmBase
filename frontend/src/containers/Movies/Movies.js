@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 
 import Carousel from '../../components/ORGANISMS/Carousel-O/Carousel';
 import Categories from '../../components/MOLECULES/FilmList-M/Categories-M/Categories';
-import FilmList from '../../components/ORGANISMS/FilmList-O/FilmList';
+import MoviesBody from '../../components/ORGANISMS/Discover-O/DiscoverBody';
 import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
 
 import * as actions from '../../store/actions/MoviesActions';
 import * as u from '../../shared/Utility';
+import c from './Movies.module.scss';
 
 class Movies extends Component {
   carouselSlideRef  = React.createRef();
@@ -73,6 +74,10 @@ class Movies extends Component {
     this.setState({ activeCategory: category });
   }
   
+  listArrowClickedHandler = (arrow) => {
+    this.props.onChangeMovieList(arrow, this.state.activeCategory);
+  }
+  
   render() { 
     let carousel    = null,
         categories  = null,
@@ -82,7 +87,7 @@ class Movies extends Component {
     if(u.isObjEmpty(this.props.movies)) {
       const moviePathBase     = this.props.location.pathname,
             nowPlayingMovies  = this.props.movies['nowPlaying'].videos;
-            
+
       carousel = <Carousel 
         videos={nowPlayingMovies.slice(0, this.props.showLength)}
         dotClicked={this.dotClickedHandler}
@@ -92,14 +97,18 @@ class Movies extends Component {
         videoClicked={this.getMovieDetailsHandler}
         pathBase={moviePathBase} />;
       
-      Object.entries(this.props.movies).forEach(([_, movieList]) => {
-        filmList.push(<FilmList
+      Object.entries(this.props.movies).forEach(([key, movieList]) => {
+        filmList.push(<MoviesBody
           key={movieList.category}
           category={movieList.category}
-          filmList={movieList.videos.slice(0, this.props.listLength)}
-          videoClicked={this.getMovieDetailsHandler}
+          results={movieList.videos}
+          listLength={this.props.listLength}
+          page={this.props.showPage[key]}
           activeCategory={this.state.activeCategory}
-          pathBase={moviePathBase} />);
+          arrowClicked={this.listArrowClickedHandler}
+          videoClicked={this.getMovieDetailsHandler}
+          pathBase={moviePathBase}
+          isImgLoaded={!this.props.loading} />);
       });
 
       categories = <Categories 
@@ -110,8 +119,10 @@ class Movies extends Component {
       content = (
         <>
           {carousel}
-          {categories}
-          {filmList}
+          <div className={c.Movies__Body}>
+            {categories}
+            {filmList}
+          </div>
         </>
       )
     }
@@ -129,7 +140,9 @@ const mapStateToProps = state => {
   return {
     movies: state.movies.movies,
     loadingInit: state.movies.loadingInit,
+    loading: state.movies.loading,
     translateSlide: state.movies.translateSlide,
+    showPage: state.movies.showPage,
     showLength: state.app.showLength,
     listLength: state.app.listLength
   }
@@ -141,6 +154,7 @@ const mapDispatchToProps = dispatch => {
     onChangeCarouselMovie: (movieId, element) => dispatch(actions.changeCarouselMovie(movieId, element)),
     onChangeCarouselMovieArrow: (arrow, element, showLength) => dispatch(actions.changeCarouselMovieArrow(arrow, element, showLength)),
     onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlide(element)),
+    onChangeMovieList: (arrow, category) => dispatch(actions.changeMovieList(arrow, category)),
     onGetMovieDetails: (movieId) => dispatch(actions.getMovieDetails(movieId)),
     onResetTranslateMovie: () => dispatch(actions.resetTranslateMovie())
   }

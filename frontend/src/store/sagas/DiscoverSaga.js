@@ -11,9 +11,12 @@ export function* getDiscoverInitSaga(action) {
       loadType        = 'init';
 
   try {
-    const imgConfig       = yield select(state => state.app.imgConfig),
-          listLength      = yield select(state => state.app.listLength),
-          { media, year } = action.queryParams,
+    const [imgConfig, listLength] = yield all ([
+      select(state => state.app.imgConfig),
+      select(state => state.app.listLength)
+    ]);
+
+    const { media, year } = action.queryParams,
           queryPath       = [year.name, year.value].join('=');
 
     yield put(actions.getDiscoverInitStart({showPage, listLength, imgConfig}));
@@ -27,9 +30,10 @@ export function* getDiscoverInitSaga(action) {
       yield put(actions.getDiscoverResultsSuccess({ hasLooped, page, results, searchString, loadType }));
 
       const resultsLength = yield select(state => state.discover.results.length),
-            loopAgain     = showPage * listLength > resultsLength;
-      
-      if(!loopAgain) {
+            maxPage       = yield select(state => state.discover.maxPage),
+            loopAgain     = (1 * listLength > resultsLength) && maxPage > page;
+            
+      if(!loopAgain || page >= maxPage) {
         break;
       }
 
@@ -126,7 +130,7 @@ function* getQueryId(query, searchType) {
 export function* changeDiscoverListSaga(action) {
   try {
     let hasLooped     = false,
-        maxIterations = 10;
+        maxIterations = 5;
     const { direction } = action;
 
     while(maxIterations > 0) {

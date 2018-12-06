@@ -13,6 +13,7 @@ import Spinner from './components/ATOMS/UI-A/Spinner-A/Spinner';
 import * as actionsMovies from './store/actions/MoviesActions';
 import * as actionsTV from './store/actions/TVActions';
 import * as actionsApp from './store/actions/AppActions';
+import * as u from './shared/Utility';
 const TV = lazy(() => import('./containers/TV/TV'));
 
 class App extends Component {
@@ -49,10 +50,10 @@ class App extends Component {
       this.prevLocation !== location
     );
     
-    if(isModal && this.props.videoDetails) {
+    if(isModal && u.isObjEmpty(this.props.videoDetails)) {
       const clearVideoDetails = videoType === 'movie' ? 
         this.props.onClearMovieDetails : this.props.onClearTVDetails;
-
+        
       const modal = () => (
         <Modal modalClosed={clearVideoDetails}>
           <MoreInfo type={videoType} videoDetails={this.props.videoDetails} />
@@ -60,12 +61,10 @@ class App extends Component {
       );
       
       let pathBasedOnType = `/${videoType}/:${videoType}Id`;
-      // console.log(location);
       if(location && location.state && location.state.pathBase) {
         pathBasedOnType = `${location.state.pathBase}${videoType}/:${videoType}Id`;
       }
       
-      // console.log(pathBasedOnType);
       modalRoute = <Route path={pathBasedOnType} component={modal}/>;
     }
 

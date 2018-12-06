@@ -10,7 +10,6 @@ const initialState = {
   page: null,
   maxPage: null,
   showPage: null,
-  totalResults: null,
   error: null,
   searchString: ''
 };
@@ -31,7 +30,7 @@ const getDiscoverResultsStart = (state, action) => {
 };
 
 const getDiscoverResultsSuccess = (state, action) => {
-  const { results, total_pages: maxPage, total_results: totalResults } = action.results,
+  const { results, total_pages: maxPage } = action.results,
         { searchString, page, hasLooped } = action,
         { imgConfig, results: stateResults, showPage, listLength } = state,
         baseUrlPoster = u.getBaseUrl(imgConfig, 'poster', 1),
@@ -48,9 +47,9 @@ const getDiscoverResultsSuccess = (state, action) => {
   const loading = showPage * listLength > updatedResults.length && page < maxPage;
   if(action.loadType === 'init') {
     const loadingInit = loading;
-    return { ...state, results: updatedResults, totalResults, page, maxPage, loadingInit, searchString };
+    return { ...state, results: updatedResults, page, maxPage, loadingInit, searchString };
   } else if(action.loadType === 'filter') {
-    return { ...state, results: updatedResults, totalResults, page, maxPage, loading,  searchString };
+    return { ...state, results: updatedResults, page, maxPage, loading,  searchString };
   }
   
 };

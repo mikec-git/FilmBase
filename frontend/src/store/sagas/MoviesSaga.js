@@ -1,15 +1,17 @@
 import * as actions from '../actions/MoviesActions';
 import { put, call, all, select } from 'redux-saga/effects';
 import { axiosMovie3 } from '../../shared/AxiosMovieAPI';
+import * as u from '../../shared/Utility';
 
 // ================================== //
 //          FETCH MOVIES INIT         //
 // ================================== //
 export function* fetchMoviesInitSaga(action) {
-  let page = 1,
-      showPage = 1,
-      maxIteration = 5,
-      hasLooped = false;
+  let page = { nowPlaying: 1, upcoming: 1, popular: 1 },
+      showPage = { nowPlaying: 1, upcoming: 1, popular: 1 },
+      maxIterations = 5,
+      hasLooped = false,
+      loopAgain = {};
       
   try {
     const [imgConfig, movieGenres, listLength] = yield all([
@@ -18,25 +20,121 @@ export function* fetchMoviesInitSaga(action) {
       select(state => state.app.listLength)
     ]);
 
-    yield put(actions.fetchMoviesStart({listLength, imgConfig, movieGenres}));
+    yield put(actions.fetchMoviesStart({listLength, imgConfig, movieGenres, showPage}));
+    
+    while(maxIterations > 0){      
+      let nowPlaying  = null, 
+          upcoming    = null, 
+          popular     = null,
+          searchString = {
+            nowPlaying: ['/movie/now_playing?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&page=', page['nowPlaying']].join(''),
+            upcoming: ['/movie/upcoming?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&page=', page['upcoming']].join(''),
+            popular: ['/movie/popular?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&page=', page['popular']].join('')
+          }
 
-    const {nowPlaying, upcoming, popular} = yield all({
-      nowPlaying: call(axiosMovie3, ['/movie/now_playing?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&page=1'].join('')),
+      if(!hasLooped || loopAgain['nowPlaying']) {
+        nowPlaying = yield call(axiosMovie3, searchString.nowPlaying);
+      } 
+      if(!hasLooped || loopAgain['upcoming']) {
+        upcoming = yield call(axiosMovie3, searchString.upcoming);
+      } 
+      if(!hasLooped || loopAgain['popular']) {
+        popular = yield call(axiosMovie3, searchString.popular);
+      } 
 
-      upcoming: call(axiosMovie3, ['/movie/upcoming?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&page=1'].join('')),
+      yield put(actions.fetchMoviesInitSuccess(
+        { nowPlaying: nowPlaying && nowPlaying.data, 
+          upcoming: upcoming && upcoming.data, 
+          popular: popular && popular.data },
+        { hasLooped, loopAgain, page, searchString }
+      ));
 
-      popular: call(axiosMovie3, ['/movie/popular?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&page=1'].join(''))
-    });
+      const [nowPlayingLength, upcomingLength, popularLength, maxPage]  = yield all ([
+        select(state => state.movies.movies['nowPlaying'].videos.length),
+        select(state => state.movies.movies['upcoming'].videos.length),
+        select(state => state.movies.movies['popular'].videos.length),
+        select(state => state.movies.maxPage)
+      ]);
+      
+      if(listLength > nowPlayingLength && maxPage['nowPlaying'] > page['nowPlaying']) {
+        loopAgain['nowPlaying'] = true;
+        page['nowPlaying']++;
+      } else {
+        loopAgain['nowPlaying'] = false;
+      }
+      if(listLength > upcomingLength && maxPage['upcoming'] > page['upcoming']) {
+        loopAgain['upcoming'] = true;
+        page['upcoming']++;
+      } else {
+        loopAgain['upcoming'] = false;
+      }
+      if(listLength > popularLength && maxPage['popular'] > page['popular']) {
+        loopAgain['popular'] = true;
+        page['popular']++;
+      } else {
+        loopAgain['popular'] = false;
+      }
 
-    // const {nowPlaying, upcoming, popular} = yield
+      const stopLoop = !loopAgain['nowPlaying'] && !loopAgain['upcoming']  && !loopAgain['popular'];
+      const pageExceeded = page['nowPlaying'] >= maxPage['nowPlaying'] && page['upcoming'] >= maxPage['upcoming'] && page['popular'] >= maxPage['popular'];
 
-    yield put(actions.fetchMoviesInitSuccess(
-      { nowPlaying: nowPlaying.data, 
-        upcoming: upcoming.data, 
-        popular: popular.data }
-    ));
+      if(stopLoop || pageExceeded) {
+        break;
+      }
+
+      maxIterations--;
+      hasLooped = true;
+    }
   } catch(error) {
     yield put(actions.fetchMoviesInitFail(error));
+  }
+}
+
+// ================================== //
+//          CHANGE MOVIE LIST         //
+// ================================== //
+export function* changeMovieListSaga(action) {
+  try {
+    let hasLooped     = false,
+        maxIterations = 5,
+        category      = u.toCamelCase(action.category);
+
+    const { direction } = action;
+    const listLength = yield select(state => state.app.listLength);
+    
+    while(maxIterations > 0) {
+      const prevPage = yield select(state => state.movies.page[category]);
+      
+      yield put(actions.changeMovieListStart({direction, hasLooped, category}));
+      
+      const [newPage, searchString] = yield all ([
+        select(state => state.movies.page[category]),
+        select(state => state.movies.searchString[category])
+      ]);
+      
+      if(direction === 'right' && (newPage > prevPage || hasLooped)) {
+        let nextPageData = yield call(axiosMovie3, searchString);
+        yield put(actions.changeMovieListSuccess(nextPageData.data, direction, category));
+      } else {
+        yield put(actions.changeMovieListSuccess(-1, direction, category));
+      }
+      
+      const { showPage, resultsLength, maxPage } = yield all ({
+        maxPage: select(state => state.movies.maxPage[category]),
+        showPage: select(state => state.movies.showPage[category]),
+        resultsLength: select(state => state.movies.movies[category].videos.length)
+      })
+
+      const loopAgain = showPage*listLength > resultsLength;
+            
+      if(!loopAgain || newPage >= maxPage) {
+        break;
+      }
+      hasLooped = true;
+      maxIterations--;
+    }
+  } catch (error) {
+    yield put(actions.changeMovieListFail(error));
   }
 }
 
@@ -47,7 +145,6 @@ export function* getMovieDetailsSaga(action) {
   yield put(actions.getMovieDetailsStart());
 
   try {
-    const imgConfig = yield select(state => state.app.imgConfig);
     const {videos, credits, details, reviews} = yield all({
       videos: call(axiosMovie3, '/movie/' + action.movieId + '/videos?api_key=' + process.env.REACT_APP_TMDB_KEY),
 
@@ -57,13 +154,12 @@ export function* getMovieDetailsSaga(action) {
       
       reviews: call(axiosMovie3, '/movie/' + action.movieId + '/reviews?api_key=' + process.env.REACT_APP_TMDB_KEY)   
     });
-    
+    console.log(videos);
     yield put(actions.getMovieDetailsSuccess(
       { videos: videos.data, 
         credits: credits.data, 
         details: details.data, 
-        reviews: reviews.data },
-      imgConfig
+        reviews: reviews.data }
     ));
   } catch(error) {
     yield put(actions.getMovieDetailsFail(error));

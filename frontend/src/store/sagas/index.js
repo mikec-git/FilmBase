@@ -1,7 +1,7 @@
 import { takeEvery, takeLatest, all } from 'redux-saga/effects';
 import * as actionTypes from '../actions/actionTypes';
 
-import { fetchMoviesInitSaga, getMovieDetailsSaga } from './MoviesSaga';
+import { fetchMoviesInitSaga, getMovieDetailsSaga, changeMovieListSaga } from './MoviesSaga';
 import { fetchTVInitSaga, getTVDetailsSaga } from './TVSaga';
 import { fetchConfigInitSaga } from './AppSaga';
 import { getSearchbarResultsSaga } from './SearchSaga';
@@ -9,6 +9,7 @@ import { getDiscoverInitSaga, getDiscoverResultsSaga, changeDiscoverListSaga } f
 
 const watchMovies = [
   takeEvery(actionTypes.FETCH_MOVIES_INIT, fetchMoviesInitSaga),
+  takeEvery(actionTypes.CHANGE_MOVIE_LIST, changeMovieListSaga),
   takeLatest(actionTypes.GET_MOVIE_DETAILS, getMovieDetailsSaga)
 ];
 

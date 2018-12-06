@@ -1,4 +1,13 @@
 .DiscoverBody {
+  
+  &_hidden {
+    display: none;
+  }
+
+  &_active {
+    display: block;
+  }
+
   &__List {
     position: relative;
     height: 100%;

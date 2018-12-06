@@ -4,9 +4,14 @@ import c from './FilmList.module.scss';
 
 const filmList = (props) => {
   let listThumbnails  = null;
-  let classNames      = props.category === props.activeCategory ? 
-    [c.FilmList, c.FilmList_active].join(' ') : 
-    c.FilmList;
+  let classNames      = c.FilmList;
+  if(props.category && props.activeCategory) {
+    classNames = [c.FilmList, c.FilmList_hidden].join(' ');
+    
+    if(props.category === props.activeCategory) {
+      classNames = [c.FilmList, c.FilmList_active].join(' ');
+    }
+  }    
   
   if(props.filmList) {
     listThumbnails = props.filmList.map(film => {

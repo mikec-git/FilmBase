@@ -1,0 +1,8 @@
+@import '../../styles/variables';
+
+.Movies {
+  &__Body {
+    margin: 0 auto;
+    max-width: $max-width;
+  }
+}
