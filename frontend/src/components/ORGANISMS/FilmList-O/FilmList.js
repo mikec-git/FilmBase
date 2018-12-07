@@ -5,13 +5,6 @@ import c from './FilmList.module.scss';
 const filmList = (props) => {
   let listThumbnails  = null;
   let classNames      = c.FilmList;
-  if(props.category && props.activeCategory) {
-    classNames = [c.FilmList, c.FilmList_hidden].join(' ');
-    
-    if(props.category === props.activeCategory) {
-      classNames = [c.FilmList, c.FilmList_active].join(' ');
-    }
-  }    
   
   if(props.filmList) {
     listThumbnails = props.filmList.map(film => {

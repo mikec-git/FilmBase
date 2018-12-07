@@ -1,10 +1,12 @@
+@import '../../../../styles/variables';
+
 .VideoList {
   overflow-x: hidden;
   width: 100%;
   background-color: rgba(0, 0, 0, .8);
-  color: #aaa;
-  border-bottom: 5px solid black;
-  border-left: 5px solid black;
+  color: $primary-light-gray;
+  border-bottom: 3px solid black;
+  border-left: 3px solid black;
   height: 100%;
   
   &__Item {
@@ -17,7 +19,7 @@
     
     &_active {
       cursor: initial;
-      background-color: #aaa;
+      background-color: $primary-gray;
       color: rgba(0, 0, 0, .8);
     }
 

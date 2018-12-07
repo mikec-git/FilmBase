@@ -30,7 +30,7 @@ export function* fetchMoviesInitSaga(action) {
             nowPlaying: ['/movie/now_playing?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&page=', page['nowPlaying']].join(''),
             upcoming: ['/movie/upcoming?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&page=', page['upcoming']].join(''),
             popular: ['/movie/popular?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&page=', page['popular']].join('')
-          }
+          };
 
       if(!hasLooped || loopAgain['nowPlaying']) {
         nowPlaying = yield call(axiosMovie3, searchString.nowPlaying);
@@ -94,12 +94,12 @@ export function* fetchMoviesInitSaga(action) {
 //          CHANGE MOVIE LIST         //
 // ================================== //
 export function* changeMovieListSaga(action) {
+  let hasLooped     = false,
+      maxIterations = 5,
+      category      = u.toCamelCase(action.category);
+  const { direction } = action;
+  
   try {
-    let hasLooped     = false,
-        maxIterations = 5,
-        category      = u.toCamelCase(action.category);
-
-    const { direction } = action;
     const listLength = yield select(state => state.app.listLength);
     
     while(maxIterations > 0) {
@@ -134,7 +134,7 @@ export function* changeMovieListSaga(action) {
       maxIterations--;
     }
   } catch (error) {
-    yield put(actions.changeMovieListFail(error));
+    yield put(actions.changeMovieListFail(error, category));
   }
 }
 
@@ -142,7 +142,8 @@ export function* changeMovieListSaga(action) {
 //    GET INDIVIDUAL MOVIE DETAILS    //
 // ================================== //
 export function* getMovieDetailsSaga(action) {
-  yield put(actions.getMovieDetailsStart());
+  const imgConfig = yield select(state => state.app.imgConfig);
+  yield put(actions.getMovieDetailsStart({imgConfig}));
 
   try {
     const {videos, credits, details, reviews} = yield all({

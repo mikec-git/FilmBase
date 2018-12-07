@@ -6,10 +6,14 @@ const initialState = {
   movieGenres: null,
   listLength: null,
   loadingInit: false,
-  loading: false,
+  loading: {
+    nowPlaying: false,
+    upcoming: false,
+    popular: false
+  },
   loadingDetails: false,
-  movies: {},
   currentMovieDetails: {},
+  movies: {},
   searchString: {},
   page: null,
   maxPage: null,
@@ -72,8 +76,7 @@ const fetchMoviesInitSuccess = (state, action) => {
     return { 
       ...state, page, maxPage, loadingInit: false, searchString,
       movies: {...state.movies, ...movies}};
-  } 
-  if(!hasLooped) {
+  } else {
     return { ...state, page, maxPage, loadingInit: false, movies, searchString };
   }
 };
@@ -108,12 +111,11 @@ const changeMovieListStart = (state, action) => {
       searchString[category] = searchString[category].replace(/page=\d+(?=&?)/g, `page=${page[category]}`);
     } 
   }
-
   return { ...state, 
     page: { ...state.page, ...page }, 
     showPage: { ...state.showPage, ...showPage }, 
     searchString: { ...state.searchString, ...searchString }, 
-    loading: true };
+    loading: {...state.loading, [category]: true} };
 }
 
 const changeMovieListSuccess = (state, action) => {
@@ -121,7 +123,7 @@ const changeMovieListSuccess = (state, action) => {
   const { imgConfig, movies } = state;
 
   if(direction === 'left' || newDataAction === -1) {
-    return { ...state, loading: false };
+    return { ...state, loading: {...state.loading, [category]: false} };
   }
 
   const newData       = newDataAction.results,
@@ -143,18 +145,18 @@ const changeMovieListSuccess = (state, action) => {
         videos: noDuplicateResults
       }
     }, 
-    loading: false };
+    loading: {...state.loading, [category]: false} };
 }
 
 const changeMovieListFail = (state, action) => {
-  return { ...state, error: action.error, loading: false };
+  return { ...state, error: action.error, loading: {...state.loading, [action.category]: false} };
 }
 
 // =========================== //
 //   FETCHING MOVIE DETAILS    //
 // =========================== //
 const getMovieDetailsStart = (state, action) => {
-  return { ...state, loadingDetails: true };
+  return { ...state, loadingDetails: true, imgConfig: action.imgConfig };
 }
 
 const getMovieDetailsSuccess = (state, action) => {
@@ -163,12 +165,12 @@ const getMovieDetailsSuccess = (state, action) => {
     credits: creditResult, 
     details, 
     reviews: reviewResult } = action.fetchedDetails;  
-  const { imgConfig } = state,
-        videos    = u.filterByVideoData(videoResult.results, 'videoSite'),
-        cast      = u.extractUpTo(creditResult.cast, 11),
-        crew      = u.extractUpTo(creditResult.crew, 11),
-        reviews   = reviewResult.results;
-        
+const { imgConfig } = state,
+      videos    = u.filterByVideoData(videoResult.results, 'videoSite'),
+      cast      = u.extractUpTo(creditResult.cast, 11),
+      crew      = u.extractUpTo(creditResult.crew, 11),
+      reviews   = reviewResult.results;
+    
   const baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 0),
         baseUrlProfile  = u.getBaseUrl(imgConfig, 'poster', 1);
 

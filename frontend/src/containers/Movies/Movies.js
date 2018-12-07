@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
+import Category from '../../components/ATOMS/FilmList-A/Category-A/Category';
 import Carousel from '../../components/ORGANISMS/Carousel-O/Carousel';
-import Categories from '../../components/MOLECULES/FilmList-M/Categories-M/Categories';
 import MoviesBody from '../../components/ORGANISMS/Discover-O/DiscoverBody';
 import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
 
@@ -14,8 +14,11 @@ class Movies extends Component {
   carouselSlideRef  = React.createRef();
 
   state = {
-    activeCategory: 'Now Playing',
-    categoryNames: ['Now Playing', 'Upcoming', 'Popular']
+    categoryNames: {
+      nowPlaying: 'Now Playing', 
+      upcoming: 'Upcoming', 
+      popular: 'Popular'
+    }
   }
   
   componentDidMount() {
@@ -70,19 +73,14 @@ class Movies extends Component {
     this.modalOpened = true;
   }
 
-  categoryClickedHandler = (category) => {
-    this.setState({ activeCategory: category });
-  }
-  
-  listArrowClickedHandler = (arrow) => {
-    this.props.onChangeMovieList(arrow, this.state.activeCategory);
+  listArrowClickedHandler = (arrow, category) => {
+    this.props.onChangeMovieList(arrow, category);
   }
   
   render() { 
-    let carousel    = null,
-        categories  = null,
-        content     = null,
-        filmList    = [];
+    let carousel  = null,
+        content   = null,
+        filmList  = [];
 
     if(u.isObjEmpty(this.props.movies)) {
       const moviePathBase     = this.props.location.pathname,
@@ -98,29 +96,27 @@ class Movies extends Component {
         pathBase={moviePathBase} />;
       
       Object.entries(this.props.movies).forEach(([key, movieList]) => {
-        filmList.push(<MoviesBody
-          key={movieList.category}
-          category={movieList.category}
-          results={movieList.videos}
-          listLength={this.props.listLength}
-          page={this.props.showPage[key]}
-          activeCategory={this.state.activeCategory}
-          arrowClicked={this.listArrowClickedHandler}
-          videoClicked={this.getMovieDetailsHandler}
-          pathBase={moviePathBase}
-          isImgLoaded={!this.props.loading} />);
+        filmList.push(
+          <Fragment key={movieList.category}>
+            <Category category={this.state.categoryNames[key]}  />
+            <MoviesBody
+              category={movieList.category}
+              results={movieList.videos}
+              context='main'
+              listLength={12}
+              page={this.props.showPage[key]}
+              arrowClicked={this.listArrowClickedHandler}
+              videoClicked={this.getMovieDetailsHandler}
+              pathBase={moviePathBase}
+              isImgLoaded={!this.props.loading[key]} />
+          </Fragment >
+        );
       });
-
-      categories = <Categories 
-        categoryClicked={this.categoryClickedHandler}
-        activeCategory={this.state.activeCategory}
-        categoryNames={this.state.categoryNames}  />;
 
       content = (
         <>
           {carousel}
           <div className={c.Movies__Body}>
-            {categories}
             {filmList}
           </div>
         </>

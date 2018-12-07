@@ -1,3 +1,5 @@
+@import '../../../../styles/variables';
+
 .Thumbnail {
   display: flex;
   flex-direction: column;
@@ -8,6 +10,7 @@
   &__Item {
     display: inline-block;
     width: 100%;
+    height: $thumbnail-height;
     position: relative;
     transition: all 200ms ease-out;
     border-radius: .5rem;

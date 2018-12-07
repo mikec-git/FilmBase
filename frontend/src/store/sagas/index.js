@@ -2,9 +2,9 @@ import { takeEvery, takeLatest, all } from 'redux-saga/effects';
 import * as actionTypes from '../actions/actionTypes';
 
 import { fetchMoviesInitSaga, getMovieDetailsSaga, changeMovieListSaga } from './MoviesSaga';
-import { fetchTVInitSaga, getTVDetailsSaga } from './TVSaga';
+import { fetchTVInitSaga, getTVDetailsSaga, changeTVListSaga } from './TVSaga';
 import { fetchConfigInitSaga } from './AppSaga';
-import { getSearchbarResultsSaga } from './SearchSaga';
+import { getSearchbarResultsSaga, changeSearchListSaga } from './SearchSaga';
 import { getDiscoverInitSaga, getDiscoverResultsSaga, changeDiscoverListSaga } from './DiscoverSaga';
 
 const watchMovies = [
@@ -15,6 +15,7 @@ const watchMovies = [
 
 const watchTV = [
   takeEvery(actionTypes.FETCH_TV_INIT, fetchTVInitSaga),
+  takeEvery(actionTypes.CHANGE_TV_LIST, changeTVListSaga),
   takeLatest(actionTypes.GET_TV_DETAILS, getTVDetailsSaga)
 ];
 
@@ -24,6 +25,7 @@ const watchApp = [
 
 const watchSearch = [
   takeLatest(actionTypes.GET_SEARCHBAR_RESULTS, getSearchbarResultsSaga),
+  takeLatest(actionTypes.CHANGE_SEARCH_LIST, changeSearchListSaga),
 ];
 
 const watchDiscover = [

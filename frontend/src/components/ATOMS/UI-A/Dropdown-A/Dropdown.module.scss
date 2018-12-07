@@ -6,7 +6,7 @@
   width: 100%;
   
   &_discover {
-    background-color: $filter-background-color;
+    background-color: $nav-background-color;
     border-radius: $filter-border-radius;
     box-shadow: $filter-box-shadow;
     transition: all 200ms ease-out 200ms;
@@ -38,11 +38,11 @@
     &_discover {
       border-bottom-right-radius: $filter-border-radius-top-side;
       border-bottom-left-radius: $filter-border-radius-top-side;
-      background-color: $filter-background-color;
+      background-color: $primary-gray;
       max-height: $filter-dropdown-height;
       
       &::-webkit-scrollbar {
-        width: 1rem;
+        width: .75rem;
         background-color: $filter-scrollbar-bg-color;
         border-radius: $large-border-radius;
       }
@@ -57,7 +57,7 @@
       {
         border-radius: $large-border-radius;
         box-shadow: $filter-scrollbar-box-shadow;
-        background-color: $filter-scrollbar-thumb-bg-color;
+        background-color: black;
       }
     }
   }
@@ -84,7 +84,7 @@
 
   &:hover &__Header {    
     &_discover {
-      background-color: $filter-background-color-lighter;
+      background-color: $primary-dark-gray;
       border-radius: 0;
       border-top-left-radius: $filter-border-radius-top-side;
       border-top-right-radius: $filter-border-radius-top-side;
@@ -103,10 +103,10 @@
     
     &_discover {
       padding: $filter-padding;
-      color: $filter-font-color;
+      color: $primary-dark-gray;
 
       &:hover {
-        background-color: $filter-background-color-lighter;
+        background-color: $primary-light-gray;
       }
     }
   }

@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import Header from '../../components/MOLECULES/Search-M/Header-M/Header';
-import FilmList from '../../components/ORGANISMS/FilmList-O/FilmList';
+import FilmBody from '../../components/ORGANISMS/Discover-O/DiscoverBody';
 import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
 import * as actions from '../../store/actions/SearchActions';
 import * as actionsTV from '../../store/actions/TVActions';
 import * as actionsMovie from '../../store/actions/MoviesActions';
+import * as u from '../../shared/Utility';
+import c from './Search.module.scss';
 
 class Search extends Component {
   state = { 
@@ -41,27 +43,43 @@ class Search extends Component {
     }
   }
 
+  arrowClickedHandler = (arrow) => {
+    this.props.onChangeSearchList(arrow);
+  }
+
   render() { 
     let results = null;
-    if(Array.isArray(this.props.results) &&this.props.results.length > 0) {
-      console.log(this.props.location.pathname);
+    if(u.isArrayGT(this.props.results, 0)) {
+      console.log(this.props);
       results = (
-        <FilmList
-          filmList={this.props.results}
+        <FilmBody
+          context='discover'
+          page={this.props.showPage}
+          maxPage={this.props.maxPage}
+          results={this.props.results}
+          listLength={this.props.listLength}
           videoClicked={this.getFilmDetailsHandler}
-          pathBase={this.props.location.pathname}
-          isSearch={true}
+          arrowClicked={this.arrowClickedHandler}
+          isImgLoaded={!this.props.loading}
+          isSearch
           hasPathPrefix />
       );
+    }
+
+    let pageTitle = 'Search';
+    if(this.state.currentQueryParams && this.state.currentQueryParams !== '') {
+      pageTitle=['Searching for ', this.state.currentQueryParams, '...'].join('');
     }
 
     return ( 
       <>
         <Spinner 
-          loading={this.props.loading} 
-          pageTitle={'Searching for ' + this.state.currentQueryParams + '...'} />
-        <Header resultsTitle={'Results for ' + this.state.currentQueryParams} />
-        {results}
+          loading={this.props.loadingInit} 
+          pageTitle={pageTitle} />
+        <div className={c.Search}>
+          <Header resultsTitle={'Results for ' + this.state.currentQueryParams} />
+          {results}
+        </div>
       </>
     );
   }
@@ -69,14 +87,20 @@ class Search extends Component {
  
 const mapStateToProps = state => {
   return {
+    results: state.search.searchResults,
+    loadingInit: state.search.loadingInit,
     loading: state.search.loading,
-    results: state.search.searchResults
+    showPage: state.search.showPage,
+    showLength: state.app.showLength,
+    listLength: state.app.listLength
+
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onGetSearchbarResults: (query) => dispatch(actions.getSearchbarResults(query)),
+    onChangeSearchList: (arrow) => dispatch(actions.changeSearchList(arrow)),
     onGetTVDetails: (tvId) => dispatch(actionsTV.getTVDetails(tvId)),    
     onGetMovieDetails: (movieId) => dispatch(actionsMovie.getMovieDetails(movieId))
   }

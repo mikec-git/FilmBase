@@ -132,6 +132,7 @@ export function* changeDiscoverListSaga(action) {
     let hasLooped     = false,
         maxIterations = 5;
     const { direction } = action;
+    const listLength = yield select(state => state.app.listLength);
 
     while(maxIterations > 0) {
       const prevPage = yield select(state => state.discover.page);
@@ -147,12 +148,14 @@ export function* changeDiscoverListSaga(action) {
       } else {
         yield put(actions.changeDiscoverListSuccess(-1, direction));
       }
+      
+      const { showPage, resultsLength, maxPage } = yield all ({
+        showPage: select(state => state.discover.showPage),
+        resultsLength : select(state => state.discover.results.length),
+        maxPage: select(state => state.discover.maxPage)
+      });
 
-      const showPage      = yield select(state => state.discover.showPage),
-            resultsLength = yield select(state => state.discover.results.length),
-            maxPage       = yield select(state => state.discover.maxPage),
-            listLength    = yield select(state => state.app.listLength),
-            loopAgain     = showPage*listLength > resultsLength;            
+      const loopAgain = showPage*listLength > resultsLength;            
             
       if(!loopAgain || newPage >= maxPage) {
         break;

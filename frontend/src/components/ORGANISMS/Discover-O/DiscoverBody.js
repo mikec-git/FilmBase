@@ -14,15 +14,6 @@ const discover = (props) => {
   const classesLeftArr  = [c.DiscoverBody__Arrows, c.DiscoverBody__Arrows_left].join(' ');
   const classesRightArr = [c.DiscoverBody__Arrows, c.DiscoverBody__Arrows_right].join(' ');
   let classesResults    = [c.DiscoverBody__List, c.DiscoverBody__List_hide].join(' ');
-  let classesBody = [c.DiscoverBody];
-
-  if(props.category && props.activeCategory) {
-    classesBody.push(c.DiscoverBody_hidden);
-
-    if(props.category === props.activeCategory) {
-      classesBody.push(c.DiscoverBody_active);
-    }
-  }
 
   const sliceStart  = (props.page-1) * props.listLength,
         sliceEnd    = props.page * props.listLength;
@@ -32,7 +23,7 @@ const discover = (props) => {
       rightArrow      = null,
       isNextPageAvail = true,
       loadingSpinner  = <SpinnerSecondary />;
-
+  
   if(props.page > 1) {
     leftArrow = (
       <Arrow
@@ -41,13 +32,14 @@ const discover = (props) => {
         imgSrc={LeftArrow}
         imgAlt='Left Arrow'
         clickParam={'left'}
+        category={props.category}
         clicked={props.arrowClicked} />);
   }
   
   if(u.isArrayGT(props.results, 0)) {
     const filmList = props.results.slice(sliceStart, sliceEnd);
     isNextPageAvail = filmList.length >= props.listLength;
-
+    
     if(isNextPageAvail) {
       rightArrow = (
         <Arrow
@@ -56,30 +48,24 @@ const discover = (props) => {
           imgSrc={RightArrow}
           imgAlt='Right Arrow'
           clickParam={'right'}
+          category={props.category}
           clicked={props.arrowClicked} />);
     }    
-
+    
     let pathBase = props.location.pathname;
     if(props.pathBase) {
       pathBase = props.pathBase;
     }
     
     results = (
-      <>
-        <FilmList
-          filmList={filmList}
-          videoClicked={props.videoClicked}
-          pathBase={pathBase}
-          mediaType={props.mediaType}
-          isDiscover={!!props.isDiscover}
-          hasPathPrefix={!!props.hasPathPrefix} />
-        {leftArrow}
-        {rightArrow}
-        <PageCount 
-          context='discover' 
-          page={props.page} 
-          hasNextPage={isNextPageAvail} />
-      </>
+      <FilmList
+        filmList={filmList}
+        videoClicked={props.videoClicked}
+        pathBase={pathBase}
+        mediaType={props.mediaType}
+        isDiscover={!!props.isDiscover}
+        isSearch={!!props.isSearch}
+        hasPathPrefix={!!props.hasPathPrefix} />
     );      
     
   }
@@ -90,12 +76,18 @@ const discover = (props) => {
   }
   
   return (
-    <div className={classesBody.join(' ')}> 
+    <section className={c.DiscoverBody}> 
       {loadingSpinner}
-      <section className={classesResults}>
-        {results}         
-      </section>
-    </div>
+      <div className={classesResults}>
+        {results}    
+      </div>
+      {leftArrow}
+      {rightArrow}
+      <PageCount 
+        context={props.context} 
+        page={props.page} 
+        hasNextPage={isNextPageAvail} />     
+    </section>
   );
 }
  

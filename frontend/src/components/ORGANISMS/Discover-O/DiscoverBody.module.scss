@@ -1,20 +1,9 @@
 .DiscoverBody {
-  
-  &_hidden {
-    display: none;
-  }
-
-  &_active {
-    display: block;
-  }
+  position: relative;
+  padding-bottom: 5rem;
 
   &__List {
-    position: relative;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 5rem;
     
     &_hide {
       display: none;
@@ -23,13 +12,13 @@
 
   &__Arrows {
     position: absolute;
-    top: 45%;
+    top: 42.5%;
     transform: translateY(-50%);
     z-index: 10;
     transition: all 200ms ease-out;   
     
     &_left { 
-      left: 2%; 
+      left: -4%; 
       
       &:hover {
         transform: translate(-.25rem, -50%);
@@ -38,7 +27,7 @@
     }
 
     &_right{
-      right: 2%; 
+      right: -4%; 
 
       &:hover {
         transform: translate(.25rem, -50%);

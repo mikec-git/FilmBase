@@ -4,6 +4,9 @@ $normal-font-size: 1.6rem;
 
 $navbar-height: 8rem;
 
+$filmList-padding-side: 0;
+$filmList-padding-vert: 1rem;
+
 $filter-border-radius: 2rem;
 $filter-border-radius-top-side: 1rem;
 $filter-padding: .75rem 2rem;
@@ -19,7 +22,7 @@ $filter-scrollbar-bg-color: #ccc;
 $filter-scrollbar-thumb-bg-color: #19BFD1;
 
 $layout-min-height: calc(100vh);
-$filmList-min-height: calc(85vh);
+$filmList-min-height: calc(50vh);
 
 $layout-main-gradient: linear-gradient(316deg, #1d093d 0%, #520d37 84%);
 
@@ -34,3 +37,5 @@ $primary-light-gray: #ccc;
 $primary-gray: rgb(121, 116, 116);
 $primary-dark-gray: #0f0f0f;
 $nav-background-color: #0f0f0f;
+
+$thumbnail-height: 24rem;

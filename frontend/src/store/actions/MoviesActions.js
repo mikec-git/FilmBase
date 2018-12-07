@@ -34,8 +34,8 @@ export const changeMovieListSuccess = (newData, direction, category) => {
   return { type: actionTypes.CHANGE_MOVIE_LIST_SUCCESS, newData, direction, category };
 }
 
-export const changeMovieListFail = (error) => {
-  return { type: actionTypes.CHANGE_MOVIE_LIST_FAIL, error };
+export const changeMovieListFail = (error, category) => {
+  return { type: actionTypes.CHANGE_MOVIE_LIST_FAIL, error, category };
 }
 
 
@@ -43,8 +43,8 @@ export const changeMovieListFail = (error) => {
 //            MOVIE DETAILS          //
 // ================================= //
 
-export const getMovieDetailsStart = () => {
-  return { type: actionTypes.GET_MOVIE_DETAILS_START }
+export const getMovieDetailsStart = ({imgConfig}) => {
+  return { type: actionTypes.GET_MOVIE_DETAILS_START, imgConfig }
 }
 
 export const getMovieDetails = (movieId) => {

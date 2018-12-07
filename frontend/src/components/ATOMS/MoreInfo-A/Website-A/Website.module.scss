@@ -1,17 +1,19 @@
+@import '../../../../styles/variables';
+
 .Website {
   &,
   &:link,
   &:visited {
     display: inline-block;
     text-decoration: none;
-    color: black;
+    color: inherit;
     transition: all 200ms ease-out;
     backface-visibility: hidden;
   }
 
   &:hover {
     transform: translateY(-.1rem);
-    color: #444;
+    color: $primary-gray;
   }
 
   &:active {

@@ -193,6 +193,7 @@ class Discover extends Component {
             updateInputValue={this.updateInputValueHandler}
             filters={this.state.filters} />
           <DiscoverBody 
+            context='discover'
             page={this.props.page}
             maxPage={this.props.maxPage}
             results={this.props.results}

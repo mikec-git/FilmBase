@@ -9,10 +9,18 @@
   box-shadow: 0 1rem 4rem rgba(0, 0, 0, .5);
   
   &_Discover {
-    background-color: $filter-background-color;
+    background-color: rgba($primary-dark-gray, .8);
     color: $filter-font-color;
     border-radius: $filter-border-radius;
-    margin-top: -5rem;
+    margin: 3rem auto;
+    width: 15rem;
+  }
+  
+  &_Main {
+    background-color: rgba($primary-dark-gray, .8);
+    color: $filter-font-color;
+    border-radius: $filter-border-radius;
+    margin: 3rem auto;
     width: 15rem;
   }
 

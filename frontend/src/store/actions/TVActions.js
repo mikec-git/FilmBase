@@ -7,16 +7,35 @@ export const fetchTVInit = () => {
   return { type: actionTypes.FETCH_TV_INIT };
 }
 
-export const fetchTVStart = () => {
-  return { type: actionTypes.FETCH_TV_START };
+export const fetchTVStart = ({listLength, imgConfig, tvGenres, showPage}) => {
+  return { type: actionTypes.FETCH_TV_START, listLength, imgConfig, tvGenres, showPage };
 }
 
-export const fetchTVInitSuccess = (fetchedTV, configAndGenres) => {
-  return { type: actionTypes.FETCH_TV_INIT_SUCCESS, fetchedTV, configAndGenres };
+export const fetchTVInitSuccess = (fetchedTV, { hasLooped, loopAgain, page, searchString }) => {
+  return { type: actionTypes.FETCH_TV_INIT_SUCCESS, fetchedTV, hasLooped, loopAgain, page, searchString };
 }
 
 export const fetchTVInitFail = (error) => {
   return { type: actionTypes.FETCH_TV_INIT_FAIL, error };
+}
+
+// ================================= //
+//          CHANGING TV LIST         //
+// ================================= //
+export const changeTVList = (direction, category) => {
+  return { type: actionTypes.CHANGE_TV_LIST, direction, category };
+}
+
+export const changeTVListStart = ({direction, hasLooped, category}) => {
+  return { type: actionTypes.CHANGE_TV_LIST_START, direction, hasLooped, category };
+}
+
+export const changeTVListSuccess = (newData, direction, category) => {
+  return { type: actionTypes.CHANGE_TV_LIST_SUCCESS, newData, direction, category };
+}
+
+export const changeTVListFail = (error, category) => {
+  return { type: actionTypes.CHANGE_TV_LIST_FAIL, error, category };
 }
 
 // ================================= //

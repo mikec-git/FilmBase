@@ -1,19 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import Carousel from '../../components/ORGANISMS/Carousel-O/Carousel';
-import Categories from '../../components/MOLECULES/FilmList-M/Categories-M/Categories';
-import FilmList from '../../components/ORGANISMS/FilmList-O/FilmList';
+import Category from '../../components/ATOMS/FilmList-A/Category-A/Category';
+import TVBody from '../../components/ORGANISMS/Discover-O/DiscoverBody';
 import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
 
 import * as actions from '../../store/actions/TVActions';
+import * as u from '../../shared/Utility';
+import c from './TV.module.scss';
 
 class TV extends Component {
   carouselSlideRef  = React.createRef();
 
   state = {
-    activeCategory: 'Airing Today',
-    categoryNames: ['Airing Today', 'On The Air', 'Popular']
+    categoryNames: {
+      airingToday: 'Airing Today', 
+      onTheAir: 'On The Air', 
+      popular: 'Popular'
+    }
   }
   
   componentDidMount() {
@@ -68,17 +73,16 @@ class TV extends Component {
     this.modalOpened = true;
   }
 
-  categoryClickedHandler = (category) => {
-    this.setState({ activeCategory: category });
+  listArrowClickedHandler = (arrow, category) => {
+    this.props.onChangeTVList(arrow, category);
   }
-  
+
   render() { 
     let carousel    = null,
-        categories  = null,
         content     = null,
         filmList    = [];
 
-    if(this.props.initLoaded) {
+    if(u.isObjEmpty(this.props.tv)) {
       const tvPathBase = this.props.location.pathname,
             airingTodayTV = this.props.tv['airingToday'].videos;
             
@@ -91,33 +95,38 @@ class TV extends Component {
         videoClicked={this.getTVDetailsHandler}
         pathBase={tvPathBase} />;
 
-      Object.entries(this.props.tv).forEach(([_, tvList]) => {
-        filmList.push(<FilmList
-          key={tvList.category}
-          category={tvList.category}
-          filmList={tvList.videos.slice(0, this.props.listLength)}
-          videoClicked={this.getTVDetailsHandler}
-          activeCategory={this.state.activeCategory}
-          pathBase={tvPathBase} />);
+      Object.entries(this.props.tv).forEach(([key, tvList]) => {
+        filmList.push(
+          <Fragment key={tvList.category}>
+            <Category category={this.state.categoryNames[key]} />
+            <TVBody
+              category={tvList.category}
+              results={tvList.videos}
+              context='main'
+              listLength={12}
+              page={this.props.showPage[key]}
+              arrowClicked={this.listArrowClickedHandler}
+              videoClicked={this.getTVDetailsHandler}
+              pathBase={tvPathBase}
+              isImgLoaded={!this.props.loading[key]} />
+          </Fragment>
+        );
       });
-
-      categories = <Categories 
-        categoryClicked={this.categoryClickedHandler}
-        activeCategory={this.state.activeCategory}
-        categoryNames={this.state.categoryNames} />;
+      
 
       content = (
         <>
           {carousel}
-          {categories}
-          {filmList}
+          <div className={c.TV__Body}>
+            {filmList}
+          </div>
         </>
       );
     }
     
     return ( 
       <>
-        <Spinner loading={this.props.loadingMain} pageTitle='TV' />
+        <Spinner loading={this.props.loadingInit} pageTitle='TV' />
         {content}
       </>
     );
@@ -127,9 +136,10 @@ class TV extends Component {
 const mapStateToProps = state => {
   return {
     tv: state.tv.tv,
-    loadingMain: state.tv.loadingMain,
-    initLoaded: state.tv.initLoaded,
+    loadingInit: state.tv.loadingInit,
+    loading: state.tv.loading,
     translateSlide: state.tv.translateSlide,
+    showPage: state.tv.showPage,
     showLength: state.app.showLength,
     listLength: state.app.listLength
   }
@@ -141,6 +151,7 @@ const mapDispatchToProps = dispatch => {
     onChangeCarouselTV: (tvId, element) => dispatch(actions.changeCarouselTV(tvId, element)),
     onChangeCarouselTVArrow: (arrow, element, showLength) => dispatch(actions.changeCarouselTVArrow(arrow, element, showLength)),
     onResizeCarouselSlide: (element) => dispatch(actions.resizeCarouselSlideTV(element)),
+    onChangeTVList: (arrow, category) => dispatch(actions.changeTVList(arrow, category)),
     onGetTVDetails: (tvId) => dispatch(actions.getTVDetails(tvId)),
     onResetTranslateTV: () => dispatch(actions.resetTranslateTV())
   }

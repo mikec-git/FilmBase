@@ -19,16 +19,22 @@
     padding: $filter-padding;
     font-family: inherit;
     font-size: $normal-font-size;
-    background-color: $filter-background-color;
+    background-color: $nav-background-color;
     border-radius: $filter-border-radius;
     box-shadow: $filter-box-shadow;
     transition: all 200ms ease-out;
+    color: $filter-font-color;
 
     &:focus {
       border-radius: 0;
       border-top-left-radius: $filter-border-radius-top-side;
       border-top-right-radius: $filter-border-radius-top-side;
-      background-color: $filter-background-color-lighter;
+      background-color: $primary-gray;
+      color: $primary-dark-gray;
+
+      &::placeholder {
+        color: $primary-dark-gray;
+      }
     }
     
     &::placeholder {
@@ -49,13 +55,19 @@
     justify-self: center;
     grid-column: 1 / -1;
     box-shadow: $filter-box-shadow;
+    background-color: $primary-dark-gray;
+    color: inherit;
     cursor: pointer;
     transition: all 200ms ease-out;
 
     &:hover {
       transform: translateY(-.15rem);
       box-shadow: 0 2rem 2rem rgba(0, 0, 0, .5);
-      background-color: #ccc;
+    }
+
+    &:active {
+      transform: translateY(.05rem);
+      box-shadow: 0 1rem 1rem rgba(0, 0, 0, .7);
     }
   }
 

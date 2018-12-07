@@ -1,5 +1,7 @@
+@import '../../../../styles/variables';
+
 .SpinnerSecondaryWrapper {
-  height: 90vh;
+  height: $filmList-min-height;
   position: relative;
 }
 
@@ -25,7 +27,7 @@
       margin: 0 auto;
       width: 15%;
       height: 15%;
-      background-color: #333;
+      background-color: $primary-light-gray;
       border-radius: 100%;
       animation: SpinnerSecondaryBounceDelay 1.2s infinite ease-in-out both;
     }

@@ -15,7 +15,7 @@ const image = (props) => {
     className={classNames.join(' ')} 
     src={props.imgSrc} 
     alt={props.imgAlt}
-    onClick={() => props.clicked(props.clickParam)} />;
+    onClick={() => props.clicked(props.clickParam, props.category)} />;
 }
  
 export default image;

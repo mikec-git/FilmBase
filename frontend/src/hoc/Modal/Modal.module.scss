@@ -1,3 +1,5 @@
+@import '../../styles/variables';
+
 .Modal {
   position: fixed;
   top: 3%;
@@ -5,10 +7,10 @@
   right: 5%;
   bottom: 3%;
   z-index: 10000;
-  border: 5px solid black;
-  border-radius: 1rem;
+  border: 2px solid black;
+  border-radius: 3rem;
   overflow-y: scroll;
-  background-color: #ccc;
+  background-color: $nav-background-color;
 
   &::-webkit-scrollbar {
     display: none;
