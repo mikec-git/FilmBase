@@ -7,6 +7,12 @@
   z-index: 1;
   text-align: center;
   margin: 0 2rem;
+  transition: all 200ms ease-out;
+  backface-visibility: hidden;
+
+  &:hover {    
+    filter: brightness(1.5) drop-shadow(0 .25rem 1.2rem rgba($primary-pink, 1));
+  }
 
   &__Img {
     display: block;

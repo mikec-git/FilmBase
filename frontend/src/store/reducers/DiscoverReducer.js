@@ -7,6 +7,7 @@ const initialState = {
   loadingInit: false,
   loading: false,
   results: [],
+  totalResults: null,
   page: null,
   maxPage: null,
   showPage: null,
@@ -30,12 +31,12 @@ const getDiscoverResultsStart = (state, action) => {
 };
 
 const getDiscoverResultsSuccess = (state, action) => {
-  const { results, total_pages: maxPage } = action.results,
+  const { results, total_pages: maxPage, total_results: totalResults } = action.results,
         { searchString, page, hasLooped } = action,
         { imgConfig, results: stateResults, showPage, listLength } = state,
         baseUrlPoster = u.getBaseUrl(imgConfig, 'poster', 1),
         baseUrl       = [null, baseUrlPoster];
-  
+        
   let updatedResults = u.filterByVideoData(results, 'langPosterImg');
   updatedResults = u.updateInitData(updatedResults, baseUrl);
   
@@ -47,9 +48,9 @@ const getDiscoverResultsSuccess = (state, action) => {
   const loading = showPage * listLength > updatedResults.length && page < maxPage;
   if(action.loadType === 'init') {
     const loadingInit = loading;
-    return { ...state, results: updatedResults, page, maxPage, loadingInit, searchString };
+    return { ...state, totalResults, results: updatedResults, page, maxPage, loadingInit, searchString };
   } else if(action.loadType === 'filter') {
-    return { ...state, results: updatedResults, page, maxPage, loading,  searchString };
+    return { ...state, totalResults ,results: updatedResults, page, maxPage, loading,  searchString };
   }
   
 };
@@ -114,7 +115,7 @@ const reducer = u.createReducer(initialState, {
   [actionTypes.GET_DISCOVER_RESULTS_FAIL]: getDiscoverResultsFail,
   [actionTypes.CHANGE_DISCOVER_LIST_START]: changeDiscoverListStart,
   [actionTypes.CHANGE_DISCOVER_LIST_SUCCESS]: changeDiscoverListSuccess,
-  [actionTypes.CHANGE_DISCOVER_LIST_FAIL]: changeDiscoverListFail,
+  [actionTypes.CHANGE_DISCOVER_LIST_FAIL]: changeDiscoverListFail
 });
 
 export default reducer;

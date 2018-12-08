@@ -1,0 +1,40 @@
+.CarouselSecondary__Wrapper {
+  position: relative;
+}
+
+.CarouselSecondary {
+  overflow: hidden;
+  
+  &__List {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    transition: all 250ms ease-out;
+    
+    &_MoreInfo {
+      text-align: center;
+      
+      & > * {
+        margin: 0 2.75rem;
+      }
+    }
+  } 
+
+  &__Arrow {
+    display: block;
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    
+    &_left {
+      transform: translate(-50%, -50%);
+      left: -2%;
+    }
+    
+    &_right {
+      transform: translate(50%, -50%);
+      right: -2%;
+    }
+  }
+}

@@ -10,7 +10,10 @@ const reviews = (props) => {
           context='review' 
           name={props.author} />
         <ReviewContent 
-          content={props.content} />
+          content={props.content}
+          id={props.id}
+          isExpanded={props.isExpanded}
+          reviewClicked={props.reviewClicked} />
       </div>
   );
 }

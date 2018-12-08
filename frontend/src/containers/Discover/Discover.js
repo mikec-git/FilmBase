@@ -182,6 +182,30 @@ class Discover extends Component {
   }
 
   render() {
+    let discoverBody = (
+      <DiscoverBody 
+        context='discover'
+        page={this.props.page}
+        maxPage={this.props.maxPage}
+        results={this.props.results}
+        listLength={this.props.listLength}
+        videoClicked={this.getFilmDetailsHandler}
+        arrowClicked={this.arrowClickedHandler}
+        mediaType={this.state.filters.media.value.toLowerCase()}
+        isImgLoaded={this.state.isLoaded}
+        isDiscover
+        hasPathPrefix />
+    );
+    
+    let resultsFound = null;
+    if(!this.props.loading && !this.props.loadingInit) {
+      if(this.props.results.length === 0) {
+        discoverBody = <p className={c.Discover__NoResults}>{this.props.totalResults} results found</p>;
+      } else {
+        resultsFound = <p className={c.Discover__Results}>{this.props.totalResults} results found</p>;
+      }
+    }
+
     return (
       <> 
         <Spinner 
@@ -192,18 +216,8 @@ class Discover extends Component {
             applyFilters={this.applyFiltersHandler}
             updateInputValue={this.updateInputValueHandler}
             filters={this.state.filters} />
-          <DiscoverBody 
-            context='discover'
-            page={this.props.page}
-            maxPage={this.props.maxPage}
-            results={this.props.results}
-            listLength={this.props.listLength}
-            videoClicked={this.getFilmDetailsHandler}
-            arrowClicked={this.arrowClickedHandler}
-            mediaType={this.state.filters.media.value.toLowerCase()}
-            isImgLoaded={this.state.isLoaded}
-            isDiscover
-            hasPathPrefix />
+          {resultsFound}
+          {discoverBody}
         </div>
       </>
     );

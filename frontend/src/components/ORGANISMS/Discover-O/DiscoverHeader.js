@@ -1,5 +1,5 @@
 import React from 'react';
-import PageTitle from '../../ATOMS/Shared-A/PageTitle-A/PageTitle';
+import Title from '../../ATOMS/Shared-A/Title-A/Title';
 import Filters from '../../MOLECULES/Discover-M/Filters-M/Filters';
 import c from './DiscoverHeader.module.scss';
 
@@ -7,7 +7,7 @@ const discoverHeader = (props) => {
   
   return (
     <header className={c.DiscoverHeader}>
-      <PageTitle title='Discover' />
+      <Title title={'Discover'} context='discover' />
       <Filters 
         stateKey='filters'
         applyFilters={props.applyFilters}

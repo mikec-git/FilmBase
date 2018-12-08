@@ -50,7 +50,6 @@ class Search extends Component {
   render() { 
     let results = null;
     if(u.isArrayGT(this.props.results, 0)) {
-      console.log(this.props);
       results = (
         <FilmBody
           context='discover'
@@ -67,8 +66,10 @@ class Search extends Component {
     }
 
     let pageTitle = 'Search';
+    let resultsTitle = 'Results';
     if(this.state.currentQueryParams && this.state.currentQueryParams !== '') {
       pageTitle=['Searching for ', this.state.currentQueryParams, '...'].join('');
+      resultsTitle = [this.props.totalResults, ' Results for ', this.state.currentQueryParams].join('');
     }
 
     return ( 
@@ -77,7 +78,7 @@ class Search extends Component {
           loading={this.props.loadingInit} 
           pageTitle={pageTitle} />
         <div className={c.Search}>
-          <Header resultsTitle={'Results for ' + this.state.currentQueryParams} />
+          <Header resultsTitle={resultsTitle} />
           {results}
         </div>
       </>
@@ -88,6 +89,7 @@ class Search extends Component {
 const mapStateToProps = state => {
   return {
     results: state.search.searchResults,
+    totalResults: state.search.totalResults,
     loadingInit: state.search.loadingInit,
     loading: state.search.loading,
     showPage: state.search.showPage,

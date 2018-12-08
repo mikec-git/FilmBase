@@ -59,7 +59,7 @@ class App extends Component {
           <MoreInfo type={videoType} videoDetails={this.props.videoDetails} />
         </Modal>
       );
-      
+
       let pathBasedOnType = `/${videoType}/:${videoType}Id`;
       if(location && location.state && location.state.pathBase) {
         pathBasedOnType = `${location.state.pathBase}${videoType}/:${videoType}Id`;

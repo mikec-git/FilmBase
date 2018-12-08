@@ -1,5 +1,31 @@
+@import '../../../../styles/variables';
+
 .Subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   font-size: 5rem;
   font-weight: 300;
+
+  &__MoreInfo {
+    &::before, 
+    &::after {
+      display: block;
+      content: '';
+      border: 0;
+      height: 1.15px;
+      width: 100%; 
+    }
+
+    &::before {
+      margin-right: 2rem;
+      background-image: linear-gradient(to left, #fff, $primary-gray, $primary-dark-gray, transparent);
+    }
+    
+    &::after {
+      margin-left: 2rem;
+      background-image: linear-gradient(to right, #fff, $primary-gray, $primary-dark-gray, transparent);
+    }
+  }
 }
   

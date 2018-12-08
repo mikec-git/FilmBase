@@ -12,7 +12,7 @@ const initialState = {
     popular: false
   },
   loadingDetails: false,
-  currentMovieDetails: {},
+  currentMovieDetails: null,
   movies: {},
   searchString: {},
   page: null,
@@ -191,7 +191,7 @@ const getMovieDetailsFail = (state, action) => {
 };
 
 const clearMovieDetails = (state, action) => {
-  return { ...state, currentMovieDetails: {} }
+  return { ...state, currentMovieDetails: null }
 }
 
 const resetTranslateMovie = (state, action) => {

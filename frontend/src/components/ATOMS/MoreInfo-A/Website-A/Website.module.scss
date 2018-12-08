@@ -1,9 +1,15 @@
 @import '../../../../styles/variables';
 
 .Website {
-  &,
-  &:link,
-  &:visited {
+  font-size: 3rem;
+  font-weight: 300;
+  width: 100%;
+  padding-bottom: .75rem;
+  border-bottom: 1px solid $primary-gray;
+
+  &__Name,
+  &__Name:link,
+  &__Name:visited {
     display: inline-block;
     text-decoration: none;
     color: inherit;
@@ -11,17 +17,12 @@
     backface-visibility: hidden;
   }
 
-  &:hover {
+  &__Name:hover {
     transform: translateY(-.1rem);
     color: $primary-gray;
   }
 
-  &:active {
+  &__Name:active {
     transform: translateY(.1rem);
-  }
-  
-  &__Name {
-    font-size: 3rem;
-    font-weight: 300;
   }
 }

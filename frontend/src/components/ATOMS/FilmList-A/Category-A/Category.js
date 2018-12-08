@@ -2,12 +2,12 @@ import React from 'react';
 import c from './Category.module.scss';
 
 const category = (props) => {
-  let classNames = c.Category;
-  
   return ( 
     <h3 
-      className={classNames}>
-      {props.category}
+      className={c.Category}>
+      <span className={c.Category__Text}>
+        {props.category}
+      </span>
     </h3>
   );
 }

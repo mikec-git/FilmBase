@@ -1,6 +1,10 @@
 @import '../../../styles/variables';
 
 .Footer {
+  position: fixed;
+  bottom: 0;
+  z-index: -1;
+  width: 100%;
   display: block;
   padding: 10rem 0 7rem;
   background-image: $footer-gradient;

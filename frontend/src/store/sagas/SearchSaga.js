@@ -28,7 +28,7 @@ export function* getSearchbarResultsSaga(action) {
       const resultsLength = yield select(state => state.search.searchResults.length),
             maxPage       = yield select(state => state.search.maxPage),
             loopAgain     = (1 * listLength > resultsLength) && maxPage > page;
-      
+            
       if(!loopAgain || page >= maxPage) {
         break;
       }
@@ -63,10 +63,10 @@ export function* changeSearchListSaga(action) {
       } else {
         yield put(actions.changeSearchListSuccess(-1, direction));
       }
-      
+
       const { showPage, resultsLength, maxPage } = yield all ({
         showPage: select(state => state.search.showPage),
-        resultsLength : select(state => state.search.results.length),
+        resultsLength : select(state => state.search.searchResults.length),
         maxPage: select(state => state.search.maxPage)
       });
 

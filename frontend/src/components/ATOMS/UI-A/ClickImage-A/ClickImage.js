@@ -10,12 +10,19 @@ const image = (props) => {
   if(props.context === 'arrowRound') {
     classNames.push(c.ClickImage__ArrowRound);
   }
+
+  let args = props.category;
+  let func = () => props.clicked(props.clickParam, args);
+  if(props.isCarouselSecondary) {
+    args = [props.type, props.listLength, props.translateWidth, props.showLength];
+    func = () => props.clicked(props.clickParam, ...args);
+  }
     
   return <img 
     className={classNames.join(' ')} 
     src={props.imgSrc} 
     alt={props.imgAlt}
-    onClick={() => props.clicked(props.clickParam, props.category)} />;
+    onClick={func} />;
 }
  
 export default image;

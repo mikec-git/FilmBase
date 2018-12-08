@@ -13,14 +13,17 @@
   
   &_enter {
     background-color: $primary-dark-gray;
+    background-image: $footer-gradient;
   }  
   
   &_exit_active {
-    background-color: #2242d3;
+    background-color: $primary-purple;
+    background-image: $footer-gradient;
     opacity: 0;    
   }
   
   &_exit_done {
+    background-image: $footer-gradient;
     opacity: 0;
   }
 }
@@ -29,6 +32,7 @@
   &__Title {
     font-weight: 300;
     font-size: 6.5rem;
+    letter-spacing: 1.5rem;
     text-transform: uppercase;
     display: inline-block;
     position: absolute;
@@ -40,6 +44,7 @@
   &__Subtitle {
     font-weight: 300;
     font-size: 5rem;
+    letter-spacing: 1rem;
     text-transform: uppercase;
     display: inline-block;
     position: absolute;

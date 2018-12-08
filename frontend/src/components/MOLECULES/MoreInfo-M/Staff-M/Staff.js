@@ -23,7 +23,7 @@ const staff = (props) => {
         desc={props.department} /> : null;
 
   return (  
-    <figure className={c.Staff}>
+    <figure className={c.Staff} ref={props.staffRef}>
       <Name 
         context='staff' 
         name={props.name} />

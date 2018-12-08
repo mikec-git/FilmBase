@@ -117,12 +117,12 @@
 
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(204,169,44, .75);
+    box-shadow: 0 0 0 0 rgba($primary-light-gray, .45);
   }
   70% {
-    box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+    box-shadow: 0 0 0 10px rgba($primary-light-gray, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+    box-shadow: 0 0 0 0 rgba($primary-light-gray, 0);
   }
 }

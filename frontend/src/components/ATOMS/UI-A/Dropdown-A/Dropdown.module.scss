@@ -42,22 +42,22 @@
       max-height: $filter-dropdown-height;
       
       &::-webkit-scrollbar {
-        width: .75rem;
-        background-color: $filter-scrollbar-bg-color;
+        width: 1rem;
         border-radius: $large-border-radius;
+        background-color: #111;
       }
 
       &::-webkit-scrollbar-track {
         box-shadow: $filter-scrollbar-box-shadow;
         border-radius: $large-border-radius;
-        background-color: $filter-scrollbar-bg-color;
+        background-color: #111;
       }
       
       &::-webkit-scrollbar-thumb
       {
         border-radius: $large-border-radius;
         box-shadow: $filter-scrollbar-box-shadow;
-        background-color: black;
+        background-color: #ccc;
       }
     }
   }

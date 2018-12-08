@@ -28,7 +28,7 @@ export const isArrayGT = (testObj, greaterThan) => {
 };
 
 export const isObjEmpty = (object) => {
-  return Object.keys(object).length > 0;
+  return !!object && Object.keys(object).length > 0;
 }
 
 export const setStateDirectChildValue = (stateKey, updateKey, updatedValue, state) => {

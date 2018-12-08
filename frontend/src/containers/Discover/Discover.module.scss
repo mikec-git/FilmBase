@@ -4,4 +4,20 @@
   display: block;
   max-width: $max-width;
   margin: 0 auto;
+
+  &__Results,
+  &__NoResults {
+    display: block;
+    text-align: center;
+    font-size: 3rem;
+    letter-spacing: .5rem;
+  }
+
+  &__Results {
+    padding: 0 0 4rem;
+  }
+
+  &__NoResults {
+    padding-top: 5rem;
+  }
 }

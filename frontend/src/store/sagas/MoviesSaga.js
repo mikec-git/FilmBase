@@ -155,7 +155,7 @@ export function* getMovieDetailsSaga(action) {
       
       reviews: call(axiosMovie3, '/movie/' + action.movieId + '/reviews?api_key=' + process.env.REACT_APP_TMDB_KEY)   
     });
-    console.log(videos);
+    
     yield put(actions.getMovieDetailsSuccess(
       { videos: videos.data, 
         credits: credits.data, 

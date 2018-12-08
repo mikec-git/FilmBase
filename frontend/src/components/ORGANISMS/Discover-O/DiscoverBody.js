@@ -20,7 +20,6 @@ const discover = (props) => {
 
   let results         = null,
       leftArrow       = null,
-      rightArrow      = null,
       isNextPageAvail = true,
       loadingSpinner  = <SpinnerSecondary />;
   
@@ -36,27 +35,30 @@ const discover = (props) => {
         clicked={props.arrowClicked} />);
   }
   
+  let rightArrow = (
+    <Arrow
+      className={classesRightArr}
+      context='arrowRound'
+      imgSrc={RightArrow}
+      imgAlt='Right Arrow'
+      clickParam={'right'}
+      category={props.category}
+      clicked={props.arrowClicked} />
+  );
+  
   if(u.isArrayGT(props.results, 0)) {
     const filmList = props.results.slice(sliceStart, sliceEnd);
     isNextPageAvail = filmList.length >= props.listLength;
-    
-    if(isNextPageAvail) {
-      rightArrow = (
-        <Arrow
-          className={classesRightArr}
-          context='arrowRound'
-          imgSrc={RightArrow}
-          imgAlt='Right Arrow'
-          clickParam={'right'}
-          category={props.category}
-          clicked={props.arrowClicked} />);
-    }    
+
+    if(!isNextPageAvail && props.isImgLoaded) {
+      rightArrow = null;
+    }
     
     let pathBase = props.location.pathname;
     if(props.pathBase) {
       pathBase = props.pathBase;
     }
-    
+
     results = (
       <FilmList
         filmList={filmList}

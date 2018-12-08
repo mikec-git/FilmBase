@@ -10,6 +10,7 @@ const initialState = {
   loading: false,
   searchString: '',
   searchResults: [],
+  totalResults: null,
   error: null,
 };
 
@@ -20,7 +21,7 @@ const getSearchbarResultsStart = (state, action) => {
 }
 
 const getSearchbarResultsSuccess = (state, action) => {
-  const { results, total_pages: maxPage } = action.results,
+  const { results, total_pages: maxPage, total_results: totalResults } = action.results,
         { searchString, page, hasLooped } = action,
         { imgConfig, searchResults: stateResults, showPage, listLength } = state,
         baseUrlPoster = u.getBaseUrl(imgConfig, 'poster', 1),
@@ -35,7 +36,7 @@ const getSearchbarResultsSuccess = (state, action) => {
   }
 
   const loadingInit = showPage * listLength > searchResults.length && page < maxPage;
-  return { ...state, searchResults, page, maxPage, loadingInit, searchString };
+  return { ...state, totalResults, searchResults, page, maxPage, loadingInit, searchString };
 }
 
 const getSearchbarResultsFail = (state, action) => {

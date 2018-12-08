@@ -2,12 +2,14 @@ import React from 'react';
 import c from './Subtitle.module.scss';
 
 const subtitle = (props) => {
-  let classNames = props.className ? 
-    [c.Subtitle, props.className].join(' ') : 
-    c.Subtitle; 
+  let classNames = [c.Subtitle];
+
+  if(props.context === 'moreInfo') {
+    classNames.push(c.Subtitle__MoreInfo);
+  }
   
   return (
-    <h3 className={classNames}>{props.subtitle}</h3>
+    <h3 className={classNames.join(' ')}><span>{props.subtitle}</span></h3>
   )
 };
  
