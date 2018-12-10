@@ -82,7 +82,7 @@ class Movies extends Component {
         content   = null,
         filmList  = [];
 
-    if(u.isObjEmpty(this.props.movies)) {
+    if(u.isObjNotEmpty(this.props.movies)) {
       const moviePathBase     = this.props.location.pathname,
             nowPlayingMovies  = this.props.movies['nowPlaying'].videos;
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Header from '../../components/MOLECULES/Search-M/Header-M/Header';
+import Header from '../../components/ORGANISMS/Header-O/Header';
 import FilmBody from '../../components/ORGANISMS/Discover-O/DiscoverBody';
 import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
 import * as actions from '../../store/actions/SearchActions';
@@ -78,7 +78,7 @@ class Search extends Component {
           loading={this.props.loadingInit} 
           pageTitle={pageTitle} />
         <div className={c.Search}>
-          <Header resultsTitle={resultsTitle} />
+          <Header context='search' headerTitle={resultsTitle} />
           {results}
         </div>
       </>

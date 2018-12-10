@@ -3,21 +3,24 @@ import c from './Title.module.scss';
 
 const title = (props) => {
   let classNames = null;    
+  const { context, title, className } = props;
   
-  if(props.context === 'carousel') {
-    classNames = props.className ? 
-      [c.Title__Carousel, props.className].join(' ') : 
+  if(context === 'carousel') {
+    classNames = className ? 
+      [c.Title__Carousel, className].join(' ') : 
       c.Title__Carousel;
-  } else if(props.context === 'thumbnail') {
-    classNames = props.className ? 
-      [c.Title__Thumbnail, props.className].join(' ') : 
+  } else if(context === 'thumbnail') {
+    classNames = className ? 
+      [c.Title__Thumbnail, className].join(' ') : 
       c.Title__Thumbnail;
-  } else if(props.context === 'search' || props.context === 'discover') {
+  } else if(context === 'search' || context === 'discover' || context === 'login') {
     classNames = c.Title__Search;
+  } else if(context === 'profile') {
+    classNames = c.Title__Profile;
   }
 
   return (
-    <h1 className={classNames}>{props.title}</h1>
+    <h1 className={classNames}>{title}</h1>
   )
 };
  

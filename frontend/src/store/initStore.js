@@ -8,7 +8,7 @@ export default function initStore() {
   const sagaMiddleware  = createSagaMiddleware();
   const middleWare      = composeEnhancers(applyMiddleware(sagaMiddleware));
   const store           = createStore(rootReducer, middleWare);
-  sagaMiddleware.run(rootSaga);  
 
+  sagaMiddleware.run(rootSaga);
   return store;
 }

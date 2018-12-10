@@ -2,8 +2,8 @@
   display: block;
 
   &__ArrowRound {
-    width: 5rem;
-    height: 5rem;
-    cursor: pointer;
+    width: 5rem !important;
+    height: 5rem !important;
+    cursor: pointer !important;
   }
 }

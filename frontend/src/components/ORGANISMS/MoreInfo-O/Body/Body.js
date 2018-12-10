@@ -15,31 +15,24 @@ const body = (props) => {
       staffCrew     = null,
       reviews       = <p className={c.Body__NotAvailable}>Not Available</p>,
       castCarousel  = <p className={c.Body__NotAvailable}>Not Available</p>,
-      crewCarousel  = <p className={c.Body__NotAvailable}>Not Available</p>,
-      showLength    = 5;
+      crewCarousel  = <p className={c.Body__NotAvailable}>Not Available</p>;
+
+  const settings = {
+    slidesToShow: 5,
+    slidesToScroll: 1
+  }
 
   if(u.isArrayGT(props.staffListCast, 0)) {
     staffCast = props.staffListCast.map(cast => {
       return (
         <Staff 
           key={cast.credit_id}
-          staffRef={props.castRef}
           name={cast.name} 
           character={cast.character}
-          image={cast.profile_path} />
-      )
+          image={cast.profile_path} />);
     });
     
-    castCarousel = (
-      <CarouselSecondary 
-        context='moreInfo'
-        element={props.staffElement}
-        clicked={props.arrowClicked}
-        type='cast'
-        carousel={props.carousel}
-        showLength={showLength}
-        list={staffCast} />
-    );
+    castCarousel = <CarouselSecondary {...settings} list={staffCast} />;
   } 
   
   if(u.isArrayGT(props.staffListCrew, 0)) {
@@ -47,24 +40,13 @@ const body = (props) => {
       return (
         <Staff 
           key={crew.credit_id}
-          staffRef={props.crewRef}
           name={crew.name} 
           department={crew.department}
           job={crew.job}
-          image={crew.profile_path} />
-      )
+          image={crew.profile_path} />);
     });
 
-    crewCarousel = (
-      <CarouselSecondary 
-        context='moreInfo'
-        element={props.staffElement}
-        clicked={props.arrowClicked}
-        type='crew'
-        carousel={props.carousel}
-        showLength={showLength}
-        list={staffCrew} />
-    );
+    crewCarousel = <CarouselSecondary {...settings} list={staffCrew} />;
   } 
     
   if(props.reviewList.length > 0) {
@@ -101,12 +83,10 @@ const body = (props) => {
       </div>
       <div className={c.Body__Staff}>
         <Subtitle context='moreInfo' subtitle='Cast' />
-        {/* <div className={c.Body__StaffMember}>{staffCast}</div> */}
         {castCarousel}
       </div> 
       <div className={c.Body__Staff}>
         <Subtitle context='moreInfo' subtitle='Crew' />
-        {/* <div className={c.Body__StaffMember}>{staffCrew}</div> */}
         {crewCarousel}
       </div> 
       <div className={c.Body__Reviews}>

@@ -4,6 +4,8 @@ import moviesReducer from './MoviesReducer';
 import searchReducer from './SearchReducer';
 import discoverReducer from './DiscoverReducer';
 import tvReducer from './TVReducer';
+import loginReducer from './LoginReducer';
+import profileReducer from './ProfileReducer';
 
 export default combineReducers(
   {
@@ -11,6 +13,8 @@ export default combineReducers(
     tv: tvReducer,
     search: searchReducer,
     discover: discoverReducer,
-    app: appReducer
+    app: appReducer,
+    login: loginReducer,
+    profile: profileReducer
   }
 );

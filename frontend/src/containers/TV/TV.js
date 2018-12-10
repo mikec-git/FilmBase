@@ -82,7 +82,7 @@ class TV extends Component {
         content     = null,
         filmList    = [];
 
-    if(u.isObjEmpty(this.props.tv)) {
+    if(u.isObjNotEmpty(this.props.tv)) {
       const tvPathBase = this.props.location.pathname,
             airingTodayTV = this.props.tv['airingToday'].videos;
             

@@ -1,6 +1,6 @@
 import * as actions from '../actions/SearchActions';
 import { put, call, select, all } from 'redux-saga/effects';
-import { axiosMovie3 } from '../../shared/AxiosMovieAPI';
+import { axiosTMDB3 } from '../../shared/AxiosMovieAPI';
 
 export function* getSearchbarResultsSaga(action) {
   let page          = 1,
@@ -20,7 +20,7 @@ export function* getSearchbarResultsSaga(action) {
     while(maxIterations > 0) {      
       const searchString = ['/search/multi?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&query=', queryParams, '&page=', page, '&include_adult=false'].join('');
 
-      let searchResults = yield call(axiosMovie3, searchString);
+      let searchResults = yield call(axiosTMDB3, searchString);
           searchResults = searchResults.data;
       
       yield put(actions.getSearchbarResultsSuccess({ results: searchResults, hasLooped, page, searchString }));
@@ -58,7 +58,7 @@ export function* changeSearchListSaga(action) {
             searchString  = yield select(state => state.search.searchString);
             
       if(direction === 'right' && (newPage > prevPage || hasLooped)) {
-        let nextPageData = yield call(axiosMovie3, searchString);
+        let nextPageData = yield call(axiosTMDB3, searchString);
         yield put(actions.changeSearchListSuccess(nextPageData.data, direction));
       } else {
         yield put(actions.changeSearchListSuccess(-1, direction));

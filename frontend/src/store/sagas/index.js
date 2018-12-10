@@ -6,6 +6,8 @@ import { fetchTVInitSaga, getTVDetailsSaga, changeTVListSaga } from './TVSaga';
 import { fetchConfigInitSaga } from './AppSaga';
 import { getSearchbarResultsSaga, changeSearchListSaga } from './SearchSaga';
 import { getDiscoverInitSaga, getDiscoverResultsSaga, changeDiscoverListSaga } from './DiscoverSaga';
+import { getLoginInitSaga, loginSaga, loginApprovedSaga } from './LoginSaga';
+import { getProfileInitSaga } from './ProfileSaga';
 
 const watchMovies = [
   takeEvery(actionTypes.FETCH_MOVIES_INIT, fetchMoviesInitSaga),
@@ -32,6 +34,16 @@ const watchDiscover = [
   takeEvery(actionTypes.GET_DISCOVER_INIT, getDiscoverInitSaga),
   takeEvery(actionTypes.GET_DISCOVER_RESULTS, getDiscoverResultsSaga),
   takeEvery(actionTypes.CHANGE_DISCOVER_LIST, changeDiscoverListSaga),
+];
+
+const watchLogin = [
+  takeLatest(actionTypes.GET_LOGIN_INIT, getLoginInitSaga),
+  takeLatest(actionTypes.LOGIN, loginSaga),
+  takeLatest(actionTypes.LOGIN_APPROVED, loginApprovedSaga)
+];
+
+const watchProfile = [
+  takeLatest(actionTypes.GET_PROFILE_INIT, getProfileInitSaga)
 ]
 
 
@@ -41,6 +53,8 @@ export default function* rootSaga() {
     ...watchTV,
     ...watchSearch,
     ...watchDiscover,
-    ...watchApp
+    ...watchApp,
+    ...watchLogin,
+    ...watchProfile
   ]);
 };

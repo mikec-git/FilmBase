@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
-import DiscoverHeader from '../../components/ORGANISMS/Discover-O/DiscoverHeader';
+import Header from '../../components/ORGANISMS/Header-O/Header';
 import DiscoverBody from '../../components/ORGANISMS/Discover-O/DiscoverBody';
 
 import c from './Discover.module.scss';
@@ -158,7 +158,7 @@ class Discover extends Component {
 
     const { history, onGetDiscoverResults, page } = this.props;
 
-    if(u.isObjEmpty(queries)) {
+    if(u.isObjNotEmpty(queries)) {
       const searchQueryPath = ['/discover?', path.join('&')].join(''),
             pushQueryPath   = [searchQueryPath, '&page=', page].join('');
       onGetDiscoverResults(queries);
@@ -212,7 +212,10 @@ class Discover extends Component {
           loading={this.props.loadingInit} 
           pageTitle='Discover More' />
         <div className={c.Discover}>
-          <DiscoverHeader
+          <Header
+            headerTitle='Discover'
+            context='discover'
+            stateKey='filters'
             applyFilters={this.applyFiltersHandler}
             updateInputValue={this.updateInputValueHandler}
             filters={this.state.filters} />

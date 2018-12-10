@@ -1,6 +1,6 @@
 import * as actions from '../actions/DiscoverActions';
 import { put, call, all, select } from 'redux-saga/effects';
-import { axiosMovie3 } from '../../shared/AxiosMovieAPI';
+import { axiosTMDB3 } from '../../shared/AxiosMovieAPI';
 import * as u from '../../shared/Utility';
 
 export function* getDiscoverInitSaga(action) {  
@@ -24,7 +24,7 @@ export function* getDiscoverInitSaga(action) {
     while(maxIterations > 0) {      
       const searchString = ['/discover/', media.name, '?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&include_video=true&', queryPath, '&page=', page].join('');
 
-      let results = yield call(axiosMovie3, searchString);
+      let results = yield call(axiosTMDB3, searchString);
           results = results.data;
 
       yield put(actions.getDiscoverResultsSuccess({ hasLooped, page, results, searchString, loadType }));
@@ -79,7 +79,7 @@ export function* getDiscoverResultsSaga(action) {
     while (maxIterations > 0) {
       const searchString = ['/discover/', query.media.name, '?api_key=', process.env.REACT_APP_TMDB_KEY, '&language=en-US&include_adult=false&include_video=false&', queryPath, '&page=', page].join('');
       
-      let results = yield call(axiosMovie3, searchString);
+      let results = yield call(axiosTMDB3, searchString);
           results = results.data;
 
       yield put(actions.getDiscoverResultsSuccess({ hasLooped, page, results, searchString, loadType }));
@@ -120,7 +120,7 @@ function* getQueryIds(filter, searchType, queryParams) {
 
 function* getQueryId(query, searchType) {
   try {
-    return yield call(axiosMovie3, '/search/' + searchType + '?api_key=' + process.env.REACT_APP_TMDB_KEY + '&query=' + query + '&page=1');
+    return yield call(axiosTMDB3, '/search/' + searchType + '?api_key=' + process.env.REACT_APP_TMDB_KEY + '&query=' + query + '&page=1');
   } catch (error) {
     console.log(error);
   }
@@ -143,7 +143,7 @@ export function* changeDiscoverListSaga(action) {
             searchString  = yield select(state => state.discover.searchString);
             
       if(direction === 'right' && (newPage > prevPage || hasLooped)) {
-        let nextPageData = yield call(axiosMovie3, searchString);
+        let nextPageData = yield call(axiosTMDB3, searchString);
         yield put(actions.changeDiscoverListSuccess(nextPageData.data, direction));
       } else {
         yield put(actions.changeDiscoverListSuccess(-1, direction));

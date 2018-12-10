@@ -27,8 +27,8 @@ export const isArrayGT = (testObj, greaterThan) => {
   return Array.isArray(testObj) && testObj.length > greaterThan;
 };
 
-export const isObjEmpty = (object) => {
-  return !!object && Object.keys(object).length > 0;
+export const isObjNotEmpty = (object) => {
+  return !!object && Object.keys(object) && Object.keys(object).length > 0;
 }
 
 export const setStateDirectChildValue = (stateKey, updateKey, updatedValue, state) => {
@@ -40,6 +40,14 @@ export const setStateDirectChildValue = (stateKey, updateKey, updatedValue, stat
     }
   };
 };
+
+export const randomNumber = (num) => {
+  return Math.floor(Math.random() * Math.floor(num));
+}
+
+export const HtoMS = (hour) => {
+  return hour * 3.6 * Math.pow(10,6);
+}
 
 // DICTIONARY FOR FILTER QUERY - THEMOVIEDB
 export const getDiscoverOrderQueryValue = (value) => {

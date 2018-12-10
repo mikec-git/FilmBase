@@ -18,7 +18,7 @@ $filter-font-color: #ccc;
 $filter-scrollbar-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 $filter-scrollbar-bg-color: #ccc;
 
-$layout-min-height: calc(100vh);
+$layout-min-height: calc(100vh - 8rem);
 $filmList-min-height: calc(50vh);
 
 $layout-main-gradient: linear-gradient(316deg, rgba(#25064C, 1) 0%, rgba(rgb(2, 2, 2), 1) 50%);

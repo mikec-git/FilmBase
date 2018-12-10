@@ -6,6 +6,8 @@ const subtitle = (props) => {
 
   if(props.context === 'moreInfo') {
     classNames.push(c.Subtitle__MoreInfo);
+  } else if(props.context === 'profile') {
+    classNames.push(c.Subtitle__Profile);
   }
   
   return (

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Searchbar from '../../MOLECULES/Navigation-M/Searchbar-M/Searchbar';
 import NavItems from '../../MOLECULES/Navigation-M/NavItems-M/NavItems';
@@ -77,7 +78,12 @@ class Navigation extends Component {
   render() { 
     let navigationLinks = [];
     for (let key in this.props.navItems) {
-      navigationLinks.push(this.props.navItems[key]);
+      const item = this.props.navItems[key];
+      if(item.hasOwnProperty('auth') && item.auth === this.props.loggedIn) {
+        navigationLinks.push(item);
+      } else if(!item.hasOwnProperty('auth')) {
+        navigationLinks.push(item);
+      }
     }
 
     return (
@@ -100,5 +106,10 @@ class Navigation extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    loggedIn: state.login.loggedIn
+  }
+}
  
-export default withRouter(Navigation);
+export default withRouter(connect(mapStateToProps)(Navigation));

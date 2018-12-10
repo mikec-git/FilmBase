@@ -12,12 +12,15 @@ const image = (props) => {
   }
 
   let args = props.category;
-  let func = () => props.clicked(props.clickParam, args);
-  if(props.isCarouselSecondary) {
-    args = [props.type, props.listLength, props.translateWidth, props.showLength];
-    func = () => props.clicked(props.clickParam, ...args);
+  let func = () => props.clicked();
+  if(props.clicked) {
+    if(props.clickParam) {
+      func = () => props.clicked(props.clickParam, args);
+    }
+  } else if(props.onClick) {
+    func = props.onClick;
   }
-    
+  
   return <img 
     className={classNames.join(' ')} 
     src={props.imgSrc} 

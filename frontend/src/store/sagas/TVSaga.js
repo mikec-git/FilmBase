@@ -1,6 +1,6 @@
 import * as actions from '../actions/TVActions';
 import { put, call, all, select } from 'redux-saga/effects';
-import { axiosMovie3 } from '../../shared/AxiosMovieAPI';
+import { axiosTMDB3 } from '../../shared/AxiosMovieAPI';
 import * as u from '../../shared/Utility';
 
 // ================================== //
@@ -36,13 +36,13 @@ export function* fetchTVInitSaga(action) {
           }
 
       if(!hasLooped || loopAgain['airingToday']) {
-        airingToday = yield call(axiosMovie3, searchString.airingToday);
+        airingToday = yield call(axiosTMDB3, searchString.airingToday);
       } 
       if(!hasLooped || loopAgain['onTheAir']) {
-        onTheAir = yield call(axiosMovie3, searchString.onTheAir);
+        onTheAir = yield call(axiosTMDB3, searchString.onTheAir);
       } 
       if(!hasLooped || loopAgain['popular']) {
-        popular = yield call(axiosMovie3, searchString.popular);
+        popular = yield call(axiosTMDB3, searchString.popular);
       }
       
       yield put(actions.fetchTVInitSuccess(
@@ -117,7 +117,7 @@ export function* changeTVListSaga(action) {
       ]);
       
       if(direction === 'right' && (newPage > prevPage || hasLooped)) {
-        let nextPageData = yield call(axiosMovie3, searchString);
+        let nextPageData = yield call(axiosTMDB3, searchString);
         yield put(actions.changeTVListSuccess(nextPageData.data, direction, category));
       } else {
         yield put(actions.changeTVListSuccess(-1, direction, category));
@@ -154,13 +154,13 @@ export function* getTVDetailsSaga(action) {
   try {
     const imgConfig = yield select(state => state.app.imgConfig);
     const {videos, credits, details, reviews} = yield all({
-      videos: call(axiosMovie3, '/tv/' + action.tvId + '/videos?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      videos: call(axiosTMDB3, '/tv/' + action.tvId + '/videos?api_key=' + process.env.REACT_APP_TMDB_KEY),
 
-      credits: call(axiosMovie3, '/tv/' + action.tvId + '/credits?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      credits: call(axiosTMDB3, '/tv/' + action.tvId + '/credits?api_key=' + process.env.REACT_APP_TMDB_KEY),
       
-      details: call(axiosMovie3, '/tv/' + action.tvId + '?api_key=' + process.env.REACT_APP_TMDB_KEY),
+      details: call(axiosTMDB3, '/tv/' + action.tvId + '?api_key=' + process.env.REACT_APP_TMDB_KEY),
       
-      reviews: call(axiosMovie3, '/tv/' + action.tvId + '/reviews?api_key=' + process.env.REACT_APP_TMDB_KEY)   
+      reviews: call(axiosTMDB3, '/tv/' + action.tvId + '/reviews?api_key=' + process.env.REACT_APP_TMDB_KEY)   
     });
     
     yield put(actions.getTVDetailsSuccess(

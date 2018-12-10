@@ -34,7 +34,13 @@ class Layout extends Component {
       },
       login: {
         name: 'Login',
-        path: '/login'
+        path: '/login',
+        auth: false
+      },
+      profile: {
+        name: 'Profile',
+        path: '/profile',
+        auth: true
       }
     }
   }

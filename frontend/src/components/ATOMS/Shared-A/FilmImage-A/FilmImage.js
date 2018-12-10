@@ -11,6 +11,10 @@ const image = (props) => {
     classNames = props.className ? 
       [c.FilmImage__Thumbnail, props.className].join(' ') : 
       c.FilmImage__Thumbnail;
+  } else if(props.context === 'avatar') {
+    classNames = props.className ? 
+      [c.FilmImage__Avatar, props.className].join(' ') : 
+      c.FilmImage__Avatar;
   }
   
   return <img 

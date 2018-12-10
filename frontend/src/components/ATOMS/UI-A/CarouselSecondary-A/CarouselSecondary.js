@@ -1,68 +1,51 @@
 import React from 'react';
+import Slider from 'react-slick';
 import Arrow from '../ClickImage-A/ClickImage';
 import leftArrowImg from '../../../../assets/img/arrow-left-circle.svg';
 import rightArrowImg from '../../../../assets/img/arrow-right-circle.svg';
-import c from './CarouselSecondary.module.scss';
+import './CarouselSecondary.scss';
 
 const carouselSecondary = (props) => {
-  const { context, showLength, list, type, clicked, carousel, element } = props;
+  let { slidesToShow, slidesToScroll, list } = props;
   const listLength = list.length;
 
-  let carouselSecondary = null;
-  let classNames = [c.CarouselSecondary__List];
-
-  if(context === 'moreInfo') {
-    classNames.push(c.CarouselSecondary__List_MoreInfo);
+  let rightArrow = {
+    context: 'arrowRound',
+    clickParam: 'right',
+    imgSrc: rightArrowImg,
+    imgAlt: 'Right Arrow'
   }
 
-  let translateWidth = 0;
-  if(element[type]) {
-    const elementRect = element[type].getBoundingClientRect();
-    translateWidth = parseInt((elementRect.right - elementRect.left + 55).toFixed(2), 10);
+  let leftArrow = {
+    context: 'arrowRound',
+    clickParam: 'left',
+    imgSrc: leftArrowImg,
+    imgAlt: 'Left Arrow'
+  };
+
+  if(listLength < slidesToShow) {
+    slidesToShow = listLength;
   }
 
-  const arrowProps = { clicked, isCarouselSecondary: true, type, showLength, listLength, translateWidth };
-
-  let rightArrow = (
-    <Arrow      
-      className={[c.CarouselSecondary__Arrow,c.CarouselSecondary__Arrow_right].join(' ')}
-      context='arrowRound'
-      clickParam='right'
-      {...arrowProps}
-      imgSrc={rightArrowImg}
-      imgAlt='Right Arrow' />
-  );
-
-  let leftArrow = (
-    <Arrow
-      className={[c.CarouselSecondary__Arrow,c.CarouselSecondary__Arrow_left].join(' ')}
-      context='arrowRound'
-      clickParam='left'
-      {...arrowProps}
-      imgSrc={leftArrowImg}
-      imgAlt='Left Arrow' />
-  );
-
-  if(listLength <= showLength) {
-    rightArrow = null;
-    leftArrow = null;
+  let settings = {
+    slidesToScroll: slidesToScroll,
+    slidesToShow: slidesToShow,
+    infinite: true,
+    dots: true,    
+    speed: 500,
+    centerMode: true,
+    draggable: false,
+    nextArrow: <Arrow {...rightArrow} />,
+    prevArrow: <Arrow {...leftArrow} />,
+    arrows: listLength > slidesToShow,
+    centerMode: listLength <= slidesToShow
   }
 
-  carouselSecondary = (
-    <div className={c.CarouselSecondary__Wrapper}>
-      {leftArrow}
-      <div className={c.CarouselSecondary}>
-        <div 
-          className={classNames.join(' ')} 
-          style={{transform: `translateX(${carousel[type].translate}px)`}}>
-          {list}
-        </div>
-      </div>
-      {rightArrow}
-    </div>
-  );
+  if(listLength > 0) {
+    return <Slider {...settings}>{list}</Slider>;
+  }
 
-  return carouselSecondary;
+  return null;
 }
  
 export default carouselSecondary;
