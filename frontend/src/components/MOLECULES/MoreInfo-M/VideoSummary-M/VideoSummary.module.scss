@@ -6,6 +6,12 @@
   border-bottom: 3px solid black;
   border-left: 3px solid black;
 
+  &__RateFav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+  }
+
   &__DescList {
     display: flex;
     justify-content: space-between;

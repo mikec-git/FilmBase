@@ -14,11 +14,12 @@ import * as actionsApp from './store/actions/AppActions';
 import * as actionsLogin from './store/actions/LoginActions';
 import * as actionsProfile from './store/actions/ProfileActions';
 import * as u from './shared/Utility';
-const TV = lazy(() => import('./containers/TV/TV'));
-const Search = lazy(() => import('./containers/Search/Search'));
-const Discover = lazy(() => import('./containers/Discover/Discover'));
-const Login = lazy(() => import('./containers/Login/Login'));
-const Profile = lazy(() => import('./containers/Profile/Profile'));
+
+const TV        = lazy(() => import('./containers/TV/TV'));
+const Search    = lazy(() => import('./containers/Search/Search'));
+const Discover  = lazy(() => import('./containers/Discover/Discover'));
+const Login     = lazy(() => import('./containers/Login/Login'));
+const Profile   = lazy(() => import('./containers/Profile/Profile'));
 
 class App extends Component {
   prevLocation = this.props.location;
@@ -40,11 +41,10 @@ class App extends Component {
     if(JSON.parse(localStorage.getItem('session'))) {
       if(JSON.parse(localStorage.getItem('session')).type === 'login') {
         this.props.onLoginSuccess('login');
-        this.props.onClearProfileData();
       } else {
         this.props.onLoginSuccess('guest');
-        this.props.onClearProfileData();
       }
+      this.props.onGetProfileInit();
     }
   }
   
@@ -58,36 +58,32 @@ class App extends Component {
     }
     
     if(session) {
-      const expiresAt = Date.parse(session.expires_at);
       if(this.props.authType === 'guest') {
-        if(Date.now() >= expiresAt - u.HtoMS(12)) {
+        if(Date.now() >= session.expires_at - u.HtoMS(12)) {
           this.props.onLogout();
-          this.props.onClearProfileData();
         }
       } else if(this.props.authType === 'login') {
-        if(Date.now() >= expiresAt + u.HtoMS(6)) {
+        if(Date.now() >= session.expires_at + u.HtoMS(6)) {
           this.props.onLogout();
-          this.props.onClearProfileData();
         }
       }
-    } else if(!session && !!this.props.profileType) {
+    } else if(!session && !!this.props.authType) {
       this.props.onLogout();
-      this.props.onClearProfileData();
     }
   }
 
   render() {
-    let modalRoute      = null,
-        { location, loggedIn, videoDetails, onClearMovieDetails, onClearTVDetails, loading, fetched } = this.props;
+    let modalRoute = null;
+    let { location, loggedIn, videoDetails, onClearMovieDetails, onClearTVDetails, loading, fetched } = this.props;
     
     let videoType = location.state && location.state.type;
     let isModal   = !!(location.state && location.state.modal && this.prevLocation !== location);
 
-    let loginRoute = <Route path="/login" render={props => <Login {...props} />} />;
+    let loginRoute      = <Route path="/login" render={props => <Login {...props} />} />;
     let redirectProfile = <Redirect from='/profile' to='login' />;
 
     if(loggedIn) {
-      loginRoute = <Route path="/profile" render={props => <Profile {...props} />} />;
+      loginRoute      = <Route path="/profile" render={props => <Profile {...props} />} />;
       redirectProfile = <Redirect from='/login' to='profile' />;
     } 
     
@@ -141,8 +137,7 @@ const mapStateToProps = state => {
     loading: state.app.loading,
     fetched: state.app.initLoaded,
     loggedIn: state.login.loggedIn,
-    authType: state.login.authType,
-    profileType: state.login.authType
+    authType: state.login.authType
   }
 }
 
@@ -153,7 +148,7 @@ const mapDispatchToProps = dispatch => {
     onClearTVDetails: () => dispatch(actionsTV.clearTVDetails()),
     onLoginSuccess: (type) => dispatch(actionsLogin.loginSuccess(type)),
     onLogout: () => dispatch(actionsLogin.logout()),
-    onClearProfileData: () => dispatch(actionsProfile.clearProfileData())
+    onGetProfileInit: () => dispatch(actionsProfile.getProfileInit())
   }
 }
 

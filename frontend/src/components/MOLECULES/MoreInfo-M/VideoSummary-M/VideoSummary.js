@@ -5,8 +5,12 @@ import Overview from '../../../ATOMS/MoreInfo-A/Overview-A/Overview';
 import Time from '../../../ATOMS/MoreInfo-A/Time-A/Time';
 import Website from '../../../ATOMS/MoreInfo-A/Website-A/Website';
 import Genre from '../../../ATOMS/Shared-A/Genre-A/Genre';
+import RateFilm from '../../../MOLECULES/RateFilm-M/RateFilm';
+import Bookmark from '../../../ATOMS/UI-A/ClickImage-A/ClickImage';
 
+import bookmark from '../../../../assets/img/bookmark.svg';
 import c from './VideoSummary.module.scss';
+import * as u from '../../../../shared/Utility';
 
 const videoSummary = (props) => {  
   const classNames = props.className ? 
@@ -44,17 +48,36 @@ const videoSummary = (props) => {
       <>
         <Website website={details.homepage} name={details.title} />
         <Tagline tagline={details.tagline} />
-      </>
-    );
+      </>);
   } else if(props.type === 'tv') {
-    heading = (
-        <Website website={details.homepage} name={details.name} />
-    );
+    heading = <Website website={details.homepage} name={details.name} />;
   }
 
+  const videoType = !!details.title ? 'movie' : 'tv';
+  let isFavorited = false;
+  if(props.favorite && props.favorite[videoType]) {
+    isFavorited = !!props.favorite[videoType].find(film => film.id === details.id);
+  }
+  
   return ( 
     <div className={classNames}>
       {heading}
+      <div className={c.VideoSummary__RateFav}>
+        <RateFilm 
+          rating={details.vote_average}
+          videoId={details.id}
+          isMovie={!!details.title}
+          userRating={props.userRating}
+          submitRating={props.submitRating}
+          mouseOver={props.ratingMouseOver} />
+        <Bookmark
+          clicked={props.favoriteFilm}
+          context='bookmark'
+          args={[videoType, details.id]}
+          isFavorited={isFavorited}
+          imgSrc={bookmark}
+          imgAlt='Bookmark' />
+      </div>
       <div className={c.VideoSummary__Genres}>{genres}</div>
       <dl className={c.VideoSummary__DescList}>{times}</dl>
       <Overview 

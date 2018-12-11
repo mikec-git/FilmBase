@@ -20,6 +20,13 @@ class Login extends Component {
         inputConfig: {
           type: 'guest'
         }
+      },
+      newAcc: {
+        value: 'Create a New Account',
+        inputConfig: {
+          type: 'link',
+          href: 'https://www.themoviedb.org/account/signup'
+        }
       }
     },
     fineprint: {

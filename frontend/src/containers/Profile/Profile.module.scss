@@ -1,7 +1,7 @@
 .Profile {
   position: relative;
   display: grid;
-  grid-template-columns: [side-panel-start] minmax(max-content, 25%) [side-panel-end list-start] repeat(4, 1fr) [list-end];
+  grid-template-columns: [side-panel-start] minmax(min-content, 22%) [side-panel-end list-start] repeat(4, 1fr) [list-end];
   width: 100%;
   height: 100%;
 

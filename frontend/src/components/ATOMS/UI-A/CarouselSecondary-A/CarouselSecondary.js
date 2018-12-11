@@ -11,14 +11,12 @@ const carouselSecondary = (props) => {
 
   let rightArrow = {
     context: 'arrowRound',
-    clickParam: 'right',
     imgSrc: rightArrowImg,
     imgAlt: 'Right Arrow'
   }
 
   let leftArrow = {
     context: 'arrowRound',
-    clickParam: 'left',
     imgSrc: leftArrowImg,
     imgAlt: 'Left Arrow'
   };
@@ -33,7 +31,6 @@ const carouselSecondary = (props) => {
     infinite: true,
     dots: true,    
     speed: 500,
-    centerMode: true,
     draggable: false,
     nextArrow: <Arrow {...rightArrow} />,
     prevArrow: <Arrow {...leftArrow} />,

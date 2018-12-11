@@ -8,12 +8,14 @@ const hearts = (props) => {
   let classNames = null;    
   if(props.context === 'carousel') {
     classNames = props.className ? 
-      [c['Hearts__Carousel'], props.className].join(' ') : 
-      c['Hearts__Carousel'];
+      [c.Hearts__Carousel, props.className].join(' ') : 
+      c.Hearts__Carousel;
   } else if(props.context === 'thumbnail') {
     classNames = props.className ? 
-      [c['Hearts__Thumbnail'], props.className].join(' ') : 
-      c['Hearts__Thumbnail'];
+    [c.Hearts__Thumbnail, props.className].join(' ') : 
+    c.Hearts__Thumbnail;
+  } else if(props.context === 'rateFilm') {
+    classNames = c.Hearts__RateFilm;
   }
 
   const starCount = (Math.round(props.rating)/2).toFixed(1);

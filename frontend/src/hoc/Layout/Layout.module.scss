@@ -11,4 +11,12 @@
     background-image: $layout-main-gradient;
     margin: 0 auto 62rem;
   }
+
+  &__Message {
+    position: fixed;
+    top: 5rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 50000;
+  }
 }

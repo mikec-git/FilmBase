@@ -9,15 +9,19 @@ const image = (props) => {
 
   if(props.context === 'arrowRound') {
     classNames.push(c.ClickImage__ArrowRound);
+  } else if(props.context === 'bookmark') {
+    if(props.isFavorited) {
+      classNames.push([c.ClickImage__Bookmark, c.ClickImage__Bookmark_fav].join(' '));
+    } else {
+      classNames.push(c.ClickImage__Bookmark);
+    }
   }
 
-  let args = props.category;
   let func = () => props.clicked();
-  if(props.clicked) {
-    if(props.clickParam) {
-      func = () => props.clicked(props.clickParam, args);
-    }
+  if(props.clicked && props.args) {
+    func = () => props.clicked(...props.args);
   } else if(props.onClick) {
+    // onClick given by React Slick Carousel
     func = props.onClick;
   }
   

@@ -6,4 +6,23 @@
     height: 5rem !important;
     cursor: pointer !important;
   }
+
+  &__Bookmark {
+    width: 2rem;
+    height: 2rem;
+    filter: saturate(0) brightness(2.5);
+    cursor: pointer;
+    
+    &:hover {
+      filter: contrast(3) saturate(.8);
+    }
+
+    &_fav {
+      filter: contrast(3) saturate(.8);
+      
+      &:hover {
+        filter: saturate(0) brightness(2.5);
+      }
+    }
+  }
 }

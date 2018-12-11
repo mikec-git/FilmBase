@@ -10,6 +10,7 @@ import Search from '../../../assets/img/search.svg';
 import Logo from '../../../assets/img/clapperboard-Logo.svg';
 import c from './Navigation.module.scss';
 import * as u from '../../../shared/Utility';
+import * as actionsLogin from '../../../store/actions/LoginActions';
 
 class Navigation extends Component {
   navRef = React.createRef();
@@ -80,6 +81,10 @@ class Navigation extends Component {
     for (let key in this.props.navItems) {
       const item = this.props.navItems[key];
       if(item.hasOwnProperty('auth') && item.auth === this.props.loggedIn) {
+        if(item.auth && this.props.loggedIn && this.props.profile) {
+          item.name = this.props.profile.userName.slice(0,1).toUpperCase();
+          item.onLogout = this.props.onLogout;
+        }
         navigationLinks.push(item);
       } else if(!item.hasOwnProperty('auth')) {
         navigationLinks.push(item);
@@ -108,8 +113,15 @@ class Navigation extends Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: state.login.loggedIn
+    loggedIn: state.login.loggedIn,
+    profile: state.profile.profile
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogout: () => dispatch(actionsLogin.logout())
   }
 }
  
-export default withRouter(connect(mapStateToProps)(Navigation));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));

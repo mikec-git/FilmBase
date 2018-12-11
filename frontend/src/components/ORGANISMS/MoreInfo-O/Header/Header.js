@@ -41,7 +41,12 @@ const header = (props) => {
           details={details}
           videoTimes={times}
           expanded={props.overviewExpanded}
-          expandToggle={props.overviewToggle} />
+          expandToggle={props.overviewToggle}
+          ratingMouseOver={props.ratingMouseOver}
+          userRating={props.userRating}
+          submitRating={props.submitRating}
+          favoriteFilm={props.favoriteFilm}
+          favorite={props.favorite} />
         <VideoList 
           videoList={details.videos} 
           videoImage={details.backdrop_path}

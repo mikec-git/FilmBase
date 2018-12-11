@@ -30,14 +30,26 @@ const header = (props) => {
     if(u.isObjNotEmpty(props.buttons)) {
       buttons = [];
       Object.entries(props.buttons).forEach(([key, button]) => {
-        buttons.push(
-          <Button
-            key={key}
-            btnClicked={props.btnClicked}
-            text={button.value}
-            context={context}
-            buttonArgs={button.inputConfig} />
-        );
+        if(button.inputConfig.type === 'link') {
+          buttons.push(
+            <Button 
+              key={key}
+              href={button.inputConfig.href}
+              target='_blank'
+              isLink
+              context={context}
+              text={button.value} />
+          )
+        } else {
+          buttons.push(
+            <Button
+              key={key}
+              btnClicked={props.btnClicked}
+              text={button.value}
+              context={context}
+              buttonArgs={button.inputConfig} />
+          );
+        }
       });
       
       if(props.fineprint) {

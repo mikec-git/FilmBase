@@ -4,13 +4,7 @@ import c from './NavItems.module.scss';
 
 const navItems = (props) => {
   const navItems = props.navItems.map(navItem => {
-    return <NavItem 
-      imgSrc={navItem.imgSrc}
-      imgAlt={navItem.imgAlt}
-      navType={navItem.navType}
-      key={navItem.name} 
-      path={navItem.path} 
-      name={navItem.name} />
+    return <NavItem key={navItem.name} {...navItem} />
   });
   
   let classNames = props.className ? 

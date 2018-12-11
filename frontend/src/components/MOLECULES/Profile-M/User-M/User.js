@@ -24,9 +24,7 @@ const user = (props) => {
         context='profile'
         title={'Welcome ' + props.userName} />
     );
-  }
-
-  if(props.name) {
+  } else {
     name = (
       <>
         <Title 
@@ -39,7 +37,7 @@ const user = (props) => {
           rel='noreferrer noopener'>
           <Subtitle
             context='profile'
-            subtitle={props.name} />
+            subtitle={props.name || props.userName} />
         </a>
       </>
     )

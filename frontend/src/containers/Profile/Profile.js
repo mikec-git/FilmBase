@@ -1,9 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import SidePanel from '../../components/ORGANISMS/Profile-O/SidePanel-O/SidePanel';
 import Subtitle from '../../components/ATOMS/Shared-A/Subtitle-A/Subtitle';
 import CarouselSecondary from '../../components/ATOMS/UI-A/CarouselSecondary-A/CarouselSecondary';
 import Thumbnail from '../../components/MOLECULES/FilmList-M/Thumbnail-M/Thumbnail';
+import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
 
 import c from './Profile.module.scss';
 import * as actions from '../../store/actions/ProfileActions';
@@ -17,13 +18,13 @@ class Profile extends Component {
     guest: {
       categories: {
         rated: {
-          movies: 'Rated Movies',
+          movie: 'Rated Movies',
           tv: 'Rated TV Shows'
         }
       },
       type: {
         rated: {
-          movies: 'ratedMovies',
+          movie: 'ratedMovies',
           tv: 'ratedTV',
         }
       }
@@ -31,21 +32,21 @@ class Profile extends Component {
     login: {
       categories: {
         favorite: {
-          movies: 'Favorite Movies',
+          movie: 'Favorite Movies',
           tv: 'Favorite TV Shows'
         },
         rated: {
-          movies: 'Rated Movies',
+          movie: 'Rated Movies',
           tv: 'Rated TV Shows'
         }
       },
       type: {
         favorite: {
-          movies: 'favoriteMovies',
+          movie: 'favoriteMovies',
           tv: 'favoriteTV'
         },
         rated: {
-          movies: 'ratedMovies',
+          movie: 'ratedMovies',
           tv: 'ratedTV',
         }
       }
@@ -98,7 +99,7 @@ class Profile extends Component {
         let typePathBase = '/profile/';
         Object.entries(data).forEach(([key, value]) => {
           Object.entries(value).forEach(([filmType, list]) => {
-            let pathBase = filmType === 'movies' ? '/profile/movie/' : '/profile/tv/';
+            let pathBase = filmType === 'movie' ? '/profile/movie/' : '/profile/tv/';
             const newList = list.map(film => {
               return (
                 <Thumbnail
@@ -149,14 +150,19 @@ class Profile extends Component {
     }
 
     return ( 
-      <div className={c.Profile}>
-        <div className={c.Profile__SidePanel}>
-          {sidePanel}
+      <>
+        <Spinner 
+          loading={this.props.loadingInit}
+          pageTitle='Profile' />
+        <div className={c.Profile}>
+          <div className={c.Profile__SidePanel}>
+            {sidePanel}
+          </div>
+          <section className={c.Profile__Lists}>
+            {filmList}
+          </section>
         </div>
-        <section className={c.Profile__Lists}>
-          {filmList}
-        </section>
-      </div>
+      </>
     );
   }
 }

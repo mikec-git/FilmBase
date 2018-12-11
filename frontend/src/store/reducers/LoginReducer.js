@@ -58,9 +58,12 @@ const loginFail = (state, action) => {
 };
 
 // LOGOUT
-const logout = (state, action) => {
-  localStorage.removeItem('session');
+const logoutSuccess = (state, action) => {
   return { ...state, loggedIn: false, loadingAuth: false, authType: null };
+}
+
+const logoutFail = (state, action) => {
+  return { ...state, loggedIn: false, loadingAuth: false, authType: null, error: action.error };
 }
 
 // =========================== //
@@ -75,7 +78,8 @@ const reducer = u.createReducer(initialState, {
   [actionTypes.LOGIN_SUCCESS]: loginSuccess,
   [actionTypes.LOGIN_UNAPPROVED]: loginUnapproved,
   [actionTypes.LOGIN_FAIL]: loginFail,
-  [actionTypes.LOGOUT]: logout
+  [actionTypes.LOGOUT_SUCCESS]: logoutSuccess,
+  [actionTypes.LOGOUT_FAIL]: logoutFail
 });
 
 export default reducer;

@@ -1,0 +1,75 @@
+.Message {
+  position: relative;
+  display: block;
+  font-size: 2rem;
+  padding: 2.5rem 15rem;
+  font-weight: 500;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: -1.25rem 1.5rem 3.5rem rgba(0, 0, 0, .3);
+  width: max-content;
+
+  &_success {
+    background-color: #69f0ae;
+    color: #1b5e20;
+  }
+
+  &_warning {
+    background-color: #fff59d;
+    color: #f57f17;
+  }
+  
+  &_danger {
+    background-color: #ef9a9a;
+    color: #b71c1c;
+  }
+
+  &__Close {
+    display: block;
+    width: 1.8rem;
+    height: 1.8rem;
+    position: absolute;
+    top: 1.2rem;
+    left: 1.3rem;
+    filter: invert(.2);
+    transition: all 200ms ease-out;
+    cursor: pointer;
+
+    &:hover {
+      filter: invert(.1);
+      transform: scale(1.1);
+    }
+  }
+}
+
+.msg {    
+  &_appear {
+    opacity: 0;
+    transition: all 300ms ease-out;
+  }
+
+  &_appear_active {
+    opacity: 1;
+    transition: all 300ms ease-out;
+  }
+  
+  &_enter_done {
+    opacity: 1;
+    transition: all 300ms ease-out;
+  }
+
+  &_exit {
+    opacity: 1;
+    transition: all 300ms ease-out;
+  }
+
+  &_exit_active {
+    opacity: 1;
+    transition: all 300ms ease-out;
+  }
+
+  &_exit_done {
+    opacity: 0;
+    transition: all 300ms ease-out;
+  }
+}

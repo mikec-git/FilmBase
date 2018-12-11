@@ -30,8 +30,7 @@ const discover = (props) => {
         context='arrowRound'
         imgSrc={LeftArrow}
         imgAlt='Left Arrow'
-        clickParam={'left'}
-        category={props.category}
+        args={['left', props.category]}
         clicked={props.arrowClicked} />);
   }
   
@@ -41,8 +40,7 @@ const discover = (props) => {
       context='arrowRound'
       imgSrc={RightArrow}
       imgAlt='Right Arrow'
-      clickParam={'right'}
-      category={props.category}
+      args={['right', props.category]}
       clicked={props.arrowClicked} />
   );
   

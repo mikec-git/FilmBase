@@ -20,17 +20,31 @@ const button = (props) => {
     classNames.push(c.Button__Login);
   } else if(props.context === 'logout') {
     classNames.push(c.Button__Logout);
-  } 
+  }
   
-  return ( 
-    <button 
-      className={classNames.join(' ')}
-      onClick={func}>
-      <span className={c.Button__Text}>
-        {props.text}
-      </span>
-    </button> 
-  );
+  if(props.isLink) {
+    return (
+      <a 
+        href={props.href}
+        target={props.target}
+        rel='noopener noreferrer'
+        className={classNames.join(' ')}>
+        <span className={c.Button__Text}>
+          {props.text}
+        </span>
+      </a> 
+    )
+  } else {
+    return (
+      <button 
+        className={classNames.join(' ')}
+        onClick={func}>
+        <span className={c.Button__Text}>
+          {props.text}
+        </span>
+      </button> 
+    )
+  }
 }
  
 export default button;

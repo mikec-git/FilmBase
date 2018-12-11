@@ -6,8 +6,8 @@ import { fetchTVInitSaga, getTVDetailsSaga, changeTVListSaga } from './TVSaga';
 import { fetchConfigInitSaga } from './AppSaga';
 import { getSearchbarResultsSaga, changeSearchListSaga } from './SearchSaga';
 import { getDiscoverInitSaga, getDiscoverResultsSaga, changeDiscoverListSaga } from './DiscoverSaga';
-import { getLoginInitSaga, loginSaga, loginApprovedSaga } from './LoginSaga';
-import { getProfileInitSaga } from './ProfileSaga';
+import { getLoginInitSaga, loginSaga, logoutSaga, loginApprovedSaga } from './LoginSaga';
+import { getProfileInitSaga, submitRatingSaga, updateProfileSaga, favoriteFilmSaga } from './ProfileSaga';
 
 const watchMovies = [
   takeEvery(actionTypes.FETCH_MOVIES_INIT, fetchMoviesInitSaga),
@@ -39,11 +39,15 @@ const watchDiscover = [
 const watchLogin = [
   takeLatest(actionTypes.GET_LOGIN_INIT, getLoginInitSaga),
   takeLatest(actionTypes.LOGIN, loginSaga),
-  takeLatest(actionTypes.LOGIN_APPROVED, loginApprovedSaga)
+  takeLatest(actionTypes.LOGIN_APPROVED, loginApprovedSaga),
+  takeLatest(actionTypes.LOGOUT, logoutSaga)
 ];
 
 const watchProfile = [
-  takeLatest(actionTypes.GET_PROFILE_INIT, getProfileInitSaga)
+  takeLatest(actionTypes.GET_PROFILE_INIT, getProfileInitSaga),
+  takeLatest(actionTypes.UPDATE_PROFILE, updateProfileSaga),
+  takeEvery(actionTypes.SUBMIT_RATING, submitRatingSaga),
+  takeEvery(actionTypes.FAVORITE_FILM, favoriteFilmSaga)
 ]
 
 

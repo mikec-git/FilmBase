@@ -1,7 +1,7 @@
 @import '../../../../styles/variables';
 
 .Body {
-  width: $max-width;
+  max-width: 80%;
   margin: 0 auto;
 
   &__NotAvailable {
@@ -13,23 +13,8 @@
   }
 
   &__Staff {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+    width: 85%;
     margin: 7rem auto;
-  }
-
-  &__StaffMember {
-    display: flex;
-    align-items: flex-start;
-    overflow-x: auto;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    
-    & > *:not(:last-child) {
-      margin-right: 5rem;
-    }
   }
 
   &__Reviews {

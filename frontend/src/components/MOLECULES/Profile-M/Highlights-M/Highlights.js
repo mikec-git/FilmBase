@@ -1,8 +1,11 @@
 import React from 'react';
 
 const highlights = (props) => {
+  
   return ( 
-    <div></div>
+    <div>
+
+    </div>
   );
 }
  
