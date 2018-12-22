@@ -44,9 +44,7 @@ const loginRequesting = (state, action) => {
 };
 
 const loginSuccess = (state, action) => {
-  const { authType } = action;
-
-  return { ...state, loggedIn: true, requesting: false, loadingAuth: false, authType };
+  return { ...state, loggedIn: true, requesting: false, loadingAuth: false, authType: action.authType};
 };
 
 const loginUnapproved = (state, action) => {

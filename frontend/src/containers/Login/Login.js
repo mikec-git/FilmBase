@@ -48,6 +48,7 @@ class Login extends Component {
       this.props.history.replace('/login');
       // ADD STATE TO MAYBE SHOW VALIDATION (ERROR YOU CANT ACCESS THIS)
     }
+    window.scrollTo(0, 0);
   }
   
   loginClickedHandler = (e, args) => {

@@ -25,6 +25,7 @@ class TV extends Component {
     window.addEventListener('resize', this.resizeSlide);
     this.props.onFetchTVInit();
     this.startInterval();
+    window.scrollTo(0, 0);
   }
   
   componentWillUnmount() {
@@ -80,7 +81,16 @@ class TV extends Component {
   render() { 
     let carousel    = null,
         content     = null,
+        listLength  = 12,
         filmList    = [];
+    
+    if(window.innerWidth <= 400) {
+      listLength = 2;
+    } else if(window.innerWidth <= 600) {
+      listLength = 4;
+    } else if(window.innerWidth <= 900) {
+      listLength = 10;
+    }
 
     if(u.isObjNotEmpty(this.props.tv)) {
       const tvPathBase = this.props.location.pathname,
@@ -103,7 +113,7 @@ class TV extends Component {
               category={tvList.category}
               results={tvList.videos}
               context='main'
-              listLength={12}
+              listLength={listLength}
               page={this.props.showPage[key]}
               arrowClicked={this.listArrowClickedHandler}
               videoClicked={this.getTVDetailsHandler}

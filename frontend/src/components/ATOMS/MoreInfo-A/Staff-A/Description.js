@@ -13,9 +13,6 @@ const description = (props) => {
     case 'character': 
       classNames = [c.Description, c.Description__Character].join(' ');
       break;
-    case 'origin':
-      classNames = [c.Description, c.Description__Origin].join(' ');
-      break;
     case 'country':
       classNames = [c.Description, c.Description__Country].join(' ');
       break;

@@ -15,9 +15,11 @@ const image = (props) => {
     } else {
       classNames.push(c.ClickImage__Bookmark);
     }
+  } else if(props.context === 'goBack') {
+    classNames.push(c.ClickImage__GoBack);    
   }
 
-  let func = () => props.clicked();
+  let func = props.clicked;
   if(props.clicked && props.args) {
     func = () => props.clicked(...props.args);
   } else if(props.onClick) {

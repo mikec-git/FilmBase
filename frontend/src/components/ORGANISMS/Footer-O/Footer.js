@@ -57,13 +57,24 @@ class Footer extends Component {
   render () {
     let footerNavItems = [];
     for(let key in this.props.navItems) {
-      footerNavItems.push(this.props.navItems[key]);
+      const newItem = {...this.props.navItems[key]};
+      if(newItem.hasOwnProperty('auth') && newItem.auth === this.props.loggedIn) {
+        footerNavItems.push(newItem);
+      } else if(!newItem.hasOwnProperty('auth')) {
+        footerNavItems.push(newItem);
+      }
     }
 
-    let credits = (<div className={c.Footer__CreditsList}><FooterCredits /></div>);
+    let credits = (
+      <div className={c.Footer__CreditsList}>
+        <FooterCredits />
+      </div>
+    );
+
     if(this.state.showCredits) {
+      const creditsClasses = [c.Footer__CreditsList, c.Footer__CreditsList_show].join(' ');
       credits = (
-        <div className={[c.Footer__CreditsList, c.Footer__CreditsList_show].join(' ')}>
+        <div className={creditsClasses}>
           <p className={c.Footer__CreditsList_text}>Icons Used</p>
           <FooterCredits />
         </div>

@@ -25,17 +25,22 @@ const footerCredits = () => {
       {/* Search Icon */}
       <div className={c.FooterCredits}>Icons made by <a href="https://www.flaticon.com/authors/simpleicon" title="SimpleIcon" rel="noopener noreferrer">SimpleIcon</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
       {/* Movie Logo */}
-      <div className={c.FooterCredits}>Icons made by <a href="https://www.freepik.com/" title="Freepik" target="_blank" rel="noopener noreferrer">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
       {/* Compass, TV, Movie Nav */}
-      <div className={c.FooterCredits}>Icons made by <a href="https://www.freepik.com/" title="Freepik" rel="noopener noreferrer">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
       {/* Avatar */}
-      <div className={c.FooterCredits}>Icons made by <a href="https://www.freepik.com/" title="Freepik" rel="noopener noreferrer">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
+      <div className={c.FooterCredits}>Icons made by <a href="https://www.freepik.com/" title="Freepik" target="_blank" rel="noopener noreferrer">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
       {/* LOGOUT ICON */}
       <div className={c.FooterCredits}>Icons made by <a href="https://www.flaticon.com/authors/dmitri13" title="dmitri13" rel="noopener noreferrer">dmitri13</a> from <a href="https://www.flaticon.com/" title="Flaticon" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
       {/* CLOSE ICON */}
       <div className={c.FooterCredits}>Icons made by <a href="https://www.flaticon.com/authors/egor-rumyantsev" title="Egor Rumyantsev" rel="noopener noreferrer">Egor Rumyantsev</a> from <a href="https://www.flaticon.com/" title="Flaticon" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
       {/* BOOKMARK ICON */}
       <div className={c.FooterCredits}>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons" rel="noopener noreferrer">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
+      {/* SHARE ICON */}
+      {/* FACEBOOK ICON */}
+      {/* REDDIT ICON */}
+      {/* TWITTER ICON */}
+      <div className={c.FooterCredits}>Icons made by <a href="https://www.freepik.com/" title="Freepik" rel="noopener noreferrer">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
+      {/* MAIL */}
+      <div className={c.FooterCredits}>Icons made by <a href="https://www.flaticon.com/authors/dave-gandy" title="Dave Gandy" rel="noopener noreferrer">Dave Gandy</a> from <a href="https://www.flaticon.com/" title="Flaticon" rel="noopener noreferrer">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank" rel="noopener noreferrer">CC 3.0 BY</a></div>
     </>
   );
 }

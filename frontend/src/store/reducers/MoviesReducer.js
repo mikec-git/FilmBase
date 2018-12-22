@@ -33,12 +33,19 @@ const fetchMoviesStart = (state, action) => {
 const fetchMoviesInitSuccess = (state, action) => {
   const { fetchedMovies, hasLooped, loopAgain, page, searchString } = action,
         {imgConfig, movieGenres} = state;
-        
-  const movies  = {},
-        maxPage = {
-    nowPlaying: fetchedMovies['nowPlaying'].total_pages,
-    upcoming: fetchedMovies['upcoming'].total_pages,
-    popular: fetchedMovies['popular'].total_pages };
+  
+  const maxPage = {};
+  const movies  = {};
+
+  if(fetchedMovies['nowPlaying']) {
+    maxPage.nowPlaying = fetchedMovies['nowPlaying'].total_pages;
+  }
+  if(fetchedMovies['upcoming']) {
+    maxPage.upcoming = fetchedMovies['upcoming'].total_pages;
+  }
+  if(fetchedMovies['popular']) {
+    maxPage.popular = fetchedMovies['popular'].total_pages;
+  }
 
   let nowPlaying  = null,
       upcoming    = null,
@@ -74,10 +81,10 @@ const fetchMoviesInitSuccess = (state, action) => {
   
   if(hasLooped) {
     return { 
-      ...state, page, maxPage, loadingInit: false, searchString,
+      ...state, page, maxPage: {...state.maxPage, ...maxPage}, loadingInit: false, searchString,
       movies: {...state.movies, ...movies}};
   } else {
-    return { ...state, page, maxPage, loadingInit: false, movies, searchString };
+    return { ...state, page, maxPage: {...state.maxPage, ...maxPage}, loadingInit: false, movies, searchString };
   }
 };
 
@@ -162,27 +169,34 @@ const getMovieDetailsStart = (state, action) => {
 const getMovieDetailsSuccess = (state, action) => {
   const { 
     videos: videoResult, 
-    credits: creditResult, 
-    details, 
-    reviews: reviewResult } = action.fetchedDetails;  
+    credits: creditResult,
+    reviews: reviewResult,
+    details } = action.fetchedDetails;  
+
 const { imgConfig } = state,
       videos    = u.filterByVideoData(videoResult.results, 'videoSite'),
       cast      = u.extractUpTo(creditResult.cast, 11),
-      crew      = u.extractUpTo(creditResult.crew, 11),
+      crew      = u.extractUpTo(creditResult.crew, 11),      
+      prod      = u.extractUpTo(details.production_companies, 11),
       reviews   = reviewResult.results;
     
-  const baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 0),
-        baseUrlProfile  = u.getBaseUrl(imgConfig, 'poster', 1);
+  const baseUrlBackdrop   = u.getBaseUrl(imgConfig, 'backdrop', 0),
+        baseUrlBackdropLg = u.getBaseUrl(imgConfig, 'backdrop', 3),
+        baseUrlProfile    = u.getBaseUrl(imgConfig, 'poster', 1),
+        baseUrlLogo       = u.getBaseUrl(imgConfig, 'logo', 4);
 
   u.sortVideoType(videos);
   u.getProfilePath(cast, baseUrlProfile);
   u.getProfilePath(crew, baseUrlProfile);
+  u.getLogoPath(prod, baseUrlLogo);
+
   
   const currentMovieDetails = {
-    ...details, videos, cast, crew, reviews,
-    backdrop_path: baseUrlBackdrop.concat(details.backdrop_path)
+    ...details, videos, cast, crew, reviews, prod,
+    backdrop_path: baseUrlBackdrop.concat(details.backdrop_path),
+    backdrop_path_large: baseUrlBackdropLg.concat(details.backdrop_path)
   };
-    
+  
   return { ...state, currentMovieDetails, loadingDetails: false };
 };
 

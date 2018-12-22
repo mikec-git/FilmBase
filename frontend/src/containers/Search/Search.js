@@ -21,6 +21,7 @@ class Search extends Component {
     const queryParams = params.get('q');
     this.props.onGetSearchbarResults(queryParams);
     this.setState({ currentQueryParams: queryParams });
+    window.scrollTo(0, 0);
   }
 
   componentDidUpdate() {
@@ -48,15 +49,24 @@ class Search extends Component {
   }
 
   render() { 
+    let listLength = this.props.listLength;
     let results = null;
     if(u.isArrayGT(this.props.results, 0)) {
+      if(window.innerWidth <= 400) {
+        listLength = 10;
+      } else if(window.innerWidth <= 700) {
+        listLength = 14;
+      } else if(window.innerWidth <= 900) {
+        listLength = 16;
+      } 
+
       results = (
         <FilmBody
           context='discover'
           page={this.props.showPage}
           maxPage={this.props.maxPage}
           results={this.props.results}
-          listLength={this.props.listLength}
+          listLength={listLength}
           videoClicked={this.getFilmDetailsHandler}
           arrowClicked={this.arrowClickedHandler}
           isImgLoaded={!this.props.loading}

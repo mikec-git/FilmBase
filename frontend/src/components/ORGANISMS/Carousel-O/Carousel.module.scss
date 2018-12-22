@@ -15,6 +15,26 @@
     width: 102%;
     height: calc(100vh - 8rem);
     transition: all 500ms ease-in-out; // For slide transition
+
+    @media only screen and (max-width: 75em) {
+      height: 85vh;
+    }
+
+    @media only screen and (max-width: 68.75em) {
+      height: 80vh;
+    }
+    
+    @media only screen and (max-width: 59.375em) {
+      height: 70vh;
+    }
+    
+    @media only screen and (max-width: 53.125em) {
+      height: 55vh;
+    }
+    
+    @media only screen and (max-width: 40.625em) {
+      height: 40vh;
+    }
   }
 
   &__Dots {
@@ -36,6 +56,10 @@
     &:hover {
       background-color: rgba(255, 255, 255, .3);
     }
+
+    @media only screen and (max-width: 56.25em) {
+      display: none;
+    }
   }
     
   &__Arrows {
@@ -46,6 +70,11 @@
     visibility: hidden;
     opacity: 0;
     transition: all 200ms ease-out;   
+
+    @media only screen and (max-width: 62.5em) {
+      opacity: 1;
+      visibility: visible;
+    }
     
     &_left { 
       left: 2%; 

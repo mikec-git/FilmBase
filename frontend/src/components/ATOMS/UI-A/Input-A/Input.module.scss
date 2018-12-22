@@ -93,6 +93,21 @@
                   .1rem -.1rem 0.15rem $primary-purple-light,
                   -.1rem .1rem 0.15rem $primary-purple-light,
                   -.1rem -.1rem 0.15rem $primary-purple-light;
+      @media only screen and (max-width: 75em) {
+        width: 100%;
+      }
+
+      @media only screen and (max-width: 68.75em) {
+        width: 100%;
+      }
+    }
+
+    @media only screen and (max-width: 75em) {
+      width: 95%;
+    }
+
+    @media only screen and (max-width: 68.75em) {
+      width: 90%;
     }
   }
   

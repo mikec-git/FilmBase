@@ -7,6 +7,10 @@
   background-color: rgba(0,0,0, .8);
   z-index: 999;
   transition: all 1500ms ease-out;
+
+  @media only screen and (max-width: 68.75em) {
+    display: none;
+  }
   
   &_appear {
     opacity: 0;

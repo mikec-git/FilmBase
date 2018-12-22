@@ -21,18 +21,27 @@ const staff = (props) => {
     <Description
         descType='department'
         desc={props.department} /> : null;
+  
+  const country = props.country ? 
+    <Description
+      descType='country'
+      desc={props.country} /> : null;
 
   return (  
-    <figure className={c.Staff} ref={props.staffRef}>
+    <figure className={c.Staff}>
       <Name 
         context='staff' 
         name={props.name} />
       <Image 
-        image={props.image} />
+        image={props.profile_path}
+        isCountry={!!props.country}
+        showPerson={props.showPerson}
+        personId={props.id} />
       <figcaption>
         {character}
         {job}
         {department}
+        {country}
       </figcaption>
     </figure>
   );

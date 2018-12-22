@@ -27,7 +27,7 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    width: $max-width;
+    max-width: $max-width;
     margin: 7rem auto;
     padding: 5rem 10rem;
   }

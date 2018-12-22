@@ -11,12 +11,12 @@ const navItem = (props) => {
   let wrapperClasses = c.NavItem;
   let linkClasses  = c.NavItem__Link;
 
-  if(props.navType === 'img') {
+  if(props.navType === 'img' && !props.isSidedrawer) {
     content = <img 
       className={c.NavItem__Img} 
       src={props.imgSrc} 
       alt={props.imgAlt} />
-  } else if(props.name && !props.imgSrc) {
+  } else if((props.name && !props.imgSrc) || props.isSidedrawer) {
     content = props.name;
   } 
 

@@ -7,8 +7,28 @@ import Title from '../../../ATOMS/Shared-A/Title-A/Title';
 import c from './Thumbnail.module.scss';
 
 const thumbnail = (props) => {
+  let rating = null;
+  let title = null;
+
+  if(props.rating) {
+    rating = (
+      <div className={c.Thumbnail__Rating}>
+        <Hearts
+          context='thumbnail'
+          rating={props.rating} />
+        <Rating
+          context='thumbnail'
+          rating={props.rating} />
+      </div>
+    );
+  }
+
+  if(props.title) {
+    title = <Title context='thumbnail' title={props.title} />;
+  }
+
   // REGEX FOR VIDEO TYPE NAME
-  const videoType = /[^/find/discover/profile]\w+(?=\/?)/ig.exec(props.pathBase);
+  const videoType = /[^/find/discover/profile/people][a-zA-Z]+(?=\/?)/ig.exec(props.pathBase);
   return (
     <div className={c.Thumbnail}>
       <Link 
@@ -26,18 +46,10 @@ const thumbnail = (props) => {
           className={c.Thumbnail__Img}
           imgSrc={props.image}
           imgAlt={props.title} />
-        <div className={c.Thumbnail__Rating}>
-          <Hearts
-            context='thumbnail'
-            rating={props.rating} />
-          <Rating
-            context='thumbnail'
-            rating={props.rating} />
-        </div>
+        {rating}
       </Link>
-      <Title
-        context='thumbnail'
-        title={props.title} />
+      {title}
+      
     </div>
   );
 }

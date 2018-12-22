@@ -20,7 +20,7 @@ const getProfileInitStart = (state, action) => {
 
 const getProfileInitSuccess = (state, action) => {
   let { authType, accountId, favoriteMovies, favoriteTV, ratedMovies, ratedTV, name, userName } = action.profileData;
-  const { imgConfig } = state;
+  const { imgConfig, profile: existingProfile, validationMessages } = state;
   
   const baseUrlPoster = u.getBaseUrl(imgConfig, 'poster', 1),
         baseUrl       = [null, baseUrlPoster];
@@ -35,7 +35,15 @@ const getProfileInitSuccess = (state, action) => {
   const profile   = { name, userName },
         favorite  = { movie: favoriteMovies, tv: favoriteTV },
         rated     = { movie: ratedMovies, tv: ratedTV };
+  
+  if(!existingProfile) {
+    let message = `Welcome back ${userName}!`;
+    let type    = 'success';
+    let newMessage  = { message, type, id: Date.now(), duration: 5500 };
 
+    return { ...state, loadingInit: false, accountId, authType, profile, favorite, rated, validationMessages: [...validationMessages, newMessage] };
+  }
+  
   return { ...state, loadingInit: false, accountId, authType, profile, favorite, rated };
 };
 
@@ -70,7 +78,13 @@ const updateProfileFail = (state, action) => {
 
 // CLEAR ON LOGOUT
 const clearProfileData = (state, action) => {
-  return { ...state, authType: null, accountId: null, profile: null, favorite: null, rated: null };
+  const validationMessages = [...state.validationMessages];
+
+  let message = `Successfully logged out!`;
+  let type    = 'danger';
+  let newMessage  = { message, type, id: Date.now(), duration: 5500 };
+
+  return { ...state, authType: null, accountId: null, profile: null, favorite: null, rated: null, validationMessages: [...validationMessages, newMessage] };
 };
 
 // FAVORITE OR RATE FILM
@@ -95,11 +109,11 @@ const favOrRateSuccess = (state, action) => {
         'Successfully removed from your favorites!'; 
       type = makeFavorite ? 'success' : 'warning';
     } else {
-      message = 'Successfully Rated!';
+      message = 'Successfully rated!';
       type    = 'success';
     }
     
-    newMessage = { message, type, id: Date.now() };
+    newMessage = { message, type, id: Date.now(), duration: 3500 };
     return { ...state, validationMessages: [...validationMessages, newMessage] };
   } else if(statusCode === 3) {
     if(authType === 'guest') {
@@ -110,7 +124,7 @@ const favOrRateSuccess = (state, action) => {
       type    = 'danger';
     }
 
-    newMessage = { message, type, id: Date.now() };
+    newMessage = { message, type, id: Date.now(), duration: 3500 };
     return { ...state, validationMessages: [...validationMessages, newMessage] };
   } else {
     return { ...state };

@@ -8,7 +8,14 @@
   border-bottom: 3px solid black;
   border-left: 3px solid black;
   height: 100%;
-  
+
+  @media only screen and (max-width: 68.75em) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 25rem);
+    justify-content: center;
+    align-items: center;
+  }
+ 
   &__Item {
     display: flex;
     align-items: center;
@@ -16,6 +23,12 @@
     cursor: pointer;
     transition: all 150ms ease-in;
     padding: .75rem 1.25rem;
+
+    @media only screen and (max-width: 68.75em) {
+      flex-direction: column;
+      height: auto;
+      width: auto;
+    }
     
     &_active {
       cursor: initial;
@@ -32,6 +45,11 @@
     position: relative;
     height: 100%;
     width: 100%;
+    
+    @media only screen and (max-width: 68.75em) {
+      width: 75%;
+      height: auto;
+    }
   }
 
   &__Overlay {

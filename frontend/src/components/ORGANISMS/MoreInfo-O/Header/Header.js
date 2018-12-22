@@ -23,7 +23,6 @@ const header = (props) => {
       { name: 'Episode Runtime', type: 'runtime', time: details.runtime || details.episode_run_time }];
   }    
   
-
   return ( 
     <header className={c.Header}>
       <Youtube 
@@ -37,7 +36,6 @@ const header = (props) => {
       <div className={sideDrawerClasses}>
         <VideoSummary 
           type={props.type}
-          className={c.Header__Summary}
           details={details}
           videoTimes={times}
           expanded={props.overviewExpanded}

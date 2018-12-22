@@ -4,6 +4,7 @@
   &__Body {
     padding: 5rem 0;
     margin: 0 auto;
-    max-width: $max-width;
+    width: $max-width;
+    max-width: 90%
   }
 }

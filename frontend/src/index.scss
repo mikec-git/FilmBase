@@ -3,6 +3,18 @@
 
 html {
   font-size: 62.5%;
+
+  @media only screen and (max-width: 81.25em) {
+      font-size: 56.25%;  // 1 rem = 9 px
+  }
+  
+  @media only screen and (max-width: 62.5em) {
+      font-size: 50%;  // 1 rem = 8 px
+  }
+
+  @media only screen and (max-width: 50em) {
+      font-size: 46.88%;  // 1 rem = 7 px
+  }
 }
 
 *,

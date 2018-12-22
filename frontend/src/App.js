@@ -20,23 +20,24 @@ const Search    = lazy(() => import('./containers/Search/Search'));
 const Discover  = lazy(() => import('./containers/Discover/Discover'));
 const Login     = lazy(() => import('./containers/Login/Login'));
 const Profile   = lazy(() => import('./containers/Profile/Profile'));
+const People    = lazy(() => import('./containers/People/People'));
 
 class App extends Component {
   prevLocation = this.props.location;
 
   componentDidMount() {
     this.props.onFetchConfigInit();
-    if(!((this.props.location.pathname === '/tv') || 
-        (this.props.location.pathname === '/movie') || 
-        (this.props.location.pathname === '/login') || 
-        (this.props.location.pathname === '/profile'))) {
-      const routePrefix = /(?<prefix>\b[a-zA-Z]+\b(?=\/)?)/.exec(this.props.location.pathname);
-      if(routePrefix) {
-        this.props.history.push(`/${routePrefix.groups.prefix}`);
-      } else {
-        this.props.history.push('/movie');
-      }
-    }
+
+    const routePrefix = /(\b[a-zA-Z]+\b(?=\/)?)/.exec(this.props.location.pathname);
+    if(routePrefix) {
+        if(routePrefix[0] === 'movie' || 
+        routePrefix[0] === 'tv' || 
+        routePrefix[0] === 'find') {
+          this.props.history.push(`/${routePrefix[0]}`);
+        } else if(routePrefix[0] === 'people') {
+          this.props.history.push(`/movie`);
+        }
+    } 
 
     if(JSON.parse(localStorage.getItem('session'))) {
       if(JSON.parse(localStorage.getItem('session')).type === 'login') {
@@ -73,11 +74,12 @@ class App extends Component {
   }
 
   render() {
-    let modalRoute = null;
     let { location, loggedIn, videoDetails, onClearMovieDetails, onClearTVDetails, loading, fetched } = this.props;
     
-    let videoType = location.state && location.state.type;
-    let isModal   = !!(location.state && location.state.modal && this.prevLocation !== location);
+    let modalRoute  = null;
+    let videoType   = location.state && location.state.type;
+    let isModal     = !!(location.state && location.state.modal && 
+                      this.prevLocation !== location);
 
     let loginRoute      = <Route path="/login" render={props => <Login {...props} />} />;
     let redirectProfile = <Redirect from='/profile' to='login' />;
@@ -118,6 +120,7 @@ class App extends Component {
               <Route path="/tv" render={props => <TV {...props} />} />
               <Route path="/find" render={props => <Search {...props} />} />
               <Route path="/discover" render={props => <Discover {...props} />} />
+              <Route path="/people" render={props => <People {...props} />} />
               {loginRoute}
               <Redirect to='/movie' />
             </Switch>        

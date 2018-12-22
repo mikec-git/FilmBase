@@ -16,8 +16,10 @@ export function updateInitData(originalData, baseUrls, genres) {
           baseUrls[1].concat(result.poster_path) : result.poster_path,
         vote_average: result.vote_average.toFixed(1)
       });
-    }    
-    updatedData[0].active = true;
+    }
+    if(updatedData.length > 0 && updatedData[0].hasOwnProperty('active')) {
+      updatedData[0].active = true;
+    }
   } else {    
     for(let result of originalData) {
       updatedData.push({ 
@@ -73,11 +75,23 @@ export function getProfilePath(staffData, baseUrl) {
   }
 }
 
+export function getLogoPath(data, baseUrl) {
+  for (let i = 0; i < data.length; i++) {
+    if(data[i].logo_path) {
+      data[i].logo_path = baseUrl.concat(data[i].logo_path);
+    }
+  }
+}
+
 export function getBaseUrl(imgConfig, type, size) {
   if(type === 'backdrop') {
     return imgConfig.secure_base_url.concat(imgConfig.backdrop_sizes[size]);
   } else if(type === 'poster') {
     return imgConfig.secure_base_url.concat(imgConfig.poster_sizes[size]);
+  } else if(type === 'logo') {
+    return imgConfig.secure_base_url.concat(imgConfig.logo_sizes[size]);
+  } else if(type === 'profile') {
+    return imgConfig.secure_base_url.concat(imgConfig.profile_sizes[size]);
   }
 }
 

@@ -5,6 +5,11 @@
   padding: 1rem;    
   border-bottom: 3px solid black;
   border-left: 3px solid black;
+  width: 100%;
+
+  @media only screen and (max-width: 68.75em) {
+    width: 90%;
+  }
 
   &__RateFav {
     display: flex;
@@ -26,20 +31,33 @@
 
   &__DescTitle {
     font-size: 1.6rem;
+    @media only screen and (max-width: 68.75em) {
+      font-size: 1.8rem;
+    }
   }
 
   &__DescText {
     font-size: 1.4rem;
+    @media only screen and (max-width: 68.75em) {
+      font-size: 1.8rem;
+    }
   }
 
   &__Overview {
     font-size: 1.4rem;
+    @media only screen and (max-width: 68.75em) {
+      font-size: 1.8rem;
+    }
   }
 
   &__Genres {
     display: flex;
+    flex-wrap: wrap;
     font-size: 1.4rem;
-    margin-top: 1rem;
+
+    @media only screen and (max-width: 68.75em) {
+      font-size: 2rem;
+    }
 
     & > *:not(:last-child) {
       margin-right: 1rem;

@@ -8,6 +8,8 @@ const subtitle = (props) => {
     classNames.push(c.Subtitle__MoreInfo);
   } else if(props.context === 'profile') {
     classNames.push(c.Subtitle__Profile);
+  } else if(props.context === 'work') {
+    classNames.push(c.Subtitle__Work);
   }
   
   return (

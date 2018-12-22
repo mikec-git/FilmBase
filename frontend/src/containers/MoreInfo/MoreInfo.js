@@ -3,8 +3,13 @@ import { connect } from 'react-redux';
 
 import Header from '../../components/ORGANISMS/MoreInfo-O/Header/Header';
 import Body from '../../components/ORGANISMS/MoreInfo-O/Body/Body';
+
 import c from './MoreInfo.module.scss';
+import budget from '../../assets/img/budget.svg';
+import revenue from '../../assets/img/money-bag.svg';
 import * as actionsProfile from '../../store/actions/ProfileActions';
+import * as actionsPeople from '../../store/actions/PeopleActions';
+
 
 class MoreInfo extends Component {
   state = { 
@@ -13,8 +18,24 @@ class MoreInfo extends Component {
     sideDrawerExpanded: true,
     youtubeState: null,
     reviewExpanded: {},
-    userRating: 0
+    userRating: 0,
+    money: {
+      budget: {
+        money: String(this.props.videoDetails.budget),
+        name: 'Budget',
+        moneyImg: budget
+      },
+      revenue: {
+        money: String(this.props.videoDetails.revenue),
+        name: 'Revenue',
+        moneyImg: revenue
+      }
+    }
   } 
+
+  componentDidMount() {    
+    window.scrollTo(0, 0);
+  }
 
   videoClickedHandler = (newVideoId) => {
     this.setState({ activeVideoId: newVideoId });
@@ -72,6 +93,10 @@ class MoreInfo extends Component {
     this.props.onFavoriteFilm(videoType, videoId);
   }
 
+  personClickedHandler = (personId) => {
+    this.props.onGetPersonDetails(personId, this.props.videoDetails.backdrop_path_large);
+  }
+
   render() {
     return ( 
       <div className={c.MoreInfo}>
@@ -92,10 +117,11 @@ class MoreInfo extends Component {
           favoriteFilm={this.favoriteFilmHandler}
           favorite={this.props.favorite} />
         <Body 
-          budget={this.props.videoDetails.budget}
-          revenue={this.props.videoDetails.revenue}
+          money={this.state.money}
           staffListCast={this.props.videoDetails.cast}
           staffListCrew={this.props.videoDetails.crew}
+          personClicked={this.personClickedHandler}
+          productionList={this.props.videoDetails.production_companies}
           reviewList={this.props.videoDetails.reviews}
           isReviewExpanded={this.state.reviewExpanded}
           reviewClicked={this.reviewClickedHandler} />
@@ -113,7 +139,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onSubmitRating: (type, id, rating) => dispatch(actionsProfile.submitRating(type, id, rating)),
-    onFavoriteFilm: (type, id) => dispatch(actionsProfile.favoriteFilm(type, id))
+    onFavoriteFilm: (type, id) => dispatch(actionsProfile.favoriteFilm(type, id)),
+    onGetPersonDetails: (id, backdrop) => dispatch(actionsPeople.getPersonDetails(id, backdrop))
   }
 }
  

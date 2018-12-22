@@ -10,6 +10,7 @@
   bottom: 0;
   z-index: 100000;
   transition: all 1500ms ease-in-out 1000ms;
+  white-space: nowrap;
   
   &_enter {
     background-color: $primary-dark-gray;

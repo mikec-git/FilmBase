@@ -4,6 +4,7 @@ import SidePanel from '../../components/ORGANISMS/Profile-O/SidePanel-O/SidePane
 import Subtitle from '../../components/ATOMS/Shared-A/Subtitle-A/Subtitle';
 import CarouselSecondary from '../../components/ATOMS/UI-A/CarouselSecondary-A/CarouselSecondary';
 import Thumbnail from '../../components/MOLECULES/FilmList-M/Thumbnail-M/Thumbnail';
+import Highlights from '../../components/MOLECULES/Profile-M/Highlights-M/Highlights';
 import Spinner from '../../components/ATOMS/UI-A/Spinner-A/Spinner';
 
 import c from './Profile.module.scss';
@@ -60,6 +61,7 @@ class Profile extends Component {
       this.props.history.replace('/login');
       this.props.onClearProfileData();
     }
+    window.scrollTo(0, 0);
   }
   
   getFilmDetailsHandler = (videoId, videoType) => {
@@ -71,8 +73,9 @@ class Profile extends Component {
   }
 
   render() { 
-    let sidePanel = null;
-    let filmList  = [];
+    let sidePanel     = null;
+    let filmList      = [];
+    let highlightList = [];
     const { authType, loadingInit } = this.props;
     const settings = {
       slidesToShow: 5,
@@ -101,6 +104,7 @@ class Profile extends Component {
           Object.entries(value).forEach(([filmType, list]) => {
             let pathBase = filmType === 'movie' ? '/profile/movie/' : '/profile/tv/';
             const newList = list.map(film => {
+              console.log(film);
               return (
                 <Thumbnail
                   key={film.id} 
@@ -124,6 +128,14 @@ class Profile extends Component {
                     subtitle={userState.categories[key][filmType]} />
                   <CarouselSecondary {...settings} list={newList} />
                 </div>);
+              
+              highlightList.push(
+                <Highlights 
+                  key={userState.type[key][filmType]}
+                  type={key} 
+                  count={newList.length} 
+                  highlightName={userState.categories[key][filmType]} />
+              );
             } else {
               filmList.push(
                 <div 
@@ -134,6 +146,13 @@ class Profile extends Component {
                     subtitle={userState.categories[key][filmType]} />
                   <p className={c.Profile__NotAvailable}>No {userState.categories[key][filmType]} Found</p>
                 </div>
+              );
+
+              highlightList.push(
+                <Highlights 
+                  key={userState.type[key][filmType]}
+                  type={key} 
+                  highlightName={userState.categories[key][filmType]} />
               );
             }
           })
@@ -159,6 +178,9 @@ class Profile extends Component {
             {sidePanel}
           </div>
           <section className={c.Profile__Lists}>
+            <div className={c.Profile__Highlights}>
+              {highlightList}
+            </div>
             {filmList}
           </section>
         </div>

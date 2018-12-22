@@ -6,6 +6,10 @@
     width: 6rem;
     height: 6rem;
     margin: 3rem;
+
+    @media only screen and (max-width: 37.5em) {
+      margin: 1rem 2rem; 
+    }
   }
   
   &__Credit {
@@ -13,5 +17,13 @@
     width: auto;
     height: 12rem;
     margin: 1rem;
+
+    @media only screen and (max-width: 37.5em) {
+      height: 9rem; 
+    }
+
+    @media only screen and (max-width: 25em) {
+      margin-bottom: -3rem;
+    }
   }
 }

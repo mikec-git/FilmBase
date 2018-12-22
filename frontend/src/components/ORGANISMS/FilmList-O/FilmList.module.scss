@@ -16,5 +16,10 @@
     align-items: start;
     grid-template-columns: repeat(auto-fit, minmax(min-content, 16rem));
     grid-auto-rows: min-content;
+
+    @media only screen and (max-width: 50em) {
+      width: 85%;
+      margin: 0 auto;
+    }
   }
 }

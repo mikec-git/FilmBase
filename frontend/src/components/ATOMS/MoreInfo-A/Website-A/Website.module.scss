@@ -6,6 +6,10 @@
   width: 100%;
   padding-bottom: .75rem;
   border-bottom: 1px solid $primary-gray;
+ 
+  @media only screen and (max-width: 68.75em) {
+    font-size: 3.5rem;
+  }
 
   &__Name,
   &__Name:link,

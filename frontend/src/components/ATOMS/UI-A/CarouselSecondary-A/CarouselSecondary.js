@@ -24,18 +24,42 @@ const carouselSecondary = (props) => {
   if(listLength < slidesToShow) {
     slidesToShow = listLength;
   }
-
+  
   let settings = {
     slidesToScroll: slidesToScroll,
     slidesToShow: slidesToShow,
     infinite: true,
     dots: true,    
-    speed: 500,
+    speed: 300,
     draggable: false,
     nextArrow: <Arrow {...rightArrow} />,
     prevArrow: <Arrow {...leftArrow} />,
-    arrows: listLength > slidesToShow,
-    centerMode: listLength <= slidesToShow
+    responsive: [
+      {
+        breakpoint: 1650,
+        settings: {
+          slidesToShow: listLength >= 4 ? 4 : listLength
+        }
+      },
+      {
+        breakpoint: 1400,
+        settings: {
+          slidesToShow: listLength >= 3 ? 3 : listLength
+        }
+      },
+      {
+        breakpoint: 1000,
+        settings: {
+          slidesToShow: listLength >= 2 ? 2 : listLength
+        }
+      },
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: listLength >= 1 ? 1 : listLength
+        }
+      }
+    ]
   }
 
   if(listLength > 0) {

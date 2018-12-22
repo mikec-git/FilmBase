@@ -9,15 +9,28 @@
   margin: 0 2rem;
   transition: all 200ms ease-out;
   backface-visibility: hidden;
-
+  
   &:hover {
     filter: brightness(1.5) drop-shadow(0 .25rem 1.2rem rgba($primary-pink, 1));
+  }
+
+  @media only screen and (max-width: 50em) {
+    margin: 2rem 0;
+    font-weight: 500;
+    font-size: 6.5rem;
+    text-transform: uppercase;
+    letter-spacing: .5rem;
   }
 
   &__Img {
     display: block;
     width: 3.5rem;
     height: 3.5rem;
+
+    @media only screen and (max-width: 50em) {
+      height: 10rem;
+      width: 10rem;
+    }
   }
   
   &__Link {
@@ -30,6 +43,7 @@
       text-decoration: none;
       color: inherit;
       width: 100%;
+      backface-visibility: hidden;
     }
   }
   
@@ -52,11 +66,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media only screen and (max-width: 50em) {
+    margin: 2rem 0;
+    font-weight: 500;
+    font-size: 6.5rem;
+    text-transform: uppercase;
+    letter-spacing: .5rem;
+  }
   
-  &:hover &__AuthLink {
-    filter: brightness(1.5) 
-            drop-shadow(0 .25rem 1.2rem rgba($primary-pink, 1)) 
-            drop-shadow(0 .25rem 1.2rem rgba($primary-pink, 1));
+  &:hover {
+    filter: brightness(1.1) 
+            drop-shadow(0 .1rem 1.2rem rgba($primary-pink, .5)) 
+            drop-shadow(0 .1rem 1.2rem rgba($primary-pink, .5));
   }
 
   &__Text {
@@ -66,10 +88,15 @@
     height: 100%;
     width: 100%;
     padding-bottom: .3rem;
+    
+    @media only screen and (max-width: 50em) {
+      font-weight: 500;
+    }
   }
   
   &__AuthLink {
     transition: all 200ms ease-out;
+    backface-visibility: hidden;
 
     &,
     &:link,
@@ -85,6 +112,11 @@
       font-weight: 700;
       border-radius: 50%;
       transition: all 200ms ease-out;
+      
+      @media only screen and (max-width: 50em) {
+        color: inherit;
+        background-color: transparent;
+      }
     }
   } 
 
@@ -101,6 +133,10 @@
     background-color: $primary-gray;
     border-bottom-right-radius: 1rem;
     border-bottom-left-radius: 1rem;
+
+    @media only screen and (max-width: 50em) {
+      display: none;
+    }
 
     & > *:last-child {
       border-bottom-right-radius: 1rem;

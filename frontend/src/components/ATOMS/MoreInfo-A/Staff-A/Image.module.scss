@@ -1,22 +1,26 @@
 .Image {  
   &, 
-  &__NA {
+  &__NA,
+  &__Country {
     display: block;
-    object-fit: cover;
-    object-position: 0 .1rem;
-    height: 100%;
+    object-fit: contain;
     width: 100%;
     box-shadow: -1rem 1.5rem 3rem rgba(0, 0, 0, .5);
+  }
+
+  &, 
+  &__NA {
+    object-position: 0 .1rem;
     backface-visibility: hidden;
     transition: all 200ms ease-out;
     filter: blur(.1px); 
   }
 
-  &__NA {    
-    object-fit: contain;
+  &__NA,
+  &__Country {
     object-position: 50% 50%;
+    height: 100%;
     background-color: #888;
-    cursor: initial;
   }
 
   &__Info {
@@ -34,17 +38,22 @@
     clip-path: circle(50%);
     background-color: #fff;
   }
-  
-  &__Wrapper {  
+
+  &__Wrapper,
+  &__WrapperCountry {
     position: relative;
     height: 25rem;
     width: inherit;
     overflow: hidden;
     border-radius: 2rem;
+  }
+  
+  &__Wrapper {  
     cursor: pointer;
     
     &:hover {
-      .Image {
+      .Image,
+      .Image__NA {
         filter: blur(.3rem);
         transform: scale(1.05) translateY(.8rem);
 

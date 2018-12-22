@@ -17,6 +17,8 @@ const title = (props) => {
     classNames = c.Title__Search;
   } else if(context === 'profile') {
     classNames = c.Title__Profile;
+  } else if(context === 'work') {
+    classNames = className ? [c.Title__Work, className].join(' ') : c.Title__Work;
   }
 
   return (

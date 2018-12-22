@@ -10,7 +10,6 @@ import Bookmark from '../../../ATOMS/UI-A/ClickImage-A/ClickImage';
 
 import bookmark from '../../../../assets/img/bookmark.svg';
 import c from './VideoSummary.module.scss';
-import * as u from '../../../../shared/Utility';
 
 const videoSummary = (props) => {  
   const classNames = props.className ? 

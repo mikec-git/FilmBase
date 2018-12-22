@@ -33,6 +33,21 @@
     max-width: 60%;
     white-space: pre-wrap;
 
+    @media only screen and (max-width: 56.25em) {
+      bottom: 5rem;
+    }
+
+    @media only screen and (max-width: 43.75em) {
+      right: 10rem;
+      max-width: 100%;
+    }
+    
+    @media only screen and (max-width: 37.5em) {
+      left: 0rem;
+      right: 0rem;
+      text-align: center;
+    }
+
     & > *:not(:last-child) {
       margin-bottom: 1rem;
     }
@@ -41,6 +56,16 @@
   &__Rating {
     display: flex;
     align-items: flex-end;
+
+    @media only screen and (max-width: 37.5em) {
+      & > *:first-child {
+        margin-left: auto;
+      }
+
+      & > *:last-child {
+        margin-right: auto;
+      }
+    }
 
     & > *:first-child {
       padding-right: 1rem;

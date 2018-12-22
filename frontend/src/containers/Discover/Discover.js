@@ -97,6 +97,7 @@ class Discover extends Component {
           
     this.setState({ searchQueryPath: newPath });
     this.props.onGetDiscoverInit(initFilters);
+    window.scrollTo(0, 0);
   }
 
   componentDidUpdate(prevProps,) {

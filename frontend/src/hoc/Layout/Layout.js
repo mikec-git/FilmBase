@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Navigation from '../../components/ORGANISMS/Navigation-O/Navigation';
+import Sidedrawer from '../../components/ORGANISMS/Sidedrawer-O/Sidedrawer';
 import Footer from '../../components/ORGANISMS/Footer-O/Footer';
 import Message from '../../components/ATOMS/UI-A/Message-A/Message';
+import Hamburger from '../../components/ATOMS/Navigation-A/Hamburger-A/Hamburger';
 
 import movie from '../../assets/img/movie.svg';
 import tv from '../../assets/img/tv.svg';
@@ -47,8 +49,18 @@ class Layout extends Component {
         path: '/profile',
         auth: true
       }
-      //////////////// FIX FOOTER LOGIN/PROFILE SWAP
+    },
+    open: false
+  }
+
+  componentDidUpdate(_, prevState) {
+    if(this.state.open && prevState.open) {
+      this.setState({ open: false });
     }
+  }
+
+  toggleSidedrawerHandler = () => {
+    this.setState(prevState => ({ open: !prevState.open }));
   }
 
   render() { 
@@ -57,33 +69,57 @@ class Layout extends Component {
       messages = this.props.validationMessages.map(message => (
         <Message 
           key={message.id} 
-          clearMessage={this.props.onClearMessage} 
+          clearValidationMessage={this.props.onClearValidationMessage} 
           {...message} />
       ));
       
       messages = <div className={c.Layout__Message}>{messages}</div>;
     }
 
+    let layoutClasses = [c.Layout];
+    if(this.state.open) {
+      layoutClasses.push(c.Layout_open)
+    }
+
     return (
-      <div className={c.Layout}>
+      <>
         {messages}
-        <Navigation navItems={this.state.navItems}/>
-        <main className={c.Layout__Main}>{this.props.children}</main>
-        <Footer navItems={this.state.navItems} />
-      </div>
+        <div className={layoutClasses.join(' ')}>
+          <Navigation 
+            navItems={this.state.navItems}
+            loggedIn={this.props.loggedIn}
+            profile={this.props.profile}
+            toggleSidedrawer={this.toggleSidedrawerHandler}
+            isOpen={this.state.open} />
+          <Hamburger 
+            open={this.state.open}
+            toggle={this.toggleSidedrawerHandler} />
+          <Sidedrawer
+            navItems={this.state.navItems}
+            open={this.state.open}
+            loggedIn={this.props.loggedIn} />
+          <main className={c.Layout__Main}>{this.props.children}</main>
+          <Footer 
+            navItems={this.state.navItems}
+            loggedIn={this.props.loggedIn}
+            profile={this.props.profile} />
+        </div>
+      </>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    validationMessages: state.profile.validationMessages
+    validationMessages: state.profile.validationMessages,
+    loggedIn: state.login.loggedIn,
+    profile: state.profile.profile
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onClearMessage: () => dispatch(actionsProfile.clearValidationMessage())
+    onClearValidationMessage: () => dispatch(actionsProfile.clearValidationMessage())
   };
 };
  

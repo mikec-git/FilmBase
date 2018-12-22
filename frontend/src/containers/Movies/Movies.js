@@ -25,6 +25,7 @@ class Movies extends Component {
     window.addEventListener('resize', this.resizeSlide);
     this.props.onFetchMoviesInit();
     this.startInterval();
+    window.scrollTo(0, 0);
   }
   
   componentWillUnmount() {
@@ -78,9 +79,18 @@ class Movies extends Component {
   }
   
   render() { 
-    let carousel  = null,
-        content   = null,
-        filmList  = [];
+    let carousel    = null,
+        content     = null,
+        listLength  = 12,
+        filmList    = [];
+
+    if(window.innerWidth <= 400) {
+      listLength = 2;
+    } else if(window.innerWidth <= 600) {
+      listLength = 4;
+    } else if(window.innerWidth <= 900) {
+      listLength = 10;
+    }
 
     if(u.isObjNotEmpty(this.props.movies)) {
       const moviePathBase     = this.props.location.pathname,
@@ -103,7 +113,7 @@ class Movies extends Component {
               category={movieList.category}
               results={movieList.videos}
               context='main'
-              listLength={12}
+              listLength={listLength}
               page={this.props.showPage[key]}
               arrowClicked={this.listArrowClickedHandler}
               videoClicked={this.getMovieDetailsHandler}

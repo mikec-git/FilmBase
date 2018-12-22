@@ -10,13 +10,17 @@ class Message extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.setState({ enter: false }), 2500);
-    this.timeoutId = setTimeout(this.props.clearMessage, 3000);
+    this.animationTimeoutId = setTimeout(() => this.setState({ enter: false }), this.props.duration - 500);
+    this.timeoutId = setTimeout(this.props.clearValidationMessage, this.props.duration);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.animationTimeoutId);
   }
   
   closeMessageHandler = () => {
     clearTimeout(this.timeoutId);
-    this.props.clearMessage();
+    this.props.clearValidationMessage();
   }
   
   render() {
@@ -49,7 +53,7 @@ class Message extends Component {
             onClick={this.closeMessageHandler}
             src={cancel} 
             alt="Close Message"/>
-          {this.props.message}
+          <h3 className={c.Message__Text}>{this.props.message}</h3>
         </div>
       </CSSTransition>
     );

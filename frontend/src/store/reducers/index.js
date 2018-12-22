@@ -6,6 +6,7 @@ import discoverReducer from './DiscoverReducer';
 import tvReducer from './TVReducer';
 import loginReducer from './LoginReducer';
 import profileReducer from './ProfileReducer';
+import peopleReducer from './PeopleReducer';
 
 export default combineReducers(
   {
@@ -15,6 +16,7 @@ export default combineReducers(
     discover: discoverReducer,
     app: appReducer,
     login: loginReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    people: peopleReducer
   }
 );

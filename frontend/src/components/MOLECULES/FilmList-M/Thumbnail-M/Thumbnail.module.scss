@@ -10,6 +10,7 @@
   
   &__Item {
     display: inline-block;
+    min-width: 14rem;
     width: auto;
     height: $thumbnail-height;
     position: relative;
@@ -19,6 +20,15 @@
     box-shadow: -1.5rem 1rem 2.5rem rgba(#333, .5);
     cursor: pointer;
     overflow: hidden;
+
+    @media only screen and (max-width: 50em) {
+      min-width: 19rem;
+      height: auto;
+    }
+    
+    @media only screen and (max-width: 25em) {
+      min-width: 22rem;
+    }
 
     &::before {
       content: '';

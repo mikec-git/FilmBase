@@ -42,11 +42,14 @@ class Navigation extends Component {
   }
 
   pageScrollingHandler = () => {
-    if(this.navRef && this.navRef.current) {
+    if(this.navRef && this.navRef.current && window.innerWidth > 800) {
       this.scrollDirDown  = (window.scrollY - this.curScrollPos) >= 0;
       this.curScrollPos   = window.scrollY;
       const navStyle      = this.navRef.current.style;
       navStyle.transform  = !this.scrollDirDown && this.curScrollPos > navStyle.height ? 'translateY(-100%)' : 'translateY(0)';
+    } else {
+      const navStyle      = this.navRef.current.style;
+      navStyle.transform  = 'translateY(0)';
     }
   }
 
@@ -79,15 +82,16 @@ class Navigation extends Component {
   render() { 
     let navigationLinks = [];
     for (let key in this.props.navItems) {
-      const item = this.props.navItems[key];
-      if(item.hasOwnProperty('auth') && item.auth === this.props.loggedIn) {
-        if(item.auth && this.props.loggedIn && this.props.profile) {
-          item.name = this.props.profile.userName.slice(0,1).toUpperCase();
-          item.onLogout = this.props.onLogout;
+      const newItem = {...this.props.navItems[key]};
+      
+      if(newItem.hasOwnProperty('auth') && newItem.auth === this.props.loggedIn) {
+        if(newItem.auth && this.props.loggedIn && this.props.profile) {
+          newItem.name      = this.props.profile.userName.slice(0,1).toUpperCase();
+          newItem.onLogout  = this.props.onLogout;
         }
-        navigationLinks.push(item);
-      } else if(!item.hasOwnProperty('auth')) {
-        navigationLinks.push(item);
+        navigationLinks.push(newItem);
+      } else if(!newItem.hasOwnProperty('auth')) {
+        navigationLinks.push(newItem);
       }
     }
 
@@ -111,17 +115,10 @@ class Navigation extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    loggedIn: state.login.loggedIn,
-    profile: state.profile.profile
-  }
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     onLogout: () => dispatch(actionsLogin.logout())
   }
 }
  
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));
+export default withRouter(connect(null, mapDispatchToProps)(Navigation));

@@ -41,7 +41,7 @@ export function* fetchMoviesInitSaga(action) {
       if(!hasLooped || loopAgain['popular']) {
         popular = yield call(axiosTMDB3, searchString.popular);
       } 
-
+      
       yield put(actions.fetchMoviesInitSuccess(
         { nowPlaying: nowPlaying && nowPlaying.data, 
           upcoming: upcoming && upcoming.data, 

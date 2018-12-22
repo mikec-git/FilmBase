@@ -16,6 +16,8 @@ const hearts = (props) => {
     c.Hearts__Thumbnail;
   } else if(props.context === 'rateFilm') {
     classNames = c.Hearts__RateFilm;
+  } else if(props.context === 'work') {
+    classNames = c.Hearts__Work;
   }
 
   const starCount = (Math.round(props.rating)/2).toFixed(1);

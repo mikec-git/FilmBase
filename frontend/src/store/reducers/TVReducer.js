@@ -49,6 +49,7 @@ const fetchTVInitSuccess = (state, action) => {
       baseUrl         = [baseUrlBackdrop, baseUrlPoster];
 
 
+  console.log(fetchedTV);
   // Extracting relevant data
   if(!hasLooped || loopAgain['airingToday']) {
     airingToday = u.filterByVideoData(fetchedTV['airingToday'].results, 'langImg');
@@ -162,23 +163,29 @@ const getTVDetailsStart = (state, action) => {
 }
 
 const getTVDetailsSuccess = (state, action) => {
-  const imgConfig = action.config,
-        videos    = u.filterByVideoData(action.fetchedDetails['videos'].results, 'videoSite'),
-        cast      = u.extractUpTo(action.fetchedDetails['credits'].cast, 11),
-        crew      = u.extractUpTo(action.fetchedDetails['credits'].crew, 11),
-        details   = action.fetchedDetails['details'],
-        reviews   = action.fetchedDetails['reviews'].results;
+  const { config: imgConfig, fetchedDetails } = action;
+  
+  const videos  = u.filterByVideoData(fetchedDetails['videos'].results, 'videoSite'),
+        details = fetchedDetails['details'],
+        reviews = fetchedDetails['reviews'].results,
+        cast    = u.extractUpTo(fetchedDetails['credits'].cast, 11),
+        crew    = u.extractUpTo(fetchedDetails['credits'].crew, 11),
+        prod    = u.extractUpTo(details.production_companies, 11);
 
-  const baseUrlBackdrop = u.getBaseUrl(imgConfig, 'backdrop', 0),
-        baseUrlProfile  = u.getBaseUrl(imgConfig, 'poster', 1);
+  const baseUrlBackdrop   = u.getBaseUrl(imgConfig, 'backdrop', 0),
+        baseUrlBackdropLg = u.getBaseUrl(imgConfig, 'backdrop', 3),
+        baseUrlProfile    = u.getBaseUrl(imgConfig, 'poster', 2),
+        baseUrlLogo       = u.getBaseUrl(imgConfig, 'logo', 4);
   
   u.sortVideoType(videos);
   u.getProfilePath(cast, baseUrlProfile);
   u.getProfilePath(crew, baseUrlProfile);
+  u.getLogoPath(prod, baseUrlLogo);
   
   const currentTVDetails = {
-    ...details, videos, cast, crew, reviews,
-    backdrop_path: baseUrlBackdrop.concat(details.backdrop_path)
+    ...details, videos, cast, crew, reviews, prod,
+    backdrop_path: baseUrlBackdrop.concat(details.backdrop_path),
+    backdrop_path_large: baseUrlBackdropLg.concat(details.backdrop_path)
   };
     
   return { ...state, currentTVDetails, loadingDetails: false };

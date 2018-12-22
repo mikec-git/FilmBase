@@ -6,6 +6,8 @@ const genre = (props) => {
     return <span className={c.Genre__Carousel}>{props.genre}</span>;
   } else if(props.context === 'moreInfo') {
     return <span className={c.Genre__MoreInfo}>{props.genre}</span>;
+  } else if(props.context === 'work') {
+    return <span className={c.Genre__Work}>{props.genre}</span>;
   } else {
     return <span>{props.genre}</span>;
   }
