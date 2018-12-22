@@ -7,7 +7,7 @@ import NavItems from '../../MOLECULES/Navigation-M/NavItems-M/NavItems';
 import Image from '../../ATOMS/UI-A/ClickImage-A/ClickImage';
 
 import Search from '../../../assets/img/search.svg';
-import Logo from '../../../assets/img/clapperboard-Logo.svg';
+import Logo from '../../../assets/img/Logo.svg';
 import c from './Navigation.module.scss';
 import * as u from '../../../shared/Utility';
 import * as actionsLogin from '../../../store/actions/LoginActions';

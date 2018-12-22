@@ -40,11 +40,10 @@
 
   &__Logo {
     display: block;
-    margin: 0 1rem;
+    margin: 0 1rem 0 3rem;
     justify-self: start;
-    width: 8rem;
+    width: 10rem;
     margin-right: auto;
-    background: #fff;
     cursor: pointer;
     
     @media only screen and (max-width: 50em) {
