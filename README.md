@@ -1,6 +1,5 @@
-# FilmBase-React-App
+# [FilmBase-React-App](https://www.filmbase.xyz/)
 This is a React app that allows users to browse for their favorite movies, TV shows, or film personalities.  
-[FilmBase](https://www.filmbase.xyz/)
 
 ## Contributor
 Mike Choi - Designer and Developer
