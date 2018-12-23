@@ -11,7 +11,7 @@ To get this project running on your local machine, follow the instructions below
 ## Prerequisites
 **NPM**
 1) Download and install [Node.js and npm](https://nodejs.org/en/)  
-(Or run the following command in your CLI to get the latest version of NPM if already installed)
+(Or run the following command in your Node CLI to get the latest version of NPM if already installed)
 ```
 npm install npm@latest -g
 ```
