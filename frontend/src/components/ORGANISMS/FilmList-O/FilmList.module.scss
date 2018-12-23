@@ -18,8 +18,16 @@
     grid-auto-rows: min-content;
 
     @media only screen and (max-width: 50em) {
-      width: 85%;
+      width: 100%;
       margin: 0 auto;
+    }
+
+    @media only screen and (max-width: 37.5em) {
+      grid-gap: .5rem;
+    }
+
+    @media only screen and (max-width: 18.75em) {
+      grid-gap: 0;
     }
   }
 }

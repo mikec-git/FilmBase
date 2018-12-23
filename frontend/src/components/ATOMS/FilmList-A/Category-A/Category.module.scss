@@ -37,6 +37,10 @@
     white-space: nowrap;
     margin-left: 1.5rem;
     letter-spacing: 1.5rem;
+
+    @media only screen and (max-width: 34.375em) {
+      white-space: initial;
+    }
   }
 
 }

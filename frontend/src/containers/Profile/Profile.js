@@ -104,7 +104,6 @@ class Profile extends Component {
           Object.entries(value).forEach(([filmType, list]) => {
             let pathBase = filmType === 'movie' ? '/profile/movie/' : '/profile/tv/';
             const newList = list.map(film => {
-              console.log(film);
               return (
                 <Thumbnail
                   key={film.id} 

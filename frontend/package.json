@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://www.filmbase.xyz",
   "dependencies": {
     "axios": "^0.18.0",
     "body-scroll-lock": "^2.6.0",

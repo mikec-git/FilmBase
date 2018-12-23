@@ -10,6 +10,10 @@
     @media only screen and (max-width: 37.5em) {
       margin: 1rem 2rem; 
     }
+    
+    @media only screen and (max-width: 18.75em) {
+      margin: 1rem 1rem;
+    }
   }
   
   &__Credit {
@@ -24,6 +28,6 @@
 
     @media only screen and (max-width: 25em) {
       margin-bottom: -3rem;
-    }
+    }    
   }
 }

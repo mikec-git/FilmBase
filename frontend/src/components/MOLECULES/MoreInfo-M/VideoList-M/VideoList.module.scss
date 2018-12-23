@@ -15,6 +15,11 @@
     justify-content: center;
     align-items: center;
   }
+
+  @media only screen and (max-width: 37.5em) {
+    overflow-y: auto;
+    height: 50%;
+  }
  
   &__Item {
     display: flex;

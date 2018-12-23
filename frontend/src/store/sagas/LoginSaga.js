@@ -43,7 +43,7 @@ export function* loginSaga(action) {
       let session = yield call(axiosTMDB3, searchString);
 
       yield put(actions.loginRequesting());
-      let win = yield call([window, 'open'],`https://www.themoviedb.org/authenticate/${session.data.request_token}?redirect_to=http://localhost:3000/login`);
+      let win = yield call([window, 'open'],`https://www.themoviedb.org/authenticate/${session.data.request_token}?redirect_to=https://www.filmbase.xyz/login`);
       win.focus();
     } 
   } catch (error) {

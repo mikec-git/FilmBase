@@ -85,9 +85,9 @@ class TV extends Component {
         filmList    = [];
     
     if(window.innerWidth <= 400) {
-      listLength = 2;
-    } else if(window.innerWidth <= 600) {
       listLength = 4;
+    } else if(window.innerWidth <= 600) {
+      listLength = 6;
     } else if(window.innerWidth <= 900) {
       listLength = 10;
     }
