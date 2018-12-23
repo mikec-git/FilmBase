@@ -33,6 +33,7 @@ Enjoy! :)
 ### Built Using
 **Libraries**
 - [React.js](https://reactjs.org/) - The Javascript library used
+- [React Router](https://reacttraining.com/react-router/) - Router used alongside React
 - [Redux](https://redux.js.org/) - State management
 - [Redux-Saga](https://redux-saga.js.org/) - Redux middleware for side effects
 - [SASS/SCSS](https://sass-lang.com/) - CSS Pre-Processor
