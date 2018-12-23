@@ -32,16 +32,16 @@ Enjoy! :)
 
 ### Built Using
 **Libraries**
-[React.js](https://reactjs.org/) - The Javascript library used
-[Redux](https://redux.js.org/) - State management
-[Redux-Saga](https://redux-saga.js.org/) - Redux middleware for side effects
-[SASS/SCSS](https://sass-lang.com/) - CSS Pre-Processor
-[React Slick](https://github.com/akiran/react-slick) - Carousel component
+- [React.js](https://reactjs.org/) - The Javascript library used
+- [Redux](https://redux.js.org/) - State management
+- [Redux-Saga](https://redux-saga.js.org/) - Redux middleware for side effects
+- [SASS/SCSS](https://sass-lang.com/) - CSS Pre-Processor
+- [React Slick](https://github.com/akiran/react-slick) - Carousel component
 
 
 **APIs**
-[TheMovieDB API](https://www.themoviedb.org/documentation/api) - Database for film/TV information
-[Youtube API](https://developers.google.com/youtube/) - Youtube video player API
+- [TheMovieDB API](https://www.themoviedb.org/documentation/api) - Database for film/TV information
+- [Youtube API](https://developers.google.com/youtube/) - Youtube video player API
 
 **Contributors**
 Mike Choi - Designer and Developer
