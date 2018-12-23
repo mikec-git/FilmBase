@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import c from './Spinner.module.scss';
 
 const spinner = (props) => {
-  const duration = 2500;
+  const duration = 2000;
   let spinner = (
     <div className={c.SpinnerWrapper}>
       <h1 className={c.SpinnerText__Title}>Film Base</h1>
