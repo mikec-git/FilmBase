@@ -11,8 +11,10 @@ const overview = (props) => {
     [c.Overview__Arrow] : 
     [c.Overview__Arrow, c.Overview__Arrow_less];
 
+  let expandArrow = <img className={arrowClasses.join(' ')} src={arrowDown} alt="Expand Arrow"/>;
   if(props.context === 'work') {
     classNames.push(c.Overview__Work);
+    expandArrow = null;
   }
   
   return (
@@ -20,7 +22,7 @@ const overview = (props) => {
       className={classNames.join(' ')}
       onClick={props.clicked}>
       {props.overview}
-      <img className={arrowClasses.join(' ')} src={arrowDown} alt="Expand Arrow"/>
+      {expandArrow}
     </p>
   )
 };

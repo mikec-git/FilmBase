@@ -48,8 +48,6 @@ const fetchTVInitSuccess = (state, action) => {
       baseUrlPoster   = u.getBaseUrl(imgConfig, 'poster', 1),
       baseUrl         = [baseUrlBackdrop, baseUrlPoster];
 
-
-  console.log(fetchedTV);
   // Extracting relevant data
   if(!hasLooped || loopAgain['airingToday']) {
     airingToday = u.filterByVideoData(fetchedTV['airingToday'].results, 'langImg');
