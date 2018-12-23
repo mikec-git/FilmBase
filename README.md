@@ -1,6 +1,5 @@
-# FilmBase-React-App
+# [FilmBase React App](https://www.filmbase.xyz/)
 This is a React app that allows users to browse for their favorite movies, TV shows, or film personalities.  
-[FilmBase](https://www.filmbase.xyz/)
 
 ## Contributor
 Mike Choi - Designer and Developer
@@ -11,7 +10,7 @@ To get this project running on your local machine, follow the instructions below
 ## Prerequisites
 **NPM**
 1) Download and install [Node.js and npm](https://nodejs.org/en/)  
-(Or run the following command in your CLI to get the latest version of NPM if already installed)
+(Or run the following command in your Node CLI to get the latest version of NPM if already installed)
 ```
 npm install npm@latest -g
 ```
@@ -22,7 +21,7 @@ npm install npm@latest -g
 git clone https://github.com/mikec-git/FilmBase-React-App.git
 ```
 
-2) Run npm install inside your project root directory to get required dependencies
+2) Run npm install inside the project root directory to get required dependencies
 ```
 npm install
 ```
