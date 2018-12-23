@@ -22,7 +22,7 @@ npm install npm@latest -g
 git clone https://github.com/mikec-git/FilmBase-React-App.git
 ```
 
-2) Run npm install inside your project root directory to get required dependencies
+2) Run npm install inside the project root directory to get required dependencies
 ```
 npm install
 ```
