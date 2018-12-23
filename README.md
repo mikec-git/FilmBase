@@ -34,7 +34,7 @@ npm run start
 
 Enjoy! :)
 
-### Built Using
+## Built Using
 **Libraries**
 - [React.js](https://reactjs.org/) - The Javascript library used
 - [React Router](https://reacttraining.com/react-router/) - Router used alongside React
@@ -51,5 +51,5 @@ Enjoy! :)
 - [TheMovieDB API](https://www.themoviedb.org/documentation/api) - Database for film/TV information
 - [Youtube API](https://developers.google.com/youtube/) - Youtube video player API
 
-### License
+## License
 This project is licensed under the MIT License - see the LICENSE.md file for details
