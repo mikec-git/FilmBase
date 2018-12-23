@@ -1,5 +1,6 @@
 # FilmBase-React-App
-This is a film information web app that allows users to interact with a movie database, through the Movie DB API.
+This is a React app that allows users to browse for their favorite movies, TV shows, or film personalities. 
+[FilmBase](https://www.filmbase.xyz/)
 
 ## Contributor
 Mike Choi - Designer and Developer
