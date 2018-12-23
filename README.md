@@ -1,6 +1,9 @@
 # FilmBase-React-App
 This is a film information web app that allows users to interact with a movie database, through the Movie DB API.
 
+## Contributor
+Mike Choi - Designer and Developer
+
 ## Getting Started
 To get this project running on your local machine, follow the instructions below.
 
@@ -46,9 +49,6 @@ Enjoy! :)
 **APIs**
 - [TheMovieDB API](https://www.themoviedb.org/documentation/api) - Database for film/TV information
 - [Youtube API](https://developers.google.com/youtube/) - Youtube video player API
-
-**Contributors**
-Mike Choi - Designer and Developer
 
 ### License
 This project is licensed under the MIT License - see the LICENSE.md file for details
