@@ -38,6 +38,9 @@ Enjoy! :)
 - [Redux-Saga](https://redux-saga.js.org/) - Redux middleware for side effects
 - [SASS/SCSS](https://sass-lang.com/) - CSS Pre-Processor
 - [React Slick](https://github.com/akiran/react-slick) - Carousel component
+- [React Transition Group](https://reactcommunity.org/react-transition-group/) - Animations for components
+- [Axios](https://github.com/axios/axios) - XMLHttpRequest Library
+- [Moment.js](https://momentjs.com/) - Time conversion format library
 
 
 **APIs**
