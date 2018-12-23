@@ -52,4 +52,4 @@ Enjoy! :)
 - [Youtube API](https://developers.google.com/youtube/) - Youtube video player API
 
 ## License
-This project is licensed under the MIT License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE file for more details
