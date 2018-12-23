@@ -1,4 +1,4 @@
-# [FilmBase-React-App](https://www.filmbase.xyz/)
+# [FilmBase React App](https://www.filmbase.xyz/)
 This is a React app that allows users to browse for their favorite movies, TV shows, or film personalities.  
 
 ## Contributor
