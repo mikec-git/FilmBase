@@ -8,8 +8,8 @@ const image = (props) => {
   let image = null;
   let src   = props.image ? props.image : NotAvailable;
   let wrapperClass = c.Image__Wrapper;
-
-  if(props.isCountry) {
+  
+  if(props.isCountry || props.isProd) {
     wrapperClass = c.Image__WrapperCountry;
     let imgClass = c.Image__Country;
 

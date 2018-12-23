@@ -33,6 +33,7 @@ const staff = (props) => {
         context='staff' 
         name={props.name} />
       <Image 
+        isProd={props.isProd}
         image={props.profile_path}
         isCountry={!!props.country}
         showPerson={props.showPerson}

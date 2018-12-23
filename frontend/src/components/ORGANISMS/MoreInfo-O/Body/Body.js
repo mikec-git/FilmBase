@@ -46,7 +46,7 @@ const body = (props) => {
 
   if(u.isArrayGT(props.productionList, 0)) {
     let production = props.productionList.map(production => {
-      return (<Staff key={production.id} name={production.name} country={production.origin_country} image={production.logo_path} />);
+      return (<Staff key={production.id} name={production.name} isProd country={production.origin_country} image={production.logo_path} />);
     });
 
     carousels[2].content = <CarouselSecondary {...settings} list={production} />;
