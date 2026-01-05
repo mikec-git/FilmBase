@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import MoreInfo from './containers/MoreInfo/MoreInfo';
 import Movies from './containers/Movies/Movies';
-import Layout from './HOC/Layout/Layout';
-import Modal from './HOC/Modal/Modal';
+import Layout from './hoc/Layout/Layout';
+import Modal from './hoc/Modal/Modal';
 import Spinner from './components/ATOMS/UI-A/Spinner-A/Spinner';
 
 import * as actionsMovies from './store/actions/MoviesActions';
