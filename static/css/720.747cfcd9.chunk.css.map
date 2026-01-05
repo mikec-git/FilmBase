@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/720.747cfcd9.chunk.css","mappings":"AAGE,oBAEE,cAEA,cAHA,eAEA,YACA","sources":["containers/TV/TV.module.scss"],"sourcesContent":["@import '../../styles/variables';\r\n\r\n.TV {\r\n  &__Body {\r\n    padding: 5rem 0;\r\n    margin: 0 auto;\r\n    width: $max-width;\r\n    max-width: 90%;\r\n  }\r\n}"],"names":[],"ignoreList":[],"sourceRoot":""}
